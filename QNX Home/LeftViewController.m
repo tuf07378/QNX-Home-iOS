@@ -24,7 +24,7 @@
 
     self.titlesArray = @[@"Open Right View",
                          @"",
-                         @"Change Root VC",
+                         @"Logout",
                          @"",
                          @"Profile",
                          @"News",

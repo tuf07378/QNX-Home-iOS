@@ -16,6 +16,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+
+}
+
+- (IBAction)loginClicked:(id)sender{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
     
@@ -33,7 +38,6 @@
                        options:UIViewAnimationOptionTransitionCrossDissolve
                     animations:nil
                     completion:nil];
-
 }
 @end
 
