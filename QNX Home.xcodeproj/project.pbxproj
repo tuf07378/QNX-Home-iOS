@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D33D12B1E6B42640033202C /* LGSideMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D33D1241E6B42640033202C /* LGSideMenuController.m */; };
+		2D33D12C1E6B42640033202C /* LGSideMenuControllerGesturesHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D33D1261E6B42640033202C /* LGSideMenuControllerGesturesHandler.m */; };
+		2D33D12D1E6B42640033202C /* LGSideMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D33D1281E6B42640033202C /* LGSideMenuView.m */; };
+		2D33D12E1E6B42640033202C /* UIViewController+LGSideMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D33D12A1E6B42640033202C /* UIViewController+LGSideMenuController.m */; };
 		2D6958161E607E95008C918F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D6958151E607E95008C918F /* main.m */; };
 		2D6958191E607E95008C918F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D6958181E607E95008C918F /* AppDelegate.m */; };
 		2D6958221E607E95008C918F /* QNX_Home.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2D6958201E607E95008C918F /* QNX_Home.xcdatamodeld */; };
@@ -46,6 +50,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2D33D1231E6B42640033202C /* LGSideMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSideMenuController.h; sourceTree = "<group>"; };
+		2D33D1241E6B42640033202C /* LGSideMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSideMenuController.m; sourceTree = "<group>"; };
+		2D33D1251E6B42640033202C /* LGSideMenuControllerGesturesHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSideMenuControllerGesturesHandler.h; sourceTree = "<group>"; };
+		2D33D1261E6B42640033202C /* LGSideMenuControllerGesturesHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSideMenuControllerGesturesHandler.m; sourceTree = "<group>"; };
+		2D33D1271E6B42640033202C /* LGSideMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGSideMenuView.h; sourceTree = "<group>"; };
+		2D33D1281E6B42640033202C /* LGSideMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSideMenuView.m; sourceTree = "<group>"; };
+		2D33D1291E6B42640033202C /* UIViewController+LGSideMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+LGSideMenuController.h"; sourceTree = "<group>"; };
+		2D33D12A1E6B42640033202C /* UIViewController+LGSideMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+LGSideMenuController.m"; sourceTree = "<group>"; };
 		2D6958111E607E95008C918F /* QNX Home.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QNX Home.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D6958151E607E95008C918F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2D6958171E607E95008C918F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -109,6 +121,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2D33D1221E6B42640033202C /* LGSideMenuController */ = {
+			isa = PBXGroup;
+			children = (
+				2D33D1231E6B42640033202C /* LGSideMenuController.h */,
+				2D33D1241E6B42640033202C /* LGSideMenuController.m */,
+				2D33D1251E6B42640033202C /* LGSideMenuControllerGesturesHandler.h */,
+				2D33D1261E6B42640033202C /* LGSideMenuControllerGesturesHandler.m */,
+				2D33D1271E6B42640033202C /* LGSideMenuView.h */,
+				2D33D1281E6B42640033202C /* LGSideMenuView.m */,
+				2D33D1291E6B42640033202C /* UIViewController+LGSideMenuController.h */,
+				2D33D12A1E6B42640033202C /* UIViewController+LGSideMenuController.m */,
+			);
+			path = LGSideMenuController;
+			sourceTree = "<group>";
+		};
 		2D6958081E607E94008C918F = {
 			isa = PBXGroup;
 			children = (
@@ -116,6 +143,7 @@
 				2D6958301E607E95008C918F /* QNX HomeTests */,
 				2D69583B1E607E95008C918F /* QNX HomeUITests */,
 				2D6958121E607E95008C918F /* Products */,
+				2D33D1221E6B42640033202C /* LGSideMenuController */,
 			);
 			sourceTree = "<group>";
 		};
@@ -371,13 +399,17 @@
 				2DAD44811E6B3D490098BB0E /* LeftViewController.m in Sources */,
 				2DAD44791E6B3D190098BB0E /* ViewController.m in Sources */,
 				2DAD447A1E6B3D190098BB0E /* OtherViewController.m in Sources */,
+				2D33D12D1E6B42640033202C /* LGSideMenuView.m in Sources */,
 				2DAD44821E6B3D490098BB0E /* LeftViewCell.m in Sources */,
 				2DAD448C1E6B3D630098BB0E /* MainViewController.m in Sources */,
+				2D33D12C1E6B42640033202C /* LGSideMenuControllerGesturesHandler.m in Sources */,
+				2D33D12E1E6B42640033202C /* UIViewController+LGSideMenuController.m in Sources */,
 				2DAD44871E6B3D530098BB0E /* RightViewController.m in Sources */,
 				2D6958221E607E95008C918F /* QNX_Home.xcdatamodeld in Sources */,
 				2D6958191E607E95008C918F /* AppDelegate.m in Sources */,
 				2D6958161E607E95008C918F /* main.m in Sources */,
 				2DAD44781E6B3D190098BB0E /* NavigationController.m in Sources */,
+				2D33D12B1E6B42640033202C /* LGSideMenuController.m in Sources */,
 				2DAD446D1E6B3CE40098BB0E /* LoginNavigationController.m in Sources */,
 				2DAD446E1E6B3CE40098BB0E /* LoginViewController.m in Sources */,
 				2DAD44881E6B3D530098BB0E /* RightViewCell.m in Sources */,

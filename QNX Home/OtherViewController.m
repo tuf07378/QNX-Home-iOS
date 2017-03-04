@@ -4,7 +4,7 @@
 //
 
 #import "OtherViewController.h"
-#import "ChooseNavigationController.h"
+#import "LoginNavigationController.h"
 
 @interface OtherViewController ()
 
@@ -25,7 +25,7 @@
 - (IBAction)showChooseController:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Choose" bundle:NSBundle.mainBundle];
 
-    ChooseNavigationController *navigationController = [storyboard instantiateInitialViewController];
+    LoginNavigationController *navigationController = [storyboard instantiateInitialViewController];
 
     UIWindow *window = UIApplication.sharedApplication.delegate.window;
     window.rootViewController = navigationController;
