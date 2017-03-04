@@ -33,6 +33,7 @@
                          @"",
                          @"Dashboard",
                          @"Sensors",
+                         @"Relays",
                          @"Automation & Notifications",
                          @"User Account Settings",
                          @"System Configuration",
@@ -69,14 +70,14 @@
     LeftViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     
     cell.titleLabel.text = self.titlesArray[indexPath.row];
-    cell.separatorView.hidden = (indexPath.row <= 3 || indexPath.row == self.titlesArray.count-1 || indexPath.row == 9);
-    cell.userInteractionEnabled = (indexPath.row != 1 && indexPath.row != 3 && indexPath.row != 9 && indexPath.row != 2);
+    cell.separatorView.hidden = (indexPath.row <= 3 || indexPath.row == self.titlesArray.count-1 || indexPath.row == 10);
+    cell.userInteractionEnabled = (indexPath.row != 1 && indexPath.row != 3 && indexPath.row != 10 && indexPath.row != 2);
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return (indexPath.row == 1 || indexPath.row == 3 || indexPath.row == 9) ? 22.0 : 44.0;
+    return (indexPath.row == 1 || indexPath.row == 3 || indexPath.row == 10) ? 22.0 : 44.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -84,6 +85,7 @@
     
     if(!self.dash){
         self.dash = [UIView new];
+        self.dash.backgroundColor = [UIColor whiteColor];
     }
     switch(indexPath.row){
         case 0:{
@@ -108,7 +110,7 @@
             [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
             break;
         }
-        case 10:{
+        case 11:{
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
             UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"LoginNavigationController"];
             
