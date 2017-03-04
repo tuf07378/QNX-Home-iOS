@@ -1,29 +1,13 @@
 //
 //  ViewController.m
-//  QNX Home
-//
-//  Created by Tyler Ford on 2/24/17.
-//  Copyright © 2017 Tyler Ford. All rights reserved.
+//  LGSideMenuControllerDemo
 //
 
 #import "ViewController.h"
-
-@interface ViewController ()
-
-@end
+#import "LoginNavigationController.h"
 
 @implementation ViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-}
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 
 @end
