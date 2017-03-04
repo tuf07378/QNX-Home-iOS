@@ -181,7 +181,7 @@
             </objects>
             <point key="canvasLocation" x="-750" y="573"/>
         </scene>
-        <!--LGSideMenuController-->
+        <!--QNX Home-->
         <scene sceneID="hhe-Pe-TGY">
             <objects>
                 <viewController storyboardIdentifier="ViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="wBU-AO-3fi" customClass="ViewController" sceneMemberID="viewController">
@@ -194,8 +194,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" title="LGSideMenuController" id="jua-jC-TbI">
-                        <barButtonItem key="leftBarButtonItem" title="Left" id="OF7-o4-Bd7">
+                    <navigationItem key="navigationItem" title="QNX Home" id="jua-jC-TbI">
+                        <barButtonItem key="leftBarButtonItem" image="menu" id="OF7-o4-Bd7">
                             <connections>
                                 <action selector="showLeftViewAnimated:" destination="wBU-AO-3fi" id="fnf-2e-Znm"/>
                             </connections>
@@ -258,4 +258,7 @@
             <point key="canvasLocation" x="902" y="-165"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="menu" width="29" height="18"/>
+    </resources>
 </document>

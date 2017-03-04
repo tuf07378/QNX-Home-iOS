@@ -12,7 +12,7 @@
         <!--Login Navigation Controller-->
         <scene sceneID="36u-eZ-cNe">
             <objects>
-                <navigationController id="ulQ-c1-Igg" userLabel="Login Navigation Controller" customClass="LoginNavigationController" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="LoginNavigationController" id="ulQ-c1-Igg" userLabel="Login Navigation Controller" customClass="LoginNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="mGT-pA-iaL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -33,7 +33,7 @@
         <!--Login View Controller-->
         <scene sceneID="z68-iz-5xt">
             <objects>
-                <viewController id="gj1-iz-GhO" customClass="LoginViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="gj1-iz-GhO" customClass="LoginViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Af0-k9-P32"/>
                         <viewControllerLayoutGuide type="bottom" id="7Ai-2Y-S8m"/>

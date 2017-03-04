@@ -11,6 +11,9 @@
 		2D33D12C1E6B42640033202C /* LGSideMenuControllerGesturesHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D33D1261E6B42640033202C /* LGSideMenuControllerGesturesHandler.m */; };
 		2D33D12D1E6B42640033202C /* LGSideMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D33D1281E6B42640033202C /* LGSideMenuView.m */; };
 		2D33D12E1E6B42640033202C /* UIViewController+LGSideMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D33D12A1E6B42640033202C /* UIViewController+LGSideMenuController.m */; };
+		2D33D1301E6B7F340033202C /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D33D12F1E6B7F340033202C /* Login.storyboard */; };
+		2D33D1321E6B7F530033202C /* LeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D33D1311E6B7F530033202C /* LeftViewController.m */; };
+		2D33D1341E6B7F650033202C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D33D1331E6B7F650033202C /* Main.storyboard */; };
 		2D6958161E607E95008C918F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D6958151E607E95008C918F /* main.m */; };
 		2D6958191E607E95008C918F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D6958181E607E95008C918F /* AppDelegate.m */; };
 		2D6958221E607E95008C918F /* QNX_Home.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2D6958201E607E95008C918F /* QNX_Home.xcdatamodeld */; };
@@ -20,16 +23,13 @@
 		2D69583D1E607E95008C918F /* QNX_HomeUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D69583C1E607E95008C918F /* QNX_HomeUITests.m */; };
 		2DAD446D1E6B3CE40098BB0E /* LoginNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD44691E6B3CE40098BB0E /* LoginNavigationController.m */; };
 		2DAD446E1E6B3CE40098BB0E /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD446B1E6B3CE40098BB0E /* LoginViewController.m */; };
-		2DAD446F1E6B3CE40098BB0E /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DAD446C1E6B3CE40098BB0E /* Login.storyboard */; };
 		2DAD44781E6B3D190098BB0E /* NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD44731E6B3D190098BB0E /* NavigationController.m */; };
 		2DAD44791E6B3D190098BB0E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD44751E6B3D190098BB0E /* ViewController.m */; };
 		2DAD447A1E6B3D190098BB0E /* OtherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD44771E6B3D190098BB0E /* OtherViewController.m */; };
-		2DAD44811E6B3D490098BB0E /* LeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD447E1E6B3D490098BB0E /* LeftViewController.m */; };
 		2DAD44821E6B3D490098BB0E /* LeftViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD44801E6B3D490098BB0E /* LeftViewCell.m */; };
 		2DAD44871E6B3D530098BB0E /* RightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD44841E6B3D530098BB0E /* RightViewController.m */; };
 		2DAD44881E6B3D530098BB0E /* RightViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD44861E6B3D530098BB0E /* RightViewCell.m */; };
 		2DAD448C1E6B3D630098BB0E /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD448A1E6B3D630098BB0E /* MainViewController.m */; };
-		2DAD448D1E6B3D630098BB0E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DAD448B1E6B3D630098BB0E /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +58,9 @@
 		2D33D1281E6B42640033202C /* LGSideMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGSideMenuView.m; sourceTree = "<group>"; };
 		2D33D1291E6B42640033202C /* UIViewController+LGSideMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+LGSideMenuController.h"; sourceTree = "<group>"; };
 		2D33D12A1E6B42640033202C /* UIViewController+LGSideMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+LGSideMenuController.m"; sourceTree = "<group>"; };
+		2D33D12F1E6B7F340033202C /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
+		2D33D1311E6B7F530033202C /* LeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftViewController.m; sourceTree = "<group>"; };
+		2D33D1331E6B7F650033202C /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		2D6958111E607E95008C918F /* QNX Home.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QNX Home.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D6958151E607E95008C918F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2D6958171E607E95008C918F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -76,7 +79,6 @@
 		2DAD44691E6B3CE40098BB0E /* LoginNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginNavigationController.m; sourceTree = "<group>"; };
 		2DAD446A1E6B3CE40098BB0E /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		2DAD446B1E6B3CE40098BB0E /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		2DAD446C1E6B3CE40098BB0E /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		2DAD44721E6B3D190098BB0E /* NavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationController.h; sourceTree = "<group>"; };
 		2DAD44731E6B3D190098BB0E /* NavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationController.m; sourceTree = "<group>"; };
 		2DAD44741E6B3D190098BB0E /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -84,7 +86,6 @@
 		2DAD44761E6B3D190098BB0E /* OtherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherViewController.h; sourceTree = "<group>"; };
 		2DAD44771E6B3D190098BB0E /* OtherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherViewController.m; sourceTree = "<group>"; };
 		2DAD447D1E6B3D490098BB0E /* LeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftViewController.h; sourceTree = "<group>"; };
-		2DAD447E1E6B3D490098BB0E /* LeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftViewController.m; sourceTree = "<group>"; };
 		2DAD447F1E6B3D490098BB0E /* LeftViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftViewCell.h; sourceTree = "<group>"; };
 		2DAD44801E6B3D490098BB0E /* LeftViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftViewCell.m; sourceTree = "<group>"; };
 		2DAD44831E6B3D530098BB0E /* RightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RightViewController.h; sourceTree = "<group>"; };
@@ -93,7 +94,6 @@
 		2DAD44861E6B3D530098BB0E /* RightViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RightViewCell.m; sourceTree = "<group>"; };
 		2DAD44891E6B3D630098BB0E /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		2DAD448A1E6B3D630098BB0E /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		2DAD448B1E6B3D630098BB0E /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,7 +206,7 @@
 				2DAD44691E6B3CE40098BB0E /* LoginNavigationController.m */,
 				2DAD446A1E6B3CE40098BB0E /* LoginViewController.h */,
 				2DAD446B1E6B3CE40098BB0E /* LoginViewController.m */,
-				2DAD446C1E6B3CE40098BB0E /* Login.storyboard */,
+				2D33D12F1E6B7F340033202C /* Login.storyboard */,
 			);
 			name = "Login View Controller";
 			sourceTree = "<group>";
@@ -216,7 +216,7 @@
 			children = (
 				2DAD44891E6B3D630098BB0E /* MainViewController.h */,
 				2DAD448A1E6B3D630098BB0E /* MainViewController.m */,
-				2DAD448B1E6B3D630098BB0E /* Main.storyboard */,
+				2D33D1331E6B7F650033202C /* Main.storyboard */,
 				2DAD447C1E6B3D390098BB0E /* Right View Controller */,
 				2DAD447B1E6B3D270098BB0E /* Left View Controller */,
 				2DAD44711E6B3D0C0098BB0E /* Root View Controller */,
@@ -241,7 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				2DAD447D1E6B3D490098BB0E /* LeftViewController.h */,
-				2DAD447E1E6B3D490098BB0E /* LeftViewController.m */,
+				2D33D1311E6B7F530033202C /* LeftViewController.m */,
 				2DAD447F1E6B3D490098BB0E /* LeftViewCell.h */,
 				2DAD44801E6B3D490098BB0E /* LeftViewCell.m */,
 			);
@@ -368,10 +368,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D33D1301E6B7F340033202C /* Login.storyboard in Resources */,
 				2D6958271E607E95008C918F /* LaunchScreen.storyboard in Resources */,
 				2D6958241E607E95008C918F /* Assets.xcassets in Resources */,
-				2DAD446F1E6B3CE40098BB0E /* Login.storyboard in Resources */,
-				2DAD448D1E6B3D630098BB0E /* Main.storyboard in Resources */,
+				2D33D1341E6B7F650033202C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,7 +396,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DAD44811E6B3D490098BB0E /* LeftViewController.m in Sources */,
 				2DAD44791E6B3D190098BB0E /* ViewController.m in Sources */,
 				2DAD447A1E6B3D190098BB0E /* OtherViewController.m in Sources */,
 				2D33D12D1E6B42640033202C /* LGSideMenuView.m in Sources */,
@@ -412,6 +411,7 @@
 				2D33D12B1E6B42640033202C /* LGSideMenuController.m in Sources */,
 				2DAD446D1E6B3CE40098BB0E /* LoginNavigationController.m in Sources */,
 				2DAD446E1E6B3CE40098BB0E /* LoginViewController.m in Sources */,
+				2D33D1321E6B7F530033202C /* LeftViewController.m in Sources */,
 				2DAD44881E6B3D530098BB0E /* RightViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

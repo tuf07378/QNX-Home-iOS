@@ -6,12 +6,17 @@
 #import "LeftViewController.h"
 #import "LeftViewCell.h"
 #import "MainViewController.h"
+#import "LoginViewController.h"
 #import "UIViewController+LGSideMenuController.h"
 #import "ViewController.h"
 
 @interface LeftViewController ()
 
 @property (strong, nonatomic) NSArray *titlesArray;
+@property (strong, nonatomic) UIView *dash;
+@property (retain, nonatomic) UIView *sen;
+@property (retain, nonatomic) UIView *rel;
+
 
 @end
 
@@ -19,22 +24,25 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     // -----
-
+    
     self.titlesArray = @[@"Open Right View",
                          @"",
-                         @"Logout",
                          @"",
-                         @"Profile",
-                         @"News",
-                         @"Articles",
-                         @"Video",
-                         @"Music"];
-
+                         @"",
+                         @"Dashboard",
+                         @"Sensors",
+                         @"Automation & Notifications",
+                         @"User Account Settings",
+                         @"System Configuration",
+                         @"",
+                         @"Logout"];
+    
+    
     // -----
-
     self.tableView.contentInset = UIEdgeInsetsMake(44.0, 0.0, 44.0, 0.0);
+    //self.dash = [UIView new];
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -59,55 +67,65 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     LeftViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-
+    
     cell.titleLabel.text = self.titlesArray[indexPath.row];
-    cell.separatorView.hidden = (indexPath.row <= 3 || indexPath.row == self.titlesArray.count-1);
-    cell.userInteractionEnabled = (indexPath.row != 1 && indexPath.row != 3);
-
+    cell.separatorView.hidden = (indexPath.row <= 3 || indexPath.row == self.titlesArray.count-1 || indexPath.row == 9);
+    cell.userInteractionEnabled = (indexPath.row != 1 && indexPath.row != 3 && indexPath.row != 9 && indexPath.row != 2);
+    
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return (indexPath.row == 1 || indexPath.row == 3) ? 22.0 : 44.0;
+    return (indexPath.row == 1 || indexPath.row == 3 || indexPath.row == 9) ? 22.0 : 44.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
-
-    if (indexPath.row == 0) {
-        if (mainViewController.isLeftViewAlwaysVisibleForCurrentOrientation) {
-            [mainViewController showRightViewAnimated:YES completionHandler:nil];
-        }
-        else {
-            [mainViewController hideLeftViewAnimated:YES completionHandler:^(void) {
+    
+    if(!self.dash){
+        self.dash = [UIView new];
+    }
+    switch(indexPath.row){
+        case 0:{
+            if (mainViewController.isLeftViewAlwaysVisibleForCurrentOrientation) {
                 [mainViewController showRightViewAnimated:YES completionHandler:nil];
-            }];
+            }
+            else {
+                [mainViewController hideLeftViewAnimated:YES completionHandler:^(void) {
+                    [mainViewController showRightViewAnimated:YES completionHandler:nil];
+                }];
+            }
+            break;
         }
-    }
-    else if (indexPath.row == 2) {
-        UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
-        UIViewController *viewController;
-
-        if ([navigationController.viewControllers.firstObject isKindOfClass:[ViewController class]]) {
-            viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"OtherViewController"];
+        case 4:{
+            mainViewController.rootViewController.childViewControllers[0].view = self.dash;
+            [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
+            break;
         }
-        else {
-            viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+        case 5:{
+            UITableView *sensors = [UITableView new];
+            mainViewController.rootViewController.childViewControllers[0].view = sensors;
+            [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
+            break;
         }
-
-        [navigationController setViewControllers:@[viewController]];
-
-        [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
-    }
-    else {
-        UIViewController *viewController = [UIViewController new];
-        viewController.view.backgroundColor = [UIColor whiteColor];
-        viewController.title = self.titlesArray[indexPath.row];
-
-        UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
-        [navigationController pushViewController:viewController animated:YES];
-
-        [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
+        case 10:{
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
+            UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"LoginNavigationController"];
+            
+            [navigationController setViewControllers:@[[storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"]]];
+            
+            LoginViewController *loginViewController = [storyboard instantiateInitialViewController];
+            //loginViewController.rootViewController = navigationController;
+            
+            UIWindow *window = UIApplication.sharedApplication.delegate.window;
+            window.rootViewController = loginViewController;
+            
+            [UIView transitionWithView:window
+                              duration:0.3
+                               options:UIViewAnimationOptionTransitionCrossDissolve
+                            animations:nil
+                            completion:nil];
+        }
     }
 }
 
