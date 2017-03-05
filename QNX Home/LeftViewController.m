@@ -34,7 +34,7 @@
                          @"Dashboard",
                          @"Sensors",
                          @"Relays",
-                         @"Automation & Notifications",
+                         @"Automation\\Notifications",
                          @"User Account Settings",
                          @"System Configuration",
                          @"",
@@ -68,8 +68,40 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     LeftViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    
     cell.titleLabel.text = self.titlesArray[indexPath.row];
+    switch(indexPath.row){
+        case 0:{
+            break;
+        }
+        case 4:{
+            [cell.imageView setImage:[UIImage imageNamed:@"home"]];
+            break;
+        }
+        case 5:{
+            [cell.imageView setImage:[UIImage imageNamed:@"sensor"]];
+            break;
+        }
+        case 6:{
+            [cell.imageView setImage:[UIImage imageNamed:@"relays"]];
+            break;
+        }
+        case 7:{
+            [cell.imageView setImage:[UIImage imageNamed:@"automation"]];
+            break;
+        }
+        case 8:{
+            [cell.imageView setImage:[UIImage imageNamed:@"user"]];
+            break;
+        }
+        case 9:{
+            [cell.imageView setImage:[UIImage imageNamed:@"settings"]];
+            break;
+        }
+        case 11:{
+            [cell.imageView setImage:[UIImage imageNamed:@"logout"]];
+            break;
+        }
+    }
     cell.separatorView.hidden = (indexPath.row <= 3 || indexPath.row == self.titlesArray.count-1 || indexPath.row == 10);
     cell.userInteractionEnabled = (indexPath.row != 1 && indexPath.row != 3 && indexPath.row != 10 && indexPath.row != 2);
     
@@ -107,6 +139,12 @@
         case 5:{
             UITableView *sensors = [UITableView new];
             mainViewController.rootViewController.childViewControllers[0].view = sensors;
+            [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
+            break;
+        }
+        case 6:{
+            UITableView *relays = [UITableView new];
+            mainViewController.rootViewController.childViewControllers[0].view = relays;
             [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
             break;
         }
