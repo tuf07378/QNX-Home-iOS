@@ -39,12 +39,6 @@
                                     <rect key="frame" x="0.0" y="0.0" width="250" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Label" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fd6-2R-Oik" userLabel="Title Label">
-                                            <rect key="frame" x="48" y="3" width="194" height="35"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HDn-80-2Mx">
                                             <rect key="frame" x="0.0" y="44" width="226" height="0.0"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -53,22 +47,28 @@
                                             <rect key="frame" x="8" y="11" width="23" height="23"/>
                                             <accessibility key="accessibilityConfiguration" identifier="icon"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="23" id="JFG-JP-Pl5"/>
+                                                <constraint firstAttribute="width" constant="23" id="psc-4Z-J0d"/>
                                             </constraints>
                                         </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Label" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fd6-2R-Oik" userLabel="Title Label">
+                                            <rect key="frame" x="48" y="5" width="194" height="35"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="HDn-80-2Mx" secondAttribute="trailing" constant="16" id="7Vr-Uv-mYX"/>
-                                        <constraint firstItem="HDn-80-2Mx" firstAttribute="top" secondItem="fd6-2R-Oik" secondAttribute="bottom" constant="6" id="9of-Yx-bAp"/>
-                                        <constraint firstItem="Qlj-IU-uIk" firstAttribute="top" secondItem="izR-Wk-2Bc" secondAttribute="topMargin" constant="3" id="az6-jM-92v"/>
-                                        <constraint firstItem="Qlj-IU-uIk" firstAttribute="centerY" secondItem="izR-Wk-2Bc" secondAttribute="centerY" id="fyG-tv-EXI"/>
-                                        <constraint firstAttribute="bottom" secondItem="HDn-80-2Mx" secondAttribute="bottom" id="gKh-rh-Xyw"/>
-                                        <constraint firstItem="fd6-2R-Oik" firstAttribute="leading" secondItem="Qlj-IU-uIk" secondAttribute="trailing" constant="17" id="kND-8l-PEm"/>
-                                        <constraint firstItem="HDn-80-2Mx" firstAttribute="top" secondItem="Qlj-IU-uIk" secondAttribute="bottom" constant="10" id="sGC-MU-s8d"/>
-                                        <constraint firstItem="Qlj-IU-uIk" firstAttribute="leading" secondItem="izR-Wk-2Bc" secondAttribute="leadingMargin" id="tAA-E6-dDt"/>
-                                        <constraint firstItem="HDn-80-2Mx" firstAttribute="leading" secondItem="izR-Wk-2Bc" secondAttribute="leading" id="vZn-D1-HNU"/>
-                                        <constraint firstItem="fd6-2R-Oik" firstAttribute="trailing" secondItem="izR-Wk-2Bc" secondAttribute="trailingMargin" id="vs5-8j-5Bz"/>
-                                        <constraint firstItem="fd6-2R-Oik" firstAttribute="top" secondItem="izR-Wk-2Bc" secondAttribute="topMargin" constant="-5" id="x6i-nC-zWq"/>
+                                        <constraint firstAttribute="bottom" secondItem="HDn-80-2Mx" secondAttribute="bottom" id="22Y-Oj-byO"/>
+                                        <constraint firstItem="Qlj-IU-uIk" firstAttribute="top" secondItem="izR-Wk-2Bc" secondAttribute="topMargin" constant="3" id="7Of-DD-qgw"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="HDn-80-2Mx" secondAttribute="trailing" constant="16" id="HPx-LH-sJ6"/>
+                                        <constraint firstItem="HDn-80-2Mx" firstAttribute="top" secondItem="fd6-2R-Oik" secondAttribute="bottom" constant="4" id="LoP-G1-CKn"/>
+                                        <constraint firstItem="HDn-80-2Mx" firstAttribute="top" secondItem="Qlj-IU-uIk" secondAttribute="bottom" constant="10" id="U3R-DG-3Cs"/>
+                                        <constraint firstItem="Qlj-IU-uIk" firstAttribute="centerY" secondItem="izR-Wk-2Bc" secondAttribute="centerY" id="bsj-wG-yFr"/>
+                                        <constraint firstItem="fd6-2R-Oik" firstAttribute="trailing" secondItem="izR-Wk-2Bc" secondAttribute="trailingMargin" id="i9d-BL-D5j"/>
+                                        <constraint firstItem="Qlj-IU-uIk" firstAttribute="centerY" secondItem="fd6-2R-Oik" secondAttribute="centerY" id="iXL-LP-sup"/>
+                                        <constraint firstItem="Qlj-IU-uIk" firstAttribute="leading" secondItem="izR-Wk-2Bc" secondAttribute="leadingMargin" id="kVP-wh-KTG"/>
+                                        <constraint firstItem="HDn-80-2Mx" firstAttribute="leading" secondItem="izR-Wk-2Bc" secondAttribute="leading" id="pgi-Tv-T0u"/>
+                                        <constraint firstItem="fd6-2R-Oik" firstAttribute="leading" secondItem="Qlj-IU-uIk" secondAttribute="trailing" constant="17" id="ynr-O8-rq0"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
