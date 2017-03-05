@@ -132,7 +132,7 @@
             break;
         }
         case 4:{
-            mainViewController.rootViewController.childViewControllers[0].view = self.dash;
+            //mainViewController.rootViewController.childViewControllers[0].view = self.dash;
             [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
             break;
         }

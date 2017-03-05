@@ -10,10 +10,10 @@
 #import <OpenEars/OEAcousticModel.h>
 #import <OpenEars/OEEventsObserver.h>
 
-@interface ViewController : UIViewController <OEEventsObserverDelegate>
+@interface ViewController : UIViewController <OEEventsObserverDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 
 @property (strong, nonatomic) OEEventsObserver *openEarsEventsObserver;
-@property IBOutlet UILabel *text;
+@property IBOutlet UIPickerView *house;
 @property IBOutlet UIView *page;
 @property (nonatomic, strong) UIView *micEntry;
 @end

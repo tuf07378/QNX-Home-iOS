@@ -11,6 +11,7 @@
 
 NSString *lmPath = nil;
 NSString *dicPath = nil;
+NSArray *picker;
 
 
 
@@ -33,6 +34,25 @@ NSString *dicPath = nil;
     }
     self.openEarsEventsObserver = [[OEEventsObserver alloc] init];
     [self.openEarsEventsObserver setDelegate:self];
+    picker = [[NSArray alloc] initWithObjects:@"Choose a House", @"", @"Retired", @"Homemaker", @"Self-employed", @"Unemployed", @"Other", nil];
+}
+
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    //One column
+    return 1;
+}
+
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    //set number of rows
+    return picker.count;
+}
+
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    //set item per row
+    return [picker objectAtIndex:row];
 }
 
 - (IBAction)voice:(id)sender{
