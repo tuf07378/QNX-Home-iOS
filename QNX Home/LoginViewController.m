@@ -39,5 +39,24 @@
                     animations:nil
                     completion:nil];
 }
+
+- (IBAction)registerClicked:(id)sender{
+    UIAlertController *registration = [UIAlertController alertControllerWithTitle:@"Register Account" message:@"Enter your email account and password." preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *reg = [UIAlertAction actionWithTitle:@"Register" style:UIAlertActionStyleDefault handler:nil];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
+    [registration addTextFieldWithConfigurationHandler:^(UITextField
+                                                         *textField) {textField.placeholder = @"Email";
+        textField.keyboardType = UIKeyboardTypeEmailAddress;}];
+    [registration addTextFieldWithConfigurationHandler:^(UITextField
+                                                         *textField) {textField.placeholder = @"Password";
+        textField.secureTextEntry = true;}];
+    [registration addTextFieldWithConfigurationHandler:^(UITextField
+                                                         *textField) {textField.placeholder = @"Password Confirmation";
+        textField.secureTextEntry = true;}];
+    [registration addAction:reg];
+    [registration addAction:cancel];
+    [self presentViewController:registration animated:YES completion:nil];
+}
+
 @end
 

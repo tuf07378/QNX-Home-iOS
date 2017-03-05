@@ -137,14 +137,10 @@
             break;
         }
         case 5:{
-            UITableView *sensors = [UITableView new];
-            mainViewController.rootViewController.childViewControllers[0].view = sensors;
             [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
             break;
         }
         case 6:{
-            UITableView *relays = [UITableView new];
-            mainViewController.rootViewController.childViewControllers[0].view = relays;
             [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
             break;
         }
