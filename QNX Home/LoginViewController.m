@@ -41,11 +41,11 @@
 }
 
 - (IBAction)registerClicked:(id)sender{
-    UIAlertController *registration = [UIAlertController alertControllerWithTitle:@"Register Account" message:@"Enter your email account and password." preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *registration = [UIAlertController alertControllerWithTitle:@"Register Account" message:@"Enter your user account and password." preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *reg = [UIAlertAction actionWithTitle:@"Register" style:UIAlertActionStyleDefault handler:nil];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
     [registration addTextFieldWithConfigurationHandler:^(UITextField
-                                                         *textField) {textField.placeholder = @"Email";
+                                                         *textField) {textField.placeholder = @"UserID";
         textField.keyboardType = UIKeyboardTypeEmailAddress;}];
     [registration addTextFieldWithConfigurationHandler:^(UITextField
                                                          *textField) {textField.placeholder = @"Password";
