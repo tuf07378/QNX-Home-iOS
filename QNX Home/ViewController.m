@@ -58,8 +58,16 @@ NSArray *picker;
 - (IBAction)voice:(id)sender{
         [[OEPocketsphinxController sharedInstance] setActive:TRUE error:nil];
         [[OEPocketsphinxController sharedInstance] startListeningWithLanguageModelAtPath:lmPath dictionaryAtPath:dicPath acousticModelAtPath:[OEAcousticModel pathToModel:@"AcousticModelEnglish"] languageModelIsJSGF:NO]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to perform Spanish recognition instead of English.
+    UIAlertController *command = [UIAlertController alertControllerWithTitle:@"Input Command" message:@"Listening, please say a command." preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action){
+        [[OEPocketsphinxController sharedInstance] setActive:FALSE error:nil];
+        [[OEPocketsphinxController sharedInstance] stopListening];
+    }];
+    [command addAction:cancel];
+    [self presentViewController:command animated:YES completion:nil];
 }
 - (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID {
+    [self dismissViewControllerAnimated:TRUE completion:nil];
     [[OEPocketsphinxController sharedInstance] setActive:FALSE error:nil];
     [[OEPocketsphinxController sharedInstance] stopListening];
     NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID);
@@ -110,6 +118,7 @@ NSArray *picker;
 - (void) testRecognitionCompleted {
     NSLog(@"A test file that was submitted for recognition is now complete.");
 }
+
 
 
 @end
