@@ -15,9 +15,12 @@
 @implementation LoginViewController
 
 - (void)viewDidLoad {
+    [self.navigationController setNavigationBarHidden:YES];
+    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Background"]];
+    bgImageView.frame = self.view.bounds;
+    [self.view addSubview:bgImageView];
+    [self.view sendSubviewToBack:bgImageView];
     [super viewDidLoad];
-
-
 }
 
 - (IBAction)loginClicked:(id)sender{
@@ -301,7 +304,6 @@
     else if (textField == self.regPass2)
         [self textFieldShouldReturn:textField];
 }
-
 
 @end
 
