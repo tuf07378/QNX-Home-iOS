@@ -34,6 +34,7 @@
 		2DAD44871E6B3D530098BB0E /* RightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD44841E6B3D530098BB0E /* RightViewController.m */; };
 		2DAD44881E6B3D530098BB0E /* RightViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD44861E6B3D530098BB0E /* RightViewCell.m */; };
 		2DAD448C1E6B3D630098BB0E /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD448A1E6B3D630098BB0E /* MainViewController.m */; };
+		2DEB3C091E8491B7007487AF /* GlobalVars.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DEB3C081E8491B7007487AF /* GlobalVars.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +102,8 @@
 		2DAD44861E6B3D530098BB0E /* RightViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RightViewCell.m; sourceTree = "<group>"; };
 		2DAD44891E6B3D630098BB0E /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		2DAD448A1E6B3D630098BB0E /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		2DEB3C071E8491B7007487AF /* GlobalVars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalVars.h; sourceTree = "<group>"; };
+		2DEB3C081E8491B7007487AF /* GlobalVars.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalVars.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +204,8 @@
 			isa = PBXGroup;
 			children = (
 				2D6958151E607E95008C918F /* main.m */,
+				2DEB3C071E8491B7007487AF /* GlobalVars.h */,
+				2DEB3C081E8491B7007487AF /* GlobalVars.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -435,6 +440,7 @@
 				2DAD446E1E6B3CE40098BB0E /* LoginViewController.m in Sources */,
 				2D33D1321E6B7F530033202C /* LeftViewController.m in Sources */,
 				2DAD44881E6B3D530098BB0E /* RightViewCell.m in Sources */,
+				2DEB3C091E8491B7007487AF /* GlobalVars.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

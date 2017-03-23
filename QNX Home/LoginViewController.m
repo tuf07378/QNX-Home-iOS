@@ -5,6 +5,7 @@
 
 #import "LoginViewController.h"
 #import "MainViewController.h"
+#import "GlobalVars.h"
 
 @interface LoginViewController ()
 
@@ -57,6 +58,14 @@
         NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSLog(@"Response Body:\n%@\n", body);
         if ([body containsString:@"[{\"SessionToken\":\""]){
+            GlobalVars *globals = [GlobalVars sharedInstance];
+            NSString *haystackPrefix = @"[{\"SessionToken\":\"";
+            NSString *haystackSuffix = @"\"}]";
+            NSRange needleRange = NSMakeRange(haystackPrefix.length,
+                                              body.length - haystackPrefix.length - haystackSuffix.length);
+            NSString *needle = [body substringWithRange:needleRange];
+            globals.seshToke = needle;
+            globals.uname = self.user.text;
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
             

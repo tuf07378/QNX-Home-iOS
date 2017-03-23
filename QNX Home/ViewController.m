@@ -5,6 +5,7 @@
 
 #import "ViewController.h"
 #import "LoginNavigationController.h"
+#import "GlobalVars.h"
 
 
 @implementation ViewController
@@ -35,6 +36,8 @@ NSArray *picker;
     self.openEarsEventsObserver = [[OEEventsObserver alloc] init];
     [self.openEarsEventsObserver setDelegate:self];
     picker = [[NSArray alloc] initWithObjects:@"Choose a House", @"", @"Retired", @"Homemaker", @"Self-employed", @"Unemployed", @"Other", nil];
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    self.uname.text = globals.uname;
 }
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -121,14 +124,55 @@ NSArray *picker;
 -(IBAction)changePW:(id)sender{
     UIAlertController *changePW = [UIAlertController alertControllerWithTitle:@"Change Password" message:@"Enter your desired password." preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
-        if (self.pass != self.pass2){
+        if (self.pass.text != self.pass2.text){
             UIAlertController *noMatch = [UIAlertController alertControllerWithTitle:@"Non-Matching Passwords" message:@"Your passwords do not match." preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleCancel handler:nil];
             [noMatch addAction:ok];
             [self presentViewController:noMatch animated:YES completion:nil];
         }
         else{
+            NSError *error;
             
+            NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+            NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+            NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/changepassword"];
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                               timeoutInterval:60.0];
+            
+            [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+            [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+            
+            [request setHTTPMethod:@"POST"];
+            GlobalVars *globals = [GlobalVars sharedInstance];
+            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.pass.text, @"password", globals.seshToke, @"sessionToken", nil];
+            NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
+            NSLog(@"%@", mapData.allValues);
+            [request setHTTPBody:postData];
+            
+            
+            NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                if (error) {
+                    // Handle error...
+                    return;
+                }
+                
+                if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+                    //NSLog(@"Response HTTP Status code: %ld\n", (long)[(NSHTTPURLResponse *)response statusCode]);
+                    //NSLog(@"Response HTTP Headers:\n%@\n", [(NSHTTPURLResponse *)response allHeaderFields]);
+                }
+                
+                NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                NSLog(@"Response Body:\n%@\n", body);
+                if ([body containsString:@"Changed Password Successfully"]){
+                    UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Password Changed" message:@"Successfully change password." preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+                    [success addAction:ok];
+                    [self presentViewController:success animated:YES completion:nil];
+                }
+            }];
+            
+            [postDataTask resume];
         }
     }];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
