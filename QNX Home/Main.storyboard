@@ -270,7 +270,7 @@
                                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6y9-EA-hvr" id="ZVK-h3-17w">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableViewCellContentView>
                                             </tableViewCell>
@@ -312,7 +312,6 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="house" destination="v3V-TH-hcl" id="ZKU-At-EeQ"/>
-                        <outlet property="page" destination="43h-Vg-M08" id="obT-dW-oOq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4LP-xN-MPF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -456,7 +455,6 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
-                        <outlet property="page" destination="6Xc-B2-kHg" id="CQb-Gj-NcP"/>
                         <outlet property="uname" destination="V4d-S2-kqq" id="ZtN-UF-pWW"/>
                     </connections>
                 </viewController>

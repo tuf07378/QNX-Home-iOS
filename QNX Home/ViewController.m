@@ -121,7 +121,15 @@ NSArray *picker;
 -(IBAction)changePW:(id)sender{
     UIAlertController *changePW = [UIAlertController alertControllerWithTitle:@"Change Password" message:@"Enter your desired password." preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
-        
+        if (self.pass != self.pass2){
+            UIAlertController *noMatch = [UIAlertController alertControllerWithTitle:@"Non-Matching Passwords" message:@"Your passwords do not match." preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleCancel handler:nil];
+            [noMatch addAction:ok];
+            [self presentViewController:noMatch animated:YES completion:nil];
+        }
+        else{
+            
+        }
     }];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
     [changePW addTextFieldWithConfigurationHandler:^(UITextField
@@ -129,12 +137,14 @@ NSArray *picker;
         textField.placeholder = @"Password";
         textField.secureTextEntry = true;
         textField.delegate = self;
+        self.pass = textField;
     }];
     [changePW addTextFieldWithConfigurationHandler:^(UITextField
                                                      *textField) {
         textField.placeholder = @"Password Confirmation";
         textField.secureTextEntry = true;
         textField.delegate = self;
+        self.pass2 = textField;
     }];
     [changePW addAction:confirm];
     [changePW addAction:cancel];
@@ -142,6 +152,24 @@ NSArray *picker;
     
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField == self.pass2){
+        if (self.pass2.text != self.pass.text){
+            self.pass.backgroundColor = [UIColor redColor];
+            self.pass2.backgroundColor = [UIColor redColor];
+        }else{
+            self.pass.backgroundColor = [UIColor greenColor];
+            self.pass2.backgroundColor = [UIColor greenColor];
+        }
+    }
+    return YES;
+}
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+    if (textField == self.pass)
+        [self textFieldShouldReturn:textField];
+    else if (textField == self.pass2)
+        [self textFieldShouldReturn:textField];
+}
 
 
 @end

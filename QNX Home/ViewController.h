@@ -14,7 +14,8 @@
 
 @property (strong, nonatomic) OEEventsObserver *openEarsEventsObserver;
 @property IBOutlet UIPickerView *house;
-@property IBOutlet UIView *page;
+@property (weak) IBOutlet UITextField *pass;
+@property (weak) IBOutlet UITextField *pass2;
 @property (nonatomic, strong) UIView *micEntry;
 @property IBOutlet UITextView *uname;
 
