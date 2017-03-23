@@ -118,6 +118,29 @@ NSArray *picker;
 - (void) testRecognitionCompleted {
     NSLog(@"A test file that was submitted for recognition is now complete.");
 }
+-(IBAction)changePW:(id)sender{
+    UIAlertController *changePW = [UIAlertController alertControllerWithTitle:@"Change Password" message:@"Enter your desired password." preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
+        
+    }];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
+    [changePW addTextFieldWithConfigurationHandler:^(UITextField
+                                                     *textField) {
+        textField.placeholder = @"Password";
+        textField.secureTextEntry = true;
+        textField.delegate = self;
+    }];
+    [changePW addTextFieldWithConfigurationHandler:^(UITextField
+                                                     *textField) {
+        textField.placeholder = @"Password Confirmation";
+        textField.secureTextEntry = true;
+        textField.delegate = self;
+    }];
+    [changePW addAction:confirm];
+    [changePW addAction:cancel];
+    [self presentViewController:changePW animated:YES completion:nil];
+    
+}
 
 
 

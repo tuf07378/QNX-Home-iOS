@@ -13,7 +13,6 @@
 @interface LeftViewController ()
 
 @property (strong, nonatomic) NSArray *titlesArray;
-@property (strong, nonatomic) UIView *dash;
 @property (retain, nonatomic) UIView *sen;
 @property (retain, nonatomic) UIView *rel;
 
@@ -115,10 +114,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
     
-    if(!self.dash){
-        self.dash = [UIView new];
-        self.dash.backgroundColor = [UIColor whiteColor];
-    }
     switch(indexPath.row){
         case 0:{
             if (mainViewController.isLeftViewAlwaysVisibleForCurrentOrientation) {
@@ -134,6 +129,13 @@
         case 4:{
             //mainViewController.rootViewController.childViewControllers[0].view = self.dash;
             [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
+            UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+            ViewController *viewController;
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+            
+            viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+            
+            [navigationController setViewControllers:@[viewController]];
             break;
         }
         case 5:{
@@ -143,6 +145,19 @@
         case 6:{
             [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
             break;
+        }
+        case 9:{
+            [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
+            UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+            ViewController *viewController;
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+
+            viewController = [storyboard instantiateViewControllerWithIdentifier:@"Settings"];
+            
+            [navigationController setViewControllers:@[viewController]];
+            break;
+            // Rarely you can get some visual bugs when you change view hierarchy and toggle side views in the same iteration
+            // You can use delay to avoid this and probably other unexpected visual bugs
         }
         case 11:{
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];

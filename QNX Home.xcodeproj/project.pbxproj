@@ -30,7 +30,6 @@
 		2DAD446E1E6B3CE40098BB0E /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD446B1E6B3CE40098BB0E /* LoginViewController.m */; };
 		2DAD44781E6B3D190098BB0E /* NavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD44731E6B3D190098BB0E /* NavigationController.m */; };
 		2DAD44791E6B3D190098BB0E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD44751E6B3D190098BB0E /* ViewController.m */; };
-		2DAD447A1E6B3D190098BB0E /* OtherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD44771E6B3D190098BB0E /* OtherViewController.m */; };
 		2DAD44821E6B3D490098BB0E /* LeftViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD44801E6B3D490098BB0E /* LeftViewCell.m */; };
 		2DAD44871E6B3D530098BB0E /* RightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD44841E6B3D530098BB0E /* RightViewController.m */; };
 		2DAD44881E6B3D530098BB0E /* RightViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD44861E6B3D530098BB0E /* RightViewCell.m */; };
@@ -93,8 +92,6 @@
 		2DAD44731E6B3D190098BB0E /* NavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationController.m; sourceTree = "<group>"; };
 		2DAD44741E6B3D190098BB0E /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		2DAD44751E6B3D190098BB0E /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		2DAD44761E6B3D190098BB0E /* OtherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherViewController.h; sourceTree = "<group>"; };
-		2DAD44771E6B3D190098BB0E /* OtherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherViewController.m; sourceTree = "<group>"; };
 		2DAD447D1E6B3D490098BB0E /* LeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftViewController.h; sourceTree = "<group>"; };
 		2DAD447F1E6B3D490098BB0E /* LeftViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftViewCell.h; sourceTree = "<group>"; };
 		2DAD44801E6B3D490098BB0E /* LeftViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftViewCell.m; sourceTree = "<group>"; };
@@ -258,8 +255,6 @@
 				2DAD44731E6B3D190098BB0E /* NavigationController.m */,
 				2DAD44741E6B3D190098BB0E /* ViewController.h */,
 				2DAD44751E6B3D190098BB0E /* ViewController.m */,
-				2DAD44761E6B3D190098BB0E /* OtherViewController.h */,
-				2DAD44771E6B3D190098BB0E /* OtherViewController.m */,
 			);
 			name = "Root View Controller";
 			sourceTree = "<group>";
@@ -425,7 +420,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DAD44791E6B3D190098BB0E /* ViewController.m in Sources */,
-				2DAD447A1E6B3D190098BB0E /* OtherViewController.m in Sources */,
 				2D33D12D1E6B42640033202C /* LGSideMenuView.m in Sources */,
 				2DAD44821E6B3D490098BB0E /* LeftViewCell.m in Sources */,
 				2DAD448C1E6B3D630098BB0E /* MainViewController.m in Sources */,
