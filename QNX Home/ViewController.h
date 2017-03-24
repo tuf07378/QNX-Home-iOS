@@ -17,6 +17,7 @@
 @property (weak) IBOutlet UITextField *pass;
 @property (weak) IBOutlet UITextField *pass2;
 @property (nonatomic, strong) UIView *micEntry;
-@property IBOutlet UITextView *uname;
+@property IBOutlet UILabel *uname;
+@property (retain) IBOutlet UITextField *uNew;
 
 @end

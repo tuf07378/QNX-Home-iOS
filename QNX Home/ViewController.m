@@ -171,7 +171,6 @@ NSArray *picker;
                     [self presentViewController:success animated:YES completion:nil];
                 }
             }];
-            
             [postDataTask resume];
         }
     }];
@@ -196,6 +195,71 @@ NSArray *picker;
     
 }
 
+- (IBAction)changeUname:(id)sender{
+    UIAlertController *changeUname = [UIAlertController alertControllerWithTitle:@"Change Username" message:@"Enter your desired username." preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
+        if ([self.uNew.text isEqual: @""]){
+            [self.uNew setBackgroundColor:[UIColor redColor]];
+        }
+        else{
+            NSError *error;
+            
+            NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+            NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+            NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/changeusername"];
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                               timeoutInterval:60.0];
+            
+            [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+            [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+            
+            [request setHTTPMethod:@"POST"];
+            GlobalVars *globals = [GlobalVars sharedInstance];
+            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.uNew.text, @"username", globals.seshToke, @"sessionToken", nil];
+            NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
+            NSLog(@"%@", mapData.allValues);
+            [request setHTTPBody:postData];
+            
+            
+            NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                if (error) {
+                    // Handle error...
+                    return;
+                }
+                
+                if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+                    //NSLog(@"Response HTTP Status code: %ld\n", (long)[(NSHTTPURLResponse *)response statusCode]);
+                    //NSLog(@"Response HTTP Headers:\n%@\n", [(NSHTTPURLResponse *)response allHeaderFields]);
+                }
+                
+                NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                NSLog(@"Response Body:\n%@\n", body);
+                if ([body containsString:@"Changed Username Successfully"]){
+                    UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Username Changed" message:@"Username change password." preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+                    [success addAction:ok];
+                    [self presentViewController:success animated:YES completion:nil];
+                    globals.uname = self.uNew.text;
+                    self.uname.text = globals.uname;
+                }
+            }];
+            
+            [postDataTask resume];
+        }
+    }];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
+    [changeUname addTextFieldWithConfigurationHandler:^(UITextField
+                                                     *textField) {
+        textField.placeholder = @"Username";
+        textField.delegate = self;
+        self.uNew = textField;
+    }];
+    [changeUname addAction:confirm];
+    [changeUname addAction:cancel];
+    [self presentViewController:changeUname animated:YES completion:nil];
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField == self.pass2){
         if (self.pass2.text != self.pass.text){
@@ -214,6 +278,5 @@ NSArray *picker;
     else if (textField == self.pass2)
         [self textFieldShouldReturn:textField];
 }
-
 
 @end
