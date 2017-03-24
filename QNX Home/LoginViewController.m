@@ -6,6 +6,7 @@
 #import "LoginViewController.h"
 #import "MainViewController.h"
 #import "GlobalVars.h"
+#include <CommonCrypto/CommonDigest.h>
 
 @interface LoginViewController ()
 
@@ -38,7 +39,7 @@
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
     [request setHTTPMethod:@"POST"];
-    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.user.text, @"username", self.pass.text, @"password", nil];
+    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.user.text, @"username", [self sha256:self.pass.text], @"password", nil];
     NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
     NSLog(@"%@", mapData.allValues);
     [request setHTTPBody:postData];
@@ -135,7 +136,7 @@
                                                                     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
                                                                     
                                                                     [request setHTTPMethod:@"POST"];
-                                                                    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.userReg.text, @"username", self.regPass.text, @"password", nil];
+                                                                    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.userReg.text, @"username", [self sha256:self.regPass.text], @"password", nil];
                                                                     NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
                                                                     NSLog(@"%@", mapData.allValues);
                                                                     [request setHTTPBody:postData];
@@ -168,7 +169,7 @@
                                                                             [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
                                                                             
                                                                             [request setHTTPMethod:@"POST"];
-                                                                            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.userReg.text, @"username", self.regPass.text, @"password", nil];
+                                                                            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.userReg.text, @"username", [self sha256:self.regPass.text], @"password", nil];
                                                                             NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
                                                                             NSLog(@"%@", mapData.allValues);
                                                                             [request setHTTPBody:postData];
@@ -310,6 +311,20 @@
         [self textFieldShouldReturn:textField];
     else if (textField == self.regPass2)
         [self textFieldShouldReturn:textField];
+}
+
+-(NSString*) sha256:(NSString *)clear{
+    const char *s=[clear cStringUsingEncoding:NSASCIIStringEncoding];
+    NSData *keyData=[NSData dataWithBytes:s length:strlen(s)];
+    
+    uint8_t digest[CC_SHA256_DIGEST_LENGTH]={0};
+    CC_SHA256(keyData.bytes, keyData.length, digest);
+    NSData *out=[NSData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
+    NSString *hash=[out description];
+    hash = [hash stringByReplacingOccurrencesOfString:@" " withString:@""];
+    hash = [hash stringByReplacingOccurrencesOfString:@"<" withString:@""];
+    hash = [hash stringByReplacingOccurrencesOfString:@">" withString:@""];
+    return hash;
 }
 
 @end
