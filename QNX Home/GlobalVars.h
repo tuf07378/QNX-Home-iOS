@@ -11,11 +11,13 @@
 @interface GlobalVars : NSObject{
     NSString *_seshToke;
     NSString *_uname;
+    NSInteger _type;
 }
 
 + (GlobalVars *)sharedInstance;
 
 @property(strong, nonatomic, readwrite) NSString *seshToke;
 @property(strong, nonatomic, readwrite) NSString *uname;
+@property(assign, nonatomic, readwrite) NSInteger type;
 
 @end

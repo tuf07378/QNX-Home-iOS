@@ -96,6 +96,13 @@
 - (IBAction)registerClicked:(id)sender{
     UIAlertController *registration = [UIAlertController alertControllerWithTitle:@"Register Account" message:@"Enter your user account and password." preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *reg = [UIAlertAction actionWithTitle:@"Register" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
+        if (self.userReg.text.length > 40){
+            UIAlertController *tLong = [UIAlertController alertControllerWithTitle:@"Username Too Long" message:@"Usernames must be less than 40 characters." preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *ret = [UIAlertAction actionWithTitle:@"Return" style:UIAlertActionStyleCancel handler:nil];
+            [tLong addAction:ret];
+            [self dismissViewControllerAnimated:YES completion:nil];
+            [self presentViewController:tLong animated:YES completion:nil];
+        }
         NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
         NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate:nil delegateQueue: [NSOperationQueue mainQueue]];
         
@@ -181,6 +188,14 @@
                                                                                 NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                                                                 NSLog(@"Response Body:\n%@\n", body);
                                                                                 if ([body containsString:@"[{\"SessionToken\":\""]){
+                                                                                    GlobalVars *globals = [GlobalVars sharedInstance];
+                                                                                    globals.uname = self.userReg.text;
+                                                                                    NSString *haystackPrefix = @"[{\"SessionToken\":\"";
+                                                                                    NSString *haystackSuffix = @"\"}]";
+                                                                                    NSRange needleRange = NSMakeRange(haystackPrefix.length,
+                                                                                                                      body.length - haystackPrefix.length - haystackSuffix.length);
+                                                                                    NSString *needle = [body substringWithRange:needleRange];
+                                                                                    globals.seshToke = needle;
                                                                                     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
                                                                                     UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
                                                                                     
@@ -285,8 +300,12 @@
     return YES;
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField{
-    if (textField == self.userReg)
+    if (textField == self.userReg){
+        if(self.userReg.text.length > 40){
+            [self.userReg setBackgroundColor:[UIColor redColor]];
+        }
         [self textFieldShouldReturn:textField];
+    }
     else if (textField == self.regPass)
         [self textFieldShouldReturn:textField];
     else if (textField == self.regPass2)

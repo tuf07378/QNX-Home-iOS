@@ -24,6 +24,7 @@
     if (self) {
         _seshToke = nil;
         _uname = nil;
+        _type = 0;
     }
     return self;
 }

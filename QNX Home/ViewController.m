@@ -16,8 +16,6 @@ NSString *lmPath = nil;
 NSString *dicPath = nil;
 NSArray *picker;
 
-
-
 - (void)viewDidLoad{
     OELanguageModelGenerator *lmGenerator = [[OELanguageModelGenerator alloc] init];
     
@@ -37,25 +35,22 @@ NSArray *picker;
     }
     self.openEarsEventsObserver = [[OEEventsObserver alloc] init];
     [self.openEarsEventsObserver setDelegate:self];
-    picker = [[NSArray alloc] initWithObjects:@"Choose a House", @"", @"Retired", @"Homemaker", @"Self-employed", @"Unemployed", @"Other", nil];
+    picker = [[NSArray alloc] initWithObjects:@"Choose a House", @"", @"House 1", @"House 2", @"House 3", @"House 4", @"House 5", nil];
     GlobalVars *globals = [GlobalVars sharedInstance];
     self.uname.text = globals.uname;
 }
 
--(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
     //One column
     return 1;
 }
 
--(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
     //set number of rows
     return picker.count;
 }
 
--(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
     //set item per row
     return [picker objectAtIndex:row];
 }
@@ -167,7 +162,7 @@ NSArray *picker;
                 NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                 NSLog(@"Response Body:\n%@\n", body);
                 if ([body containsString:@"Changed Password Successfully"]){
-                    UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Password Changed" message:@"Successfully change password." preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Password Changed" message:@"Successfully changed password." preferredStyle:UIAlertControllerStyleAlert];
                     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
                     [success addAction:ok];
                     [self presentViewController:success animated:YES completion:nil];
@@ -289,4 +284,16 @@ NSArray *picker;
     [navigationController pushViewController:viewController animated:YES];
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    if (globals.type == 0){
+        NSLog(@"TEST");
+    }
+    else if (globals.type == 1){
+        
+    }
+    else{
+        
+    }
+}
 @end

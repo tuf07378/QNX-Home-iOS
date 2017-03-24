@@ -9,6 +9,7 @@
 #import "LoginViewController.h"
 #import "UIViewController+LGSideMenuController.h"
 #import "ViewController.h"
+#import "GlobalVars.h"
 
 @interface LeftViewController ()
 
@@ -113,6 +114,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
+    GlobalVars *globals = [GlobalVars sharedInstance];
     
     switch(indexPath.row){
         case 0:{
@@ -127,7 +129,7 @@
             break;
         }
         case 4:{
-            //mainViewController.rootViewController.childViewControllers[0].view = self.dash;
+            globals.type = 0;
             [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
             UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
             ViewController *viewController;
@@ -139,11 +141,27 @@
             break;
         }
         case 5:{
+            globals.type = 1;
             [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
+            UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+            ViewController *viewController;
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+            
+            viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+            
+            [navigationController setViewControllers:@[viewController]];
             break;
         }
         case 6:{
+            globals.type = 2;
             [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
+            UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+            ViewController *viewController;
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+            
+            viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+            
+            [navigationController setViewControllers:@[viewController]];
             break;
         }
         case 8:{
