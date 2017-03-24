@@ -5,7 +5,9 @@
 
 #import "ViewController.h"
 #import "LoginNavigationController.h"
+#import "MainViewController.h"
 #import "GlobalVars.h"
+#import "UIViewController+LGSideMenuController.h"
 
 
 @implementation ViewController
@@ -277,6 +279,14 @@ NSArray *picker;
         [self textFieldShouldReturn:textField];
     else if (textField == self.pass2)
         [self textFieldShouldReturn:textField];
+}
+
+- (IBAction)newHouse:(id)sender{
+    MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
+    UIStoryboard *sb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *viewController = [sb instantiateViewControllerWithIdentifier:@"House"];
+    UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+    [navigationController pushViewController:viewController animated:YES];
 }
 
 @end
