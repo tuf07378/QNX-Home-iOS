@@ -3,6 +3,7 @@
 //  LGSideMenuControllerDemo
 //
 
+#include <CommonCrypto/CommonDigest.h>
 #import "ViewController.h"
 #import "LoginNavigationController.h"
 #import "MainViewController.h"
@@ -142,7 +143,7 @@ NSArray *picker;
             
             [request setHTTPMethod:@"POST"];
             GlobalVars *globals = [GlobalVars sharedInstance];
-            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.pass.text, @"password", globals.seshToke, @"sessionToken", nil];
+            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: [self sha256:self.pass.text], @"password", globals.seshToke, @"sessionToken", nil];
             NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
             NSLog(@"%@", mapData.allValues);
             [request setHTTPBody:postData];
@@ -296,4 +297,19 @@ NSArray *picker;
         
     }
 }
+
+-(NSString*) sha256:(NSString *)clear{
+    const char *s=[clear cStringUsingEncoding:NSASCIIStringEncoding];
+    NSData *keyData=[NSData dataWithBytes:s length:strlen(s)];
+    
+    uint8_t digest[CC_SHA256_DIGEST_LENGTH]={0};
+    CC_SHA256(keyData.bytes, keyData.length, digest);
+    NSData *out=[NSData dataWithBytes:digest length:CC_SHA256_DIGEST_LENGTH];
+    NSString *hash=[out description];
+    hash = [hash stringByReplacingOccurrencesOfString:@" " withString:@""];
+    hash = [hash stringByReplacingOccurrencesOfString:@"<" withString:@""];
+    hash = [hash stringByReplacingOccurrencesOfString:@">" withString:@""];
+    return hash;
+}
+
 @end
