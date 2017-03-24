@@ -85,29 +85,8 @@
                             completion:nil];
         }
         else{
-            NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
-            NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate:nil delegateQueue: [NSOperationQueue mainQueue]];
-            
-            NSURL * url = [NSURL URLWithString:[@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/checkusername/" stringByAppendingString:self.user.text]];
-            
-            
-            NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithURL:url
-                                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                                if(error == nil)
-                                                                {
-                                                                    NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-                                                                    if ([text containsString:@"0"]){
-                                                                        self.pass.backgroundColor = [UIColor redColor];
-                                                                    }
-                                                                    else{
-                                                                        self.user.backgroundColor = [UIColor redColor];
-                                                                    }
-                                                                }
-                                                                
-                                                            }];
-            
-            [dataTask resume];
-
+            self.pass.backgroundColor = [UIColor redColor];
+            self.user.backgroundColor = [UIColor redColor];
         }
     }];
     
