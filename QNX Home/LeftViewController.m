@@ -146,7 +146,7 @@
             [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
             break;
         }
-        case 9:{
+        case 8:{
             [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
             UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
             ViewController *viewController;
