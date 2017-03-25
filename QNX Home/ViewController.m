@@ -312,4 +312,47 @@ NSArray *picker;
     return hash;
 }
 
+-(IBAction)switchButton:(id)sender{
+    NSString *val;
+    if ([self.pSwitch isOn])
+        val = @"1";
+    else
+        val = @"0";
+    NSError *error;
+    
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/setrelaystatus"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:60.0];
+    
+    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    
+    [request setHTTPMethod:@"POST"];
+    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: @"018C98BB-C886-44B1-8667-DA304872B452", @"SessionToken", @"HardwickKitchenRelayOne", @"PeripheralName", @"Hardwick", @"HouseName", val, @"PeripheralValue", nil];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
+    NSLog(@"%@", mapData.allValues);
+    [request setHTTPBody:postData];
+    
+    
+    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error) {
+            // Handle error...
+            return;
+        }
+        
+        if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+            //NSLog(@"Response HTTP Status code: %ld\n", (long)[(NSHTTPURLResponse *)response statusCode]);
+            //NSLog(@"Response HTTP Headers:\n%@\n", [(NSHTTPURLResponse *)response allHeaderFields]);
+        }
+        
+        NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"Response Body:\n%@\n", body);
+        
+    }];
+    [postDataTask resume];
+}
+
 @end
