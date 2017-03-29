@@ -393,5 +393,39 @@ NSArray *picker;
     }];
     [postDataTask resume];
 }
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        //add a switch
+
+    }
+    
+    cell.textLabel.text = [NSString stringWithFormat:@"HI THIS IS A ROW"];
+    UISwitch *switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+    cell.accessoryView = switchView;
+    [switchView setOn:NO animated:NO];
+    [switchView addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+    switchView.tag = indexPath.row;
+    return cell;
+}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
+    return 10;
+}
+-(void) switchChanged:(id) sender{
+    NSInteger rowIndex = [sender tag];
+    NSLog(@"%ld", (long)rowIndex);
+    
+}
 
 @end

@@ -10,7 +10,7 @@
 #import <OpenEars/OEAcousticModel.h>
 #import <OpenEars/OEEventsObserver.h>
 
-@interface ViewController : UIViewController <OEEventsObserverDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface ViewController : UIViewController <OEEventsObserverDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) OEEventsObserver *openEarsEventsObserver;
 @property IBOutlet UIPickerView *house;
@@ -20,5 +20,6 @@
 @property IBOutlet UILabel *uname;
 @property (retain) IBOutlet UITextField *uNew;
 @property (retain) IBOutlet UISwitch *pSwitch;
+@property IBOutlet UITableView *tableView;
 
 @end

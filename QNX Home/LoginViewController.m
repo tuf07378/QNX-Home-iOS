@@ -139,6 +139,8 @@
                                                                     NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.userReg.text, @"username", [self sha256:self.regPass.text], @"password", nil];
                                                                     NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
                                                                     NSLog(@"%@", mapData.allValues);
+                                                                    UIAlertController *regAlert = [UIAlertController alertControllerWithTitle:@"Registering" message:@"Registering new user account." preferredStyle:UIAlertControllerStyleAlert];
+                                                                    [self presentViewController:regAlert animated:TRUE completion:nil];
                                                                     [request setHTTPBody:postData];
                                                                     
                                                                     
@@ -189,6 +191,7 @@
                                                                                 NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                                                                 NSLog(@"Response Body:\n%@\n", body);
                                                                                 if ([body containsString:@"[{\"SessionToken\":\""]){
+                                                                                    [self dismissViewControllerAnimated:TRUE completion:nil];
                                                                                     GlobalVars *globals = [GlobalVars sharedInstance];
                                                                                     globals.uname = self.userReg.text;
                                                                                     NSString *haystackPrefix = @"[{\"SessionToken\":\"";
