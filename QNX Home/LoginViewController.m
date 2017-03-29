@@ -123,6 +123,8 @@
                                                                     [self presentViewController:noReg animated:YES completion:nil];
                                                                 }
                                                                 else{
+                                                                    UIAlertController *regAlert = [UIAlertController alertControllerWithTitle:@"Registering" message:@"Registering new user account." preferredStyle:UIAlertControllerStyleAlert];
+                                                                    [self presentViewController:regAlert animated:TRUE completion:nil];
                                                                     NSError *error;
                                                                     
                                                                     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -139,8 +141,6 @@
                                                                     NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.userReg.text, @"username", [self sha256:self.regPass.text], @"password", nil];
                                                                     NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
                                                                     NSLog(@"%@", mapData.allValues);
-                                                                    UIAlertController *regAlert = [UIAlertController alertControllerWithTitle:@"Registering" message:@"Registering new user account." preferredStyle:UIAlertControllerStyleAlert];
-                                                                    [self presentViewController:regAlert animated:TRUE completion:nil];
                                                                     [request setHTTPBody:postData];
                                                                     
                                                                     
