@@ -425,7 +425,7 @@ NSArray *picker;
 -(void) switchChanged:(id) sender{
     NSInteger rowIndex = [sender tag];
     NSLog(@"%ld", (long)rowIndex);
-    
+    NSLog(@"%d", [sender isOn]);
 }
 
 @end
