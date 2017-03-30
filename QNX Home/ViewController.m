@@ -412,8 +412,14 @@ NSArray *picker;
     switchView.tag = indexPath.row;
     return cell;
 }
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    switch(globals.type){
+        case 0:
+            return 2;
+        default:
+            return 1;
+    }
     return 1;
 }
 
@@ -422,10 +428,29 @@ NSArray *picker;
     
     return 10;
 }
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    switch(globals.type){
+        case 0:
+            if (section == 0)
+                return @"Sensors";
+            else
+                return @"Relays";
+        default:
+            return NULL;
+    }
+    return NULL;
+}
+
 -(void) switchChanged:(id) sender{
     NSInteger rowIndex = [sender tag];
     NSLog(@"%ld", (long)rowIndex);
     NSLog(@"%d", [sender isOn]);
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
 }
 
 @end
