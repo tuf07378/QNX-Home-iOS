@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UIView *micEntry;
 @property IBOutlet UILabel *uname;
 @property (retain) IBOutlet UITextField *uNew;
+@property (retain) IBOutlet UITextField *hNew;
 @property (retain) IBOutlet UISwitch *pSwitch;
 @property IBOutlet UITableView *tableView;
 

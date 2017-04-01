@@ -491,7 +491,7 @@
         <!--New House-->
         <scene sceneID="vvf-hC-pxJ">
             <objects>
-                <viewController storyboardIdentifier="House" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="u3i-k5-ZFv" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="House" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="u3i-k5-ZFv" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8Ku-q0-6qb"/>
                         <viewControllerLayoutGuide type="bottom" id="HA2-Ru-1Ix"/>

@@ -25,6 +25,7 @@
         _seshToke = nil;
         _uname = nil;
         _type = 0;
+        _houses = nil;
     }
     return self;
 }

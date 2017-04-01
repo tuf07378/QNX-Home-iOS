@@ -43,7 +43,6 @@
     
     // -----
     self.tableView.contentInset = UIEdgeInsetsMake(44.0, 0.0, 44.0, 0.0);
-    //self.dash = [UIView new];
 }
 
 - (BOOL)prefersStatusBarHidden {

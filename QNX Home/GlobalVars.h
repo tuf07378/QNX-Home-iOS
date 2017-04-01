@@ -19,5 +19,6 @@
 @property(strong, nonatomic, readwrite) NSString *seshToke;
 @property(strong, nonatomic, readwrite) NSString *uname;
 @property(assign, nonatomic, readwrite) NSInteger type;
+@property(assign, nonatomic, readwrite) NSMutableArray *houses;
 
 @end
