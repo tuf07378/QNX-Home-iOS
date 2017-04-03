@@ -43,7 +43,7 @@ NSArray *picker;
     
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
-    NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/getrelayvaluesbyhouseid"];
+    NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/listhouses"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:60.0];
@@ -52,9 +52,9 @@ NSArray *picker;
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
     [request setHTTPMethod:@"POST"];
-    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: @"Hardwick", @"HouseName", @"018C98BB-C886-44B1-8667-DA304872B452", @"SessionToken", nil];
+    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", nil];
+    NSLog(@"%@", globals.seshToke);
     NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
-    NSLog(@"%@", mapData.allValues);
     [request setHTTPBody:postData];
     
     
@@ -71,11 +71,7 @@ NSArray *picker;
         
         NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSLog(@"Response Body:\n%@\n", body);
-        if ([body containsString:@"0"])
-            [self.pSwitch setOn:FALSE];
-        else
-            [self.pSwitch setOn:TRUE];
-        
+        [self parseHouses:body];
     }];
     [postDataTask resume];
 }
@@ -374,7 +370,6 @@ NSArray *picker;
         textField.secureTextEntry = TRUE;
         self.pass = textField;
     }];
-    NSString *hpass = self.pass.text;
     UIAlertAction *add = [UIAlertAction actionWithTitle:@"Add House" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
         NSError *error;
         
@@ -394,7 +389,7 @@ NSArray *picker;
         NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
         NSLog(@"%@", mapData.allValues);
         [request setHTTPBody:postData];
-        
+        NSString *hpass = [self sha256:self.pass.text];
         
         NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             if (error) {
@@ -411,7 +406,6 @@ NSArray *picker;
             NSLog(@"Response Body:\n%@\n", body);
             if ([body containsString:@"1"]){
                 NSError *error;
-                
                 NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
                 NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
                 NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/createhouse"];
@@ -424,7 +418,7 @@ NSArray *picker;
                 
                 [request setHTTPMethod:@"POST"];
                 GlobalVars *globals = [GlobalVars sharedInstance];
-                NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", [self sha256:hpass], @"housePassword", globals.seshToke, @"sessionToken", nil];
+                NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", hpass, @"housePassword", globals.seshToke, @"sessionToken", nil];
                 NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
                 NSLog(@"%@", mapData.allValues);
                 [request setHTTPBody:postData];
@@ -482,7 +476,6 @@ NSArray *picker;
         textField.delegate = self;
         self.uNew = textField;
     }];
-    NSString *hpass = [self sha256:self.pass.text];
     UIAlertAction *add = [UIAlertAction actionWithTitle:@"Change Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
         NSError *error;
         
@@ -502,6 +495,7 @@ NSArray *picker;
         NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
         NSLog(@"%@", mapData.allValues);
         [request setHTTPBody:postData];
+        NSString *hpass = [self sha256:self.pass.text];
         
         
         NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -532,7 +526,7 @@ NSArray *picker;
                 
                 [request setHTTPMethod:@"POST"];
                 GlobalVars *globals = [GlobalVars sharedInstance];
-                NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"oldHouseName", [self sha256:hpass], @"housePassword", self.uNew.text, @"newHouseName", globals.seshToke, @"sessionToken", nil];
+                NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"oldHouseName", hpass, @"housePassword", self.uNew.text, @"newHouseName", globals.seshToke, @"sessionToken", nil];
                 NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
                 NSLog(@"%@", mapData.allValues);
                 [request setHTTPBody:postData];
@@ -578,7 +572,7 @@ NSArray *picker;
     [house addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = @"House Name";
         textField.delegate = self;
-        self.hNew = textField;
+        self.uNew = textField;
     }];
     [house addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = @"Old Password";
@@ -590,10 +584,8 @@ NSArray *picker;
         textField.placeholder = @"New Password";
         textField.delegate = self;
         textField.secureTextEntry = TRUE;
-        self.uNew = textField;
+        self.temp = textField;
     }];
-    NSString *hpass = [self sha256:self.pass.text];
-    NSString *nhpass = [self sha256:self.uNew.text];
     UIAlertAction *add = [UIAlertAction actionWithTitle:@"Change Password" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
         NSError *error;
         
@@ -609,11 +601,12 @@ NSArray *picker;
         
         [request setHTTPMethod:@"POST"];
         GlobalVars *globals = [GlobalVars sharedInstance];
-        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", globals.seshToke, @"sessionToken", nil];
+        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.uNew.text, @"houseName", globals.seshToke, @"sessionToken", nil];
         NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
         NSLog(@"%@", mapData.allValues);
         [request setHTTPBody:postData];
-        
+        NSString *hpass = [self sha256:self.pass.text];
+        NSString *nhpass = [self sha256:self.temp.text];
         
         NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             if (error) {
@@ -643,7 +636,7 @@ NSArray *picker;
                 
                 [request setHTTPMethod:@"POST"];
                 GlobalVars *globals = [GlobalVars sharedInstance];
-                NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", hpass, @"oldHousePassword", nhpass, @"newHousePassword", globals.seshToke, @"sessionToken", nil];
+                NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.uNew.text, @"houseName", hpass, @"oldHousePassword", nhpass, @"newHousePassword", globals.seshToke, @"sessionToken", nil];
                 NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
                 NSLog(@"%@", mapData.allValues);
                 [request setHTTPBody:postData];
@@ -694,15 +687,14 @@ NSArray *picker;
         textField.placeholder = @"House Password";
         textField.delegate = self;
         textField.secureTextEntry = TRUE;
-        self.pass = textField;
+        self.uNew = textField;
     }];
-    NSString *hpass = [self sha256:self.pass.text];
     UIAlertAction *add = [UIAlertAction actionWithTitle:@"Join House" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
         NSError *error;
         
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
         NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
-        NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/joinhouse"];
+        NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability"];
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
                                                                cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                            timeoutInterval:60.0];
@@ -716,7 +708,7 @@ NSArray *picker;
         NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
         NSLog(@"%@", mapData.allValues);
         [request setHTTPBody:postData];
-        
+        NSString *hpass = [self sha256:self.uNew.text];
         
         NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             if (error) {
@@ -732,11 +724,12 @@ NSArray *picker;
             NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             NSLog(@"Response Body:\n%@\n", body);
             if ([body containsString:@"0"]){
+
                 NSError *error;
                 
                 NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
                 NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
-                NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/changehousepassword"];
+                NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/joinhouse"];
                 NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
                                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                                    timeoutInterval:60.0];
@@ -790,7 +783,7 @@ NSArray *picker;
 - (void)viewDidAppear:(BOOL)animated{
     GlobalVars *globals = [GlobalVars sharedInstance];
     if (globals.type == 0){
-        NSLog(@"TEST");
+
     }
     else if (globals.type == 1){
         
@@ -875,6 +868,9 @@ NSArray *picker;
     [self.view endEditing:YES];
 }
 
-
+- (void)parseHouses:(NSString *)body{
+    NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
+    NSLog(@"%lu", (unsigned long)numberOfOccurrences);
+}
 
 @end
