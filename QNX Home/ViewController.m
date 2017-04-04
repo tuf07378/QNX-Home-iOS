@@ -595,89 +595,24 @@ NSArray *picker;
         self.uNew = textField;
     }];
     UIAlertAction *add = [UIAlertAction actionWithTitle:@"Join House" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
-        NSError *error;
-        
-        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
-        NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability"];
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                           timeoutInterval:60.0];
-        
-        [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        
-        [request setHTTPMethod:@"POST"];
         GlobalVars *globals = [GlobalVars sharedInstance];
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", globals.seshToke, @"sessionToken", nil];
-        NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
-        NSLog(@"%@", mapData.allValues);
-        [request setHTTPBody:postData];
         NSString *hpass = [self sha256:self.uNew.text];
-        
-        NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            if (error) {
-                // Handle error...
-                return;
-            }
-            
-            if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-                //NSLog(@"Response HTTP Status code: %ld\n", (long)[(NSHTTPURLResponse *)response statusCode]);
-                //NSLog(@"Response HTTP Headers:\n%@\n", [(NSHTTPURLResponse *)response allHeaderFields]);
-            }
-            
-            NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability" withData:mapData];
+        NSLog(@"Response Body:\n%@\n", body);
+        if ([body containsString:@"0"]){
+            GlobalVars *globals = [GlobalVars sharedInstance];
+            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", hpass, @"housePassword", globals.seshToke, @"sessionToken", nil];
+            NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/joinhouse" withData:mapData];
             NSLog(@"Response Body:\n%@\n", body);
-            if ([body containsString:@"0"]){
-
-                NSError *error;
-                
-                NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-                NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
-                NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/joinhouse"];
-                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                                   timeoutInterval:60.0];
-                
-                [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-                [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-                
-                [request setHTTPMethod:@"POST"];
-                GlobalVars *globals = [GlobalVars sharedInstance];
-                NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", hpass, @"housePassword", globals.seshToke, @"sessionToken", nil];
-                NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
-                NSLog(@"%@", mapData.allValues);
-                [request setHTTPBody:postData];
-                
-                
-                NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                    if (error) {
-                        // Handle error...
-                        return;
-                    }
-                    
-                    if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-                        //NSLog(@"Response HTTP Status code: %ld\n", (long)[(NSHTTPURLResponse *)response statusCode]);
-                        //NSLog(@"Response HTTP Headers:\n%@\n", [(NSHTTPURLResponse *)response allHeaderFields]);
-                    }
-                    
-                    NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                    NSLog(@"Response Body:\n%@\n", body);
-                    if ([body containsString:@"Success"]){
-                        [globals.houses addObject:self.pass.text];
-                        UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Joined House" message:@"Successfully joined existing house." preferredStyle:UIAlertControllerStyleAlert];
-                        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
-                        [success addAction:ok];
-                        [self presentViewController:success animated:TRUE completion:nil];
-                    }
-                }];
-                
-                [postDataTask resume];
+            if ([body containsString:@"Success"]){
+                [globals.houses addObject:self.pass.text];
+                UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Joined House" message:@"Successfully joined existing house." preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+                [success addAction:ok];
+                [self presentViewController:success animated:TRUE completion:nil];
             }
-        }];
-        
-        [postDataTask resume];
-        
+        }
     }];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
     [house addAction:add];
