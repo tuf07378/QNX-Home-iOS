@@ -38,6 +38,7 @@ NSArray *picker;
     [self.openEarsEventsObserver setDelegate:self];
     GlobalVars *globals = [GlobalVars sharedInstance];
     picker = [[NSMutableArray alloc] initWithObjects:@"Choose a House", @"", nil];
+    picker = [[picker arrayByAddingObjectsFromArray: globals.houses] mutableCopy];
     self.uname.text = globals.uname;
 }
 
