@@ -25,7 +25,7 @@
         _seshToke = nil;
         _uname = nil;
         _type = 0;
-        _houses = nil;
+        _houses = [[NSMutableArray alloc] init];
     }
     return self;
 }

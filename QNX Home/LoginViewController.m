@@ -41,7 +41,7 @@
         globals.uname = self.user.text;
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", nil];
         NSString *test = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/listhouses" withData:mapData];
-        NSLog(@"%@", test);
+        [self parseHouses:test];
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
         [navigationController setViewControllers:@[[storyboard instantiateViewControllerWithIdentifier:@"ViewController"]]];
@@ -106,6 +106,9 @@
                         NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
                         NSString *needle = [body substringWithRange:needleRange];
                         globals.seshToke = needle;
+                        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", nil];
+                        NSString *test = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/listhouses" withData:mapData];
+                        [self parseHouses:test];
                         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
                         UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
                         [navigationController setViewControllers:@[[storyboard instantiateViewControllerWithIdentifier:@"ViewController"]]];
@@ -245,6 +248,24 @@
     [task resume];
     dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
     return self.returned;
+}
+
+- (void)parseHouses:(NSString *)body{
+    NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
+    NSString *haystackPrefix = @"[{";
+    NSString *haystackSuffix = @"}]";
+    NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
+    NSString *needle = [body substringWithRange:needleRange];
+    NSArray *houseArray = [needle componentsSeparatedByString:@","];
+    for(int i = 0; i < numberOfOccurrences + 1; i++){
+        NSString *house = (NSString *)houseArray[i];
+        haystackPrefix = @"{\"HouseName\":\"";
+        haystackSuffix = @"\"}";
+        needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+        needle = [house substringWithRange:needleRange];
+        GlobalVars *globals = [GlobalVars sharedInstance];
+        [globals.houses addObject:needle];
+    }
 }
 
 @end

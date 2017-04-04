@@ -36,8 +36,8 @@ NSArray *picker;
     }
     self.openEarsEventsObserver = [[OEEventsObserver alloc] init];
     [self.openEarsEventsObserver setDelegate:self];
-    picker = [[NSArray alloc] initWithObjects:@"Choose a House", @"", @"House 1", @"House 2", @"House 3", @"House 4", @"House 5", nil];
     GlobalVars *globals = [GlobalVars sharedInstance];
+    picker = [[NSMutableArray alloc] initWithObjects:@"Choose a House", @"", nil];
     self.uname.text = globals.uname;
 }
 
