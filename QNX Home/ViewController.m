@@ -20,7 +20,7 @@ NSArray *picker;
 - (void)viewDidLoad{
     OELanguageModelGenerator *lmGenerator = [[OELanguageModelGenerator alloc] init];
     
-    NSArray *words = [NSArray arrayWithObjects:@"TURN", @"LIGHT", @"TURN ON", @"THE LIGHT", nil];
+    NSArray *words = [NSArray arrayWithObjects:@"TURN", @"LIGHT", @"TURN ON", @"THE LIGHT", @"ON", nil];
     NSString *name = @"NameIWantForMyLanguageModelFiles";
     NSError *err = [lmGenerator generateLanguageModelFromArray:words withFilesNamed:name forAcousticModelAtPath:[OEAcousticModel pathToModel:@"AcousticModelEnglish"]]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to create a Spanish language model instead of an English one.
     
@@ -428,6 +428,13 @@ NSArray *picker;
     }
     cell.textLabel.text = [NSString stringWithFormat:@"HI THIS IS A ROW"];
     if (globals.type == 2){
+        UISwitch *switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+        cell.accessoryView = switchView;
+        [switchView setOn:NO animated:NO];
+        [switchView addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
+        switchView.tag = indexPath.row;
+    }
+    else if(indexPath.section == 1){
         UISwitch *switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
         cell.accessoryView = switchView;
         [switchView setOn:NO animated:NO];
