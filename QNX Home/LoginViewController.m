@@ -27,72 +27,39 @@
 
 - (IBAction)loginClicked:(id)sender{
     [self.view endEditing:YES];
-    NSError *error;
-    
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
-    NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/login"];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                       timeoutInterval:60.0];
-    
-    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    
-    [request setHTTPMethod:@"POST"];
     NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.user.text, @"username", [self sha256:self.pass.text], @"password", nil];
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
-    NSLog(@"%@", mapData.allValues);
-    [request setHTTPBody:postData];
-    
-    
-    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (error) {
-            // Handle error...
-            return;
-        }
-        
-        if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-            //NSLog(@"Response HTTP Status code: %ld\n", (long)[(NSHTTPURLResponse *)response statusCode]);
-            //NSLog(@"Response HTTP Headers:\n%@\n", [(NSHTTPURLResponse *)response allHeaderFields]);
-        }
-        
-        NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        NSLog(@"Response Body:\n%@\n", body);
-        if ([body containsString:@"[{\"SessionToken\":\""]){
-            GlobalVars *globals = [GlobalVars sharedInstance];
-            NSString *haystackPrefix = @"[{\"SessionToken\":\"";
-            NSString *haystackSuffix = @"\"}]";
-            NSRange needleRange = NSMakeRange(haystackPrefix.length,
+    NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/login" withData:mapData];
+    NSLog(@"Response Body:\n%@\n", body);
+    if ([body containsString:@"[{\"SessionToken\":\""]){
+        GlobalVars *globals = [GlobalVars sharedInstance];
+        NSString *haystackPrefix = @"[{\"SessionToken\":\"";
+        NSString *haystackSuffix = @"\"}]";
+        NSRange needleRange = NSMakeRange(haystackPrefix.length,
                                               body.length - haystackPrefix.length - haystackSuffix.length);
-            NSString *needle = [body substringWithRange:needleRange];
-            globals.seshToke = needle;
-            globals.uname = self.user.text;
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
-            
-            [navigationController setViewControllers:@[[storyboard instantiateViewControllerWithIdentifier:@"ViewController"]]];
-            
-            MainViewController *mainViewController = [storyboard instantiateInitialViewController];
-            mainViewController.rootViewController = navigationController;
-            [mainViewController setupWithType:2];
-            
-            UIWindow *window = UIApplication.sharedApplication.delegate.window;
-            window.rootViewController = mainViewController;
-            
-            [UIView transitionWithView:window
+        NSString *needle = [body substringWithRange:needleRange];
+        globals.seshToke = needle;
+        globals.uname = self.user.text;
+        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", nil];
+        NSString *test = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/listhouses" withData:mapData];
+        NSLog(@"%@", test);
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
+        [navigationController setViewControllers:@[[storyboard instantiateViewControllerWithIdentifier:@"ViewController"]]];
+        MainViewController *mainViewController = [storyboard instantiateInitialViewController];
+        mainViewController.rootViewController = navigationController;
+        [mainViewController setupWithType:2];
+        UIWindow *window = UIApplication.sharedApplication.delegate.window;
+        window.rootViewController = mainViewController;
+        [UIView transitionWithView:window
                               duration:0.3
                                options:UIViewAnimationOptionTransitionCrossDissolve
                             animations:nil
                             completion:nil];
-        }
-        else{
-            self.pass.backgroundColor = [UIColor redColor];
-            self.user.backgroundColor = [UIColor redColor];
-        }
-    }];
-    
-    [postDataTask resume];
+    }
+    else{
+        self.pass.backgroundColor = [UIColor redColor];
+        self.user.backgroundColor = [UIColor redColor];
+    }
 }
 
 - (IBAction)registerClicked:(id)sender{
@@ -107,131 +74,53 @@
         }
         NSURLSessionConfiguration *defaultConfigObject = [NSURLSessionConfiguration defaultSessionConfiguration];
         NSURLSession *defaultSession = [NSURLSession sessionWithConfiguration: defaultConfigObject delegate:nil delegateQueue: [NSOperationQueue mainQueue]];
-        
         NSURL * url = [NSURL URLWithString:[@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/checkusername/" stringByAppendingString:self.userReg.text]];
-        
-        
         NSURLSessionDataTask * dataTask = [defaultSession dataTaskWithURL:url
-                                                        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                            if(error == nil)
-                                                            {
-                                                                NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-                                                                if ([text containsString:@"0"]){
-                                                                    UIAlertController *noReg = [UIAlertController alertControllerWithTitle:@"Not Available" message:@"Sorry, the username you selected is not available, please choose a new one." preferredStyle:UIAlertControllerStyleAlert];
-                                                                    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
-                                                                    [noReg addAction:ok];
-                                                                    [self dismissViewControllerAnimated:TRUE completion:nil];
-                                                                    [self presentViewController:noReg animated:YES completion:nil];
-                                                                }
-                                                                else{
-                                                                    UIAlertController *regAlert = [UIAlertController alertControllerWithTitle:@"Registering" message:@"Registering new user account." preferredStyle:UIAlertControllerStyleAlert];
-                                                                    [self presentViewController:regAlert animated:TRUE completion:nil];
-                                                                    NSError *error;
-                                                                    
-                                                                    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-                                                                    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
-                                                                    NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/register"];
-                                                                    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                                                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                                                                                       timeoutInterval:60.0];
-                                                                    
-                                                                    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-                                                                    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-                                                                    
-                                                                    [request setHTTPMethod:@"POST"];
-                                                                    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.userReg.text, @"username", [self sha256:self.regPass.text], @"password", nil];
-                                                                    NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
-                                                                    NSLog(@"%@", mapData.allValues);
-                                                                    [request setHTTPBody:postData];
-                                                                    
-                                                                    
-                                                                    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                                        if (error) {
-                                                                            // Handle error...
-                                                                            return;
-                                                                        }
-                                                                        
-                                                                        if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-                                                                            //NSLog(@"Response HTTP Status code: %ld\n", (long)[(NSHTTPURLResponse *)response statusCode]);
-                                                                            //NSLog(@"Response HTTP Headers:\n%@\n", [(NSHTTPURLResponse *)response allHeaderFields]);
-                                                                        }
-                                                                        
-                                                                        NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                                                                        NSLog(@"Response Body:\n%@\n", body);
-                                                                        if ([body containsString:@"Successfull inserted the user into the table"]){
-                                                                            NSError *error;
-                                                                            
-                                                                            NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-                                                                            NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
-                                                                            NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/login"];
-                                                                            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                                                                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                                                                                               timeoutInterval:60.0];
-                                                                            
-                                                                            [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-                                                                            [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-                                                                            
-                                                                            [request setHTTPMethod:@"POST"];
-                                                                            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.userReg.text, @"username", [self sha256:self.regPass.text], @"password", nil];
-                                                                            NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
-                                                                            NSLog(@"%@", mapData.allValues);
-                                                                            [request setHTTPBody:postData];
-                                                                            
-                                                                            
-                                                                            NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                                                if (error) {
-                                                                                    // Handle error...
-                                                                                    return;
-                                                                                }
-                                                                                
-                                                                                if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-                                                                                    //NSLog(@"Response HTTP Status code: %ld\n", (long)[(NSHTTPURLResponse *)response statusCode]);
-                                                                                    //NSLog(@"Response HTTP Headers:\n%@\n", [(NSHTTPURLResponse *)response allHeaderFields]);
-                                                                                }
-                                                                                
-                                                                                NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                                                                                NSLog(@"Response Body:\n%@\n", body);
-                                                                                if ([body containsString:@"[{\"SessionToken\":\""]){
-                                                                                    [self dismissViewControllerAnimated:TRUE completion:nil];
-                                                                                    GlobalVars *globals = [GlobalVars sharedInstance];
-                                                                                    globals.uname = self.userReg.text;
-                                                                                    NSString *haystackPrefix = @"[{\"SessionToken\":\"";
-                                                                                    NSString *haystackSuffix = @"\"}]";
-                                                                                    NSRange needleRange = NSMakeRange(haystackPrefix.length,
-                                                                                                                      body.length - haystackPrefix.length - haystackSuffix.length);
-                                                                                    NSString *needle = [body substringWithRange:needleRange];
-                                                                                    globals.seshToke = needle;
-                                                                                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                                                                                    UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
-                                                                                    
-                                                                                    [navigationController setViewControllers:@[[storyboard instantiateViewControllerWithIdentifier:@"ViewController"]]];
-                                                                                    
-                                                                                    MainViewController *mainViewController = [storyboard instantiateInitialViewController];
-                                                                                    mainViewController.rootViewController = navigationController;
-                                                                                    [mainViewController setupWithType:2];
-                                                                                    
-                                                                                    UIWindow *window = UIApplication.sharedApplication.delegate.window;
-                                                                                    window.rootViewController = mainViewController;
-                                                                                    
-                                                                                    [UIView transitionWithView:window
-                                                                                                      duration:0.3
-                                                                                                       options:UIViewAnimationOptionTransitionCrossDissolve
-                                                                                                    animations:nil
-                                                                                                    completion:nil];
-                                                                                }
-                                                                            }];
-                                                                            
-                                                                            [postDataTask resume];
-                                                                        }
-                                                                    }];
-                                                                    
-                                                                    [postDataTask resume];
-                                                                }
-                                                            }
-                                                            
-                                                        }];
-        
-        [dataTask resume];
+                                                        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
+        {
+            if(error == nil){
+                NSString * text = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+                if ([text containsString:@"0"]){
+                    UIAlertController *noReg = [UIAlertController alertControllerWithTitle:@"Not Available" message:@"Sorry, the username you selected is not available, please choose a new one." preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+                    [noReg addAction:ok];
+                    [self dismissViewControllerAnimated:TRUE completion:nil];
+                    [self presentViewController:noReg animated:YES completion:nil];
+                }
+            else{
+                UIAlertController *regAlert = [UIAlertController alertControllerWithTitle:@"Registering" message:@"Registering new user account." preferredStyle:UIAlertControllerStyleAlert];
+                [self presentViewController:regAlert animated:TRUE completion:nil];
+                NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.userReg.text, @"username", [self sha256:self.regPass.text], @"password", nil];
+                NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/register" withData:mapData];
+                NSLog(@"Response Body:\n%@\n", body);
+                if ([body containsString:@"Successfull inserted the user into the table"]){
+                    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.userReg.text, @"username", [self sha256:self.regPass.text], @"password", nil];
+                    NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/login" withData:mapData];
+                    NSLog(@"Response Body:\n%@\n", body);
+                    if ([body containsString:@"[{\"SessionToken\":\""]){
+                        [self dismissViewControllerAnimated:TRUE completion:nil];
+                        GlobalVars *globals = [GlobalVars sharedInstance];
+                        globals.uname = self.userReg.text;
+                        NSString *haystackPrefix = @"[{\"SessionToken\":\"";
+                        NSString *haystackSuffix = @"\"}]";
+                        NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
+                        NSString *needle = [body substringWithRange:needleRange];
+                        globals.seshToke = needle;
+                        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
+                        [navigationController setViewControllers:@[[storyboard instantiateViewControllerWithIdentifier:@"ViewController"]]];
+                        MainViewController *mainViewController = [storyboard instantiateInitialViewController];
+                        mainViewController.rootViewController = navigationController;
+                        [mainViewController setupWithType:2];
+                        UIWindow *window = UIApplication.sharedApplication.delegate.window;
+                        window.rootViewController = mainViewController;
+                        [UIView transitionWithView:window duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:nil completion:nil];
+                    }
+                }
+            }
+        }
+            }];
+            [dataTask resume];
         }];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
     [registration addTextFieldWithConfigurationHandler:^(UITextField
@@ -333,6 +222,29 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:YES];
+}
+
+- (NSString *)post:(NSString *) link withData:(NSDictionary *) data{
+    NSError *error;
+    dispatch_semaphore_t sem;
+    NSURL *url = [[NSURL alloc] initWithString:link];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    request.HTTPMethod = @"POST";
+    [request setValue:@"application/json; charset=UTF8" forHTTPHeaderField:@"Content-Type"];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:data options:0 error:&error];
+    request.HTTPBody = postData;
+    sem = dispatch_semaphore_create(0);
+    
+    NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error){
+        NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        self.returned = body;
+        dispatch_semaphore_signal(sem);
+        
+    }];
+    
+    [task resume];
+    dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+    return self.returned;
 }
 
 @end
