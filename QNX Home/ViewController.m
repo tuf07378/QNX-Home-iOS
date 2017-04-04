@@ -39,41 +39,9 @@ NSArray *picker;
     picker = [[NSArray alloc] initWithObjects:@"Choose a House", @"", @"House 1", @"House 2", @"House 3", @"House 4", @"House 5", nil];
     GlobalVars *globals = [GlobalVars sharedInstance];
     self.uname.text = globals.uname;
-    NSError *error;
-    
-    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
-    NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/listhouses"];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                       timeoutInterval:60.0];
-    
-    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    
-    [request setHTTPMethod:@"POST"];
     NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", nil];
-    NSLog(@"%@", globals.seshToke);
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
-    [request setHTTPBody:postData];
-    
-    
-    NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (error) {
-            // Handle error...
-            return;
-        }
-        
-        if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-            //NSLog(@"Response HTTP Status code: %ld\n", (long)[(NSHTTPURLResponse *)response statusCode]);
-            //NSLog(@"Response HTTP Headers:\n%@\n", [(NSHTTPURLResponse *)response allHeaderFields]);
-        }
-        
-        NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        NSLog(@"Response Body:\n%@\n", body);
-        [self parseHouses:body];
-    }];
-    [postDataTask resume];
+    NSString *test = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/listhouses" withData:mapData];
+    NSLog(@"%@", test);
 }
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
@@ -371,86 +339,23 @@ NSArray *picker;
         self.pass = textField;
     }];
     UIAlertAction *add = [UIAlertAction actionWithTitle:@"Add House" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
-        NSError *error;
-        
-        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
-        NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability/"];
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                           timeoutInterval:60.0];
-        
-        [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        
-        [request setHTTPMethod:@"POST"];
         GlobalVars *globals = [GlobalVars sharedInstance];
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", globals.seshToke, @"sessionToken", nil];
-        NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
-        NSLog(@"%@", mapData.allValues);
-        [request setHTTPBody:postData];
+        NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability/" withData:mapData];
         NSString *hpass = [self sha256:self.pass.text];
         
-        NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            if (error) {
-                // Handle error...
-                return;
-            }
-            
-            if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-                //NSLog(@"Response HTTP Status code: %ld\n", (long)[(NSHTTPURLResponse *)response statusCode]);
-                //NSLog(@"Response HTTP Headers:\n%@\n", [(NSHTTPURLResponse *)response allHeaderFields]);
-            }
-            
-            NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            NSLog(@"Response Body:\n%@\n", body);
             if ([body containsString:@"1"]){
-                NSError *error;
-                NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-                NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
-                NSURL *url = [NSURL URLWithString:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/createhouse"];
-                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
-                                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                                   timeoutInterval:60.0];
-                
-                [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-                [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-                
-                [request setHTTPMethod:@"POST"];
                 GlobalVars *globals = [GlobalVars sharedInstance];
                 NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", hpass, @"housePassword", globals.seshToke, @"sessionToken", nil];
-                NSData *postData = [NSJSONSerialization dataWithJSONObject:mapData options:0 error:&error];
-                NSLog(@"%@", mapData.allValues);
-                [request setHTTPBody:postData];
-                
-                
-                NSURLSessionDataTask *postDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                    if (error) {
-                        // Handle error...
-                        return;
-                    }
-                    
-                    if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-                        //NSLog(@"Response HTTP Status code: %ld\n", (long)[(NSHTTPURLResponse *)response statusCode]);
-                        //NSLog(@"Response HTTP Headers:\n%@\n", [(NSHTTPURLResponse *)response allHeaderFields]);
-                    }
-                    
-                    NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                    NSLog(@"Response Body:\n%@\n", body);
-                    if ([body containsString:@"Success"]){
-                        [globals.houses addObject:self.hNew.text];
-                        UIAlertController *success = [UIAlertController alertControllerWithTitle:@"House Added" message:@"Successfully created a new house." preferredStyle:UIAlertControllerStyleAlert];
-                        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
-                        [success addAction:ok];
-                        [self presentViewController:success animated:TRUE completion:nil];
-                    }
-                }];
-                
-                [postDataTask resume];
+                NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/createhouse" withData:mapData];
+                if ([body containsString:@"Success"]){
+                    [globals.houses addObject:self.hNew.text];
+                    UIAlertController *success = [UIAlertController alertControllerWithTitle:@"House Added" message:@"Successfully created a new house." preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+                    [success addAction:ok];
+                    [self presentViewController:success animated:TRUE completion:nil];
+                }
             }
-        }];
-        
-        [postDataTask resume];
     
     }];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
@@ -871,6 +776,29 @@ NSArray *picker;
 - (void)parseHouses:(NSString *)body{
     NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
     NSLog(@"%lu", (unsigned long)numberOfOccurrences);
+}
+
+- (NSString *)post:(NSString *) link withData:(NSDictionary *) data{
+    NSError *error;
+    dispatch_semaphore_t sem;
+    NSURL *url = [[NSURL alloc] initWithString:link];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    request.HTTPMethod = @"POST";
+    [request setValue:@"application/json; charset=UTF8" forHTTPHeaderField:@"Content-Type"];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:data options:0 error:&error];
+    request.HTTPBody = postData;
+    sem = dispatch_semaphore_create(0);
+    
+    NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error){
+        NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        self.returned = body;
+        dispatch_semaphore_signal(sem);
+                                      
+    }];
+    
+    [task resume];
+    dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+    return self.returned;
 }
 
 @end

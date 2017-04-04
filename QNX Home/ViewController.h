@@ -23,5 +23,6 @@
 @property (retain, readwrite) IBOutlet UITextField *temp;
 @property (retain) IBOutlet UISwitch *pSwitch;
 @property IBOutlet UITableView *tableView;
+@property (retain, readwrite) NSString *returned;
 
 @end
