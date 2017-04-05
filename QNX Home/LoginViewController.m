@@ -281,7 +281,7 @@
     NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
     NSString *needle = [body substringWithRange:needleRange];
     NSArray *houseArray = [needle componentsSeparatedByString:@","];
-    NSMutableString *key = [[NSMutableString alloc] init];
+    NSMutableArray *keys = [[NSMutableArray alloc] init];
     for(int i = 0; i < numberOfOccurrences + 1; i++){
         if (i % 2 == 0){
             NSString *house = (NSString *)houseArray[i];
@@ -289,7 +289,7 @@
             haystackSuffix = @"\"";
             needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
             needle = [house substringWithRange:needleRange];
-            key = (NSMutableString *)[key stringByAppendingString:needle];
+            [keys addObject:[NSString stringWithString:needle]];
         }
         else{
             NSString *house = (NSString *)houseArray[i];
@@ -297,7 +297,7 @@
             haystackSuffix = @"}";
             needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
             needle = [house substringWithRange:needleRange];
-            [relays setObject:needle forKey:key];
+            [relays setObject:needle forKey:keys[i/2]];
         }
     }
     return relays;

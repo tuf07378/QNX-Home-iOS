@@ -40,6 +40,7 @@ NSArray *picker;
     picker = [[NSMutableArray alloc] initWithObjects:@"Choose a House", @"", nil];
     picker = [[picker arrayByAddingObjectsFromArray: globals.houses] mutableCopy];
     self.uname.text = globals.uname;
+    [self.house selectRow:3 inComponent:0 animated:YES];
 }
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
@@ -55,6 +56,10 @@ NSArray *picker;
 -(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
     //set item per row
     return [picker objectAtIndex:row];
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
+    [self.tableView reloadData];
 }
 
 - (IBAction)voice:(id)sender{
@@ -426,22 +431,20 @@ NSArray *picker;
         //add a switch
 
     }
-    cell.textLabel.text = [NSString stringWithFormat:@"HI THIS IS A ROW"];
-    if (globals.type == 2){
+    if (globals.type == 2 || indexPath.section == 1){
+        NSString *title = picker[[self.house selectedRowInComponent:0]];
         UISwitch *switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
         cell.accessoryView = switchView;
-        [switchView setOn:NO animated:NO];
+        if ([[globals.houseData[title] allValues][indexPath.row]  isEqual: @"0"])
+            [switchView setOn:NO animated:NO];
+        else
+            [switchView setOn:YES animated:NO];
         [switchView addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
         switchView.tag = indexPath.row;
-    }
-    else if(indexPath.section == 1){
-        UISwitch *switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
-        cell.accessoryView = switchView;
-        [switchView setOn:NO animated:NO];
-        [switchView addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
-        switchView.tag = indexPath.row;
+        cell.textLabel.text = [globals.houseData[title] allKeys][indexPath.row];
     }
     else if(indexPath.section == 0){
+        cell.textLabel.text = [NSString stringWithFormat:@"HI THIS IS A ROW"];
         cell.accessoryView = NULL;
     }
     return cell;
@@ -460,8 +463,9 @@ NSArray *picker;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     GlobalVars *globals = [GlobalVars sharedInstance];
-    if (section == 1){
-        
+    if (section == 1 || globals.type == 2){
+        NSString *title = picker[[self.house selectedRowInComponent:0]];
+        return [globals.houseData[title] count];
     }
     return 10;
 }

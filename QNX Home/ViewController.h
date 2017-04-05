@@ -13,7 +13,7 @@
 @interface ViewController : UIViewController <OEEventsObserverDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) OEEventsObserver *openEarsEventsObserver;
-@property IBOutlet UIPickerView *house;
+@property (retain) IBOutlet UIPickerView *house;
 @property (retain, readwrite) IBOutlet UITextField *pass;
 @property (retain, readwrite) IBOutlet UITextField *pass2;
 @property (nonatomic, strong) UIView *micEntry;
