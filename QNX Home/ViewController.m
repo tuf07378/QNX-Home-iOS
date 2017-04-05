@@ -40,7 +40,7 @@ NSArray *picker;
     picker = [[NSMutableArray alloc] initWithObjects:@"Choose a House", @"", nil];
     picker = [[picker arrayByAddingObjectsFromArray: globals.houses] mutableCopy];
     self.uname.text = globals.uname;
-    [self.house selectRow:3 inComponent:0 animated:YES];
+    [self.house selectRow:globals.house inComponent:0 animated:YES];
 }
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
@@ -59,7 +59,16 @@ NSArray *picker;
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-    [self.tableView reloadData];
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    globals.house = row;
+    MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
+    UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+    ViewController *viewController;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+    
+    viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+    
+    [navigationController setViewControllers:@[viewController]];
 }
 
 - (IBAction)voice:(id)sender{
