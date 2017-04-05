@@ -193,6 +193,8 @@
                                options:UIViewAnimationOptionTransitionCrossDissolve
                             animations:nil
                             completion:nil];
+            globals = nil;
+            globals.houses = nil;
         }
     }
 }

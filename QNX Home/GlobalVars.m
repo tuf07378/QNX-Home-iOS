@@ -26,6 +26,7 @@
         _uname = nil;
         _type = 0;
         _houses = [[NSMutableArray alloc] init];
+        _houseData = [[NSMutableDictionary alloc] init];
     }
     return self;
 }

@@ -27,6 +27,8 @@
 
 - (IBAction)loginClicked:(id)sender{
     [self.view endEditing:YES];
+    UIAlertController *login = [UIAlertController alertControllerWithTitle:@"Logging In" message:@"Logging in and downloading user data." preferredStyle:UIAlertControllerStyleAlert];
+    [self presentViewController:login animated:YES completion:nil];
     NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.user.text, @"username", [self sha256:self.pass.text], @"password", nil];
     NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/login" withData:mapData];
     NSLog(@"Response Body:\n%@\n", body);
@@ -42,6 +44,8 @@
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", nil];
         NSString *test = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/listhouses" withData:mapData];
         [self parseHouses:test];
+        globals.houseData = (NSMutableDictionary *) [self getSensorData];
+        [self dismissViewControllerAnimated:TRUE completion:nil];
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
         [navigationController setViewControllers:@[[storyboard instantiateViewControllerWithIdentifier:@"ViewController"]]];
@@ -57,6 +61,7 @@
                             completion:nil];
     }
     else{
+        [self dismissViewControllerAnimated:TRUE completion:nil];
         self.pass.backgroundColor = [UIColor redColor];
         self.user.backgroundColor = [UIColor redColor];
     }
@@ -266,6 +271,53 @@
         GlobalVars *globals = [GlobalVars sharedInstance];
         [globals.houses addObject:needle];
     }
+}
+
+- (NSDictionary *)parseRelays:(NSString *)body{
+    NSMutableDictionary *relays = [[NSMutableDictionary alloc] init];
+    NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
+    NSString *haystackPrefix = @"[{";
+    NSString *haystackSuffix = @"}]";
+    NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
+    NSString *needle = [body substringWithRange:needleRange];
+    NSArray *houseArray = [needle componentsSeparatedByString:@","];
+    NSMutableString *key = [[NSMutableString alloc] init];
+    for(int i = 0; i < numberOfOccurrences + 1; i++){
+        if (i % 2 == 0){
+            NSString *house = (NSString *)houseArray[i];
+            haystackPrefix = @"{\"PeripheralName\":\"";
+            haystackSuffix = @"\"";
+            needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+            needle = [house substringWithRange:needleRange];
+            key = (NSMutableString *)[key stringByAppendingString:needle];
+        }
+        else{
+            NSString *house = (NSString *)houseArray[i];
+            haystackPrefix = @"\"PeripheralValue\":";
+            haystackSuffix = @"}";
+            needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+            needle = [house substringWithRange:needleRange];
+            [relays setObject:needle forKey:key];
+        }
+    }
+    return relays;
+}
+
+- (NSDictionary *)getSensorData{
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
+    for (NSString *house in globals.houses){
+        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: house, @"HouseName", globals.seshToke, @"SessionToken", nil];
+        NSString *relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/getrelayvaluesbyhouseid" withData:mapData];
+        [data setValue:@"Test" forKey:house];
+        if ([relayData containsString:@"Peripheral"]){
+            NSDictionary *relays = [self parseRelays:relayData];
+            [data setObject:relays forKey:house];
+        }
+        else
+            [data setObject:@"" forKey:house];
+    }
+    return data;
 }
 
 @end

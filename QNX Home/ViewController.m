@@ -441,6 +441,9 @@ NSArray *picker;
         [switchView addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
         switchView.tag = indexPath.row;
     }
+    else if(indexPath.section == 0){
+        cell.accessoryView = NULL;
+    }
     return cell;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -456,7 +459,10 @@ NSArray *picker;
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    if (section == 1){
+        
+    }
     return 10;
 }
 

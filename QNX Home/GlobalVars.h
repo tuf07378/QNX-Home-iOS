@@ -20,5 +20,6 @@
 @property(strong, nonatomic, readwrite) NSString *uname;
 @property(assign, nonatomic, readwrite) NSInteger type;
 @property(retain, nonatomic, readwrite) NSMutableArray<NSString *> *houses;
+@property(retain, nonatomic, readwrite) NSMutableDictionary *houseData;
 
 @end
