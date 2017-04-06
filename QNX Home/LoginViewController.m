@@ -316,10 +316,10 @@
             [data setObject:relays forKey:house];
         }
         else if ([relayData containsString:@"message"]){
-            NSLog(@"BUG");
+            NSLog(@"BUG: %@", house);
         }
         else
-            [data setObject:@"" forKey:house];
+            [data setObject:relayData forKey:house];
     }
     return data;
 }
