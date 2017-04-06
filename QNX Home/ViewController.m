@@ -146,7 +146,7 @@ NSArray *picker;
         else{
             GlobalVars *globals = [GlobalVars sharedInstance];
             NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: [self sha256:self.pass.text], @"password", globals.seshToke, @"sessionToken", nil];
-            NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/changepassword" withData:mapData];
+            NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/changepassword" withData:mapData isAsync:NO];
             NSLog(@"Response Body:\n%@\n", body);
             if ([body containsString:@"Changed Password Successfully"]){
                 UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Password Changed" message:@"Successfully changed password." preferredStyle:UIAlertControllerStyleAlert];
@@ -186,7 +186,7 @@ NSArray *picker;
         else{
             GlobalVars *globals = [GlobalVars sharedInstance];
             NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.uNew.text, @"username", globals.seshToke, @"sessionToken", nil];
-            NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/changeusername" withData:mapData];
+            NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/changeusername" withData:mapData isAsync:NO];
             NSLog(@"Response Body:\n%@\n", body);
             if ([body containsString:@"Changed Username Successfully"]){
                 UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Username Changed" message:@"Username change password." preferredStyle:UIAlertControllerStyleAlert];
@@ -224,7 +224,7 @@ NSArray *picker;
         GlobalVars *globals = [GlobalVars sharedInstance];
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", globals.seshToke, @"sessionToken", nil];
         NSLog(@"%@", mapData.allValues);
-        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability/" withData:mapData];
+        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability/" withData:mapData isAsync:NO];
         NSLog(@"Response Body:\n%@\n", body);
         if ([body containsString:@"1"]){
             [self.hNew setBackgroundColor:[UIColor greenColor]];
@@ -259,11 +259,11 @@ NSArray *picker;
     UIAlertAction *add = [UIAlertAction actionWithTitle:@"Add House" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
         GlobalVars *globals = [GlobalVars sharedInstance];
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", globals.seshToke, @"sessionToken", nil];
-        NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability/" withData:mapData];
+        NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability/" withData:mapData isAsync:NO];
         NSString *hpass = [self sha256:self.pass.text];
         if ([body containsString:@"1"]){
             NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", hpass, @"housePassword", globals.seshToke, @"sessionToken", nil];
-            NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/createhouse" withData:mapData];
+            NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/createhouse" withData:mapData isAsync:NO];
             if ([body containsString:@"Success"]){
                 [globals.houses addObject:self.hNew.text];
                 UIAlertController *success = [UIAlertController alertControllerWithTitle:@"House Added" message:@"Successfully created a new house." preferredStyle:UIAlertControllerStyleAlert];
@@ -300,11 +300,11 @@ NSArray *picker;
         GlobalVars *globals = [GlobalVars sharedInstance];
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.uNew.text, @"houseName", globals.seshToke, @"sessionToken", nil];
         NSString *hpass = [self sha256:self.pass.text];
-        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability/" withData:mapData];
+        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability/" withData:mapData isAsync:NO];
         NSLog(@"Response Body:\n%@\n", body);
         if ([body containsString:@"1"]){
             NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"oldHouseName", hpass, @"housePassword", self.uNew.text, @"newHouseName", globals.seshToke, @"sessionToken", nil];
-            body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/changehousename" withData:mapData];
+            body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/changehousename" withData:mapData isAsync:NO];
             NSLog(@"Response Body:\n%@\n", body);
             if ([body containsString:@"Success"]){
                 [globals.houses addObject:self.pass.text];
@@ -345,11 +345,11 @@ NSArray *picker;
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.uNew.text, @"houseName", globals.seshToke, @"sessionToken", nil];
         NSString *hpass = [self sha256:self.pass.text];
         NSString *nhpass = [self sha256:self.temp.text];
-        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability" withData:mapData];
+        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability" withData:mapData isAsync:NO];
         NSLog(@"Response Body:\n%@\n", body);
         if ([body containsString:@"0"]){
             NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.uNew.text, @"houseName", hpass, @"oldHousePassword", nhpass, @"newHousePassword", globals.seshToke, @"sessionToken", nil];
-            NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/changehousepassword" withData:mapData];
+            NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/changehousepassword" withData:mapData isAsync:NO];
             NSLog(@"Response Body:\n%@\n", body);
             if ([body containsString:@"Success"]){
                 [globals.houses addObject:self.pass.text];
@@ -382,11 +382,11 @@ NSArray *picker;
         GlobalVars *globals = [GlobalVars sharedInstance];
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", globals.seshToke, @"sessionToken", nil];
         NSString *hpass = [self sha256:self.uNew.text];
-        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability" withData:mapData];
+        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability" withData:mapData isAsync:NO];
         NSLog(@"Response Body:\n%@\n", body);
         if ([body containsString:@"0"]){
             NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", hpass, @"housePassword", globals.seshToke, @"sessionToken", nil];
-            NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/joinhouse" withData:mapData];
+            NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/joinhouse" withData:mapData isAsync:NO];
             NSLog(@"Response Body:\n%@\n", body);
             if ([body containsString:@"Success"]){
                 [globals.houses addObject:self.pass.text];
@@ -473,10 +473,10 @@ NSArray *picker;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     GlobalVars *globals = [GlobalVars sharedInstance];
     if (section == 1 || globals.type == 2){
-        NSString *title = picker[[self.house selectedRowInComponent:0]];
+        NSString *title = picker[globals.house];
         return [globals.houseData[title] count];
     }
-    return 10;
+    return 5;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
@@ -495,8 +495,12 @@ NSArray *picker;
 
 -(void) switchChanged:(id) sender{
     NSInteger rowIndex = [sender tag];
-    NSLog(@"%ld", (long)rowIndex);
-    NSLog(@"%d", [sender isOn]);
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    NSString *houseN = picker[globals.house];
+    NSString *pName = [globals.houseData[houseN] allKeys][rowIndex];
+    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", pName, @"PeripheralName", houseN, @"HouseName", [NSString stringWithFormat:@"%d", [sender isOn]], @"PeripheralValue", nil];
+    [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/setrelaystatus" withData:mapData isAsync:YES];
+    [globals.houseData[houseN] setObject:[NSString stringWithFormat:@"%d", [sender isOn]] forKey:pName];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -508,26 +512,32 @@ NSArray *picker;
     NSLog(@"%lu", (unsigned long)numberOfOccurrences);
 }
 
-- (NSString *)post:(NSString *) link withData:(NSDictionary *) data{
+- (NSString *)post:(NSString *) link withData:(NSDictionary *) data isAsync:(BOOL)aSync{
     NSError *error;
-    dispatch_semaphore_t sem;
     NSURL *url = [[NSURL alloc] initWithString:link];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"POST";
     [request setValue:@"application/json; charset=UTF8" forHTTPHeaderField:@"Content-Type"];
     NSData *postData = [NSJSONSerialization dataWithJSONObject:data options:0 error:&error];
     request.HTTPBody = postData;
-    sem = dispatch_semaphore_create(0);
-    
-    NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error){
-        NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        self.returned = body;
-        dispatch_semaphore_signal(sem);
-                                      
-    }];
-    
-    [task resume];
-    dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+    if(aSync){
+        NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error){
+            NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            self.returned = body;
+        }];
+        [task resume];
+    }
+    else{
+        dispatch_semaphore_t sem;
+        sem = dispatch_semaphore_create(0);
+        NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error){
+            NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            self.returned = body;
+            dispatch_semaphore_signal(sem);
+        }];
+        [task resume];
+        dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+    }
     return self.returned;
 }
 

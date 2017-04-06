@@ -45,6 +45,7 @@
         NSString *test = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/listhouses" withData:mapData];
         [self parseHouses:test];
         globals.houseData = (NSMutableDictionary *) [self getSensorData];
+        NSLog(@"%@", globals.houseData);
         [self dismissViewControllerAnimated:TRUE completion:nil];
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
@@ -311,6 +312,11 @@
         NSString *relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/getrelayvaluesbyhouseid" withData:mapData];
         [data setValue:@"Test" forKey:house];
         if ([relayData containsString:@"Peripheral"]){
+            NSDictionary *relays = [self parseRelays:relayData];
+            [data setObject:relays forKey:house];
+        }
+        else if ([relayData containsString:@"message"]){
+            relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/getrelayvaluesbyhouseid" withData:mapData];
             NSDictionary *relays = [self parseRelays:relayData];
             [data setObject:relays forKey:house];
         }
