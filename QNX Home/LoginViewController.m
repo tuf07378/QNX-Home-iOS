@@ -316,9 +316,7 @@
             [data setObject:relays forKey:house];
         }
         else if ([relayData containsString:@"message"]){
-            relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/getrelayvaluesbyhouseid" withData:mapData];
-            NSDictionary *relays = [self parseRelays:relayData];
-            [data setObject:relays forKey:house];
+            NSLog(@"BUG");
         }
         else
             [data setObject:@"" forKey:house];

@@ -224,7 +224,7 @@ NSArray *picker;
         GlobalVars *globals = [GlobalVars sharedInstance];
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", globals.seshToke, @"sessionToken", nil];
         NSLog(@"%@", mapData.allValues);
-        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability/" withData:mapData isAsync:NO];
+        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability/" withData:mapData isAsync:TRUE];
         NSLog(@"Response Body:\n%@\n", body);
         if ([body containsString:@"1"]){
             [self.hNew setBackgroundColor:[UIColor greenColor]];
@@ -389,7 +389,7 @@ NSArray *picker;
             NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/joinhouse" withData:mapData isAsync:NO];
             NSLog(@"Response Body:\n%@\n", body);
             if ([body containsString:@"Success"]){
-                [globals.houses addObject:self.pass.text];
+                [globals.houses addObject:self.hNew.text];
                 UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Joined House" message:@"Successfully joined existing house." preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
                 [success addAction:ok];

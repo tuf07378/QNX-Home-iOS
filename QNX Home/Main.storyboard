@@ -338,7 +338,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h48-vp-rIS">
-                                        <rect key="frame" x="205" y="389" width="136" height="107"/>
+                                        <rect key="frame" x="205" y="389" width="136" height="57"/>
                                         <state key="normal" title="Join Existing House"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
@@ -365,7 +365,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uc9-Te-ZCH">
                                         <rect key="frame" x="100" y="90" width="175" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="U0T-w9-Lhe"/>
+                                            <constraint firstAttribute="height" constant="30" id="YnC-Ho-vB4"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                         <state key="normal" title="Change Password"/>
@@ -382,10 +382,10 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K4H-HJ-84H">
-                                        <rect key="frame" x="44" y="389" width="128" height="107"/>
+                                        <rect key="frame" x="44" y="389" width="128" height="57"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="107" id="TtC-Mg-FGe"/>
-                                            <constraint firstAttribute="width" constant="128" id="w4R-rP-SQi"/>
+                                            <constraint firstAttribute="height" constant="57" id="Ogy-ns-772"/>
+                                            <constraint firstAttribute="width" constant="128" id="yDT-6g-iVO"/>
                                         </constraints>
                                         <state key="normal" title="Add New House"/>
                                         <userDefinedRuntimeAttributes>
@@ -400,29 +400,10 @@
                                             <action selector="newHouse:" destination="ulY-YR-GnB" eventType="touchUpInside" id="lXC-mJ-xSN"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lFA-kd-MCl">
-                                        <rect key="frame" x="109" y="481" width="157" height="52"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="157" id="7GL-eM-pqj"/>
-                                            <constraint firstAttribute="height" constant="52" id="F2M-AM-wJI"/>
-                                        </constraints>
-                                        <state key="normal" title="Change House Name"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                <integer key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="20"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="hName:" destination="ulY-YR-GnB" eventType="touchUpInside" id="0FJ-Se-9Xi"/>
-                                        </connections>
-                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iyn-es-EHt">
                                         <rect key="frame" x="116" y="14" width="143" height="21"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="143" id="l0G-5f-fU5"/>
+                                            <constraint firstAttribute="width" constant="143" id="78m-fB-0H7"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -431,7 +412,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DsP-vO-yVK">
                                         <rect key="frame" x="100" y="41" width="175" height="35"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="175" id="GJq-15-eHB"/>
+                                            <constraint firstAttribute="width" constant="175" id="epS-nl-vvK"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                         <state key="normal" title="Change Username"/>
@@ -450,7 +431,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qeS-bh-3zh">
                                         <rect key="frame" x="95" y="529" width="184" height="52"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="52" id="wZI-5u-UQb"/>
+                                            <constraint firstAttribute="height" constant="52" id="o6N-Wr-ELs"/>
                                         </constraints>
                                         <state key="normal" title="Change House Password"/>
                                         <userDefinedRuntimeAttributes>
@@ -466,43 +447,62 @@
                                             <action selector="newHouse:" destination="ulY-YR-GnB" eventType="touchUpInside" id="jw8-KV-YbJ"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lFA-kd-MCl">
+                                        <rect key="frame" x="109" y="469" width="157" height="52"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="157" id="Bwa-ze-J9h"/>
+                                            <constraint firstAttribute="height" constant="52" id="HrU-Ts-J3B"/>
+                                        </constraints>
+                                        <state key="normal" title="Change House Name"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="hName:" destination="ulY-YR-GnB" eventType="touchUpInside" id="0FJ-Se-9Xi"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="K1F-NP-krn" secondAttribute="trailing" id="62j-dm-8ey"/>
-                                    <constraint firstItem="iyn-es-EHt" firstAttribute="top" secondItem="6Xc-B2-kHg" secondAttribute="top" constant="14" id="Cpm-1K-LoP"/>
-                                    <constraint firstItem="K1F-NP-krn" firstAttribute="centerX" secondItem="lFA-kd-MCl" secondAttribute="centerX" id="D8C-d8-ySO"/>
-                                    <constraint firstItem="DsP-vO-yVK" firstAttribute="top" secondItem="iyn-es-EHt" secondAttribute="bottom" constant="6" id="DCn-rQ-IeT"/>
-                                    <constraint firstItem="K4H-HJ-84H" firstAttribute="top" secondItem="h48-vp-rIS" secondAttribute="top" id="Dfg-Tp-2kE"/>
-                                    <constraint firstItem="lFA-kd-MCl" firstAttribute="centerX" secondItem="qeS-bh-3zh" secondAttribute="centerX" id="GsR-yR-VKH"/>
-                                    <constraint firstAttribute="trailing" secondItem="h48-vp-rIS" secondAttribute="trailing" constant="34" id="KcZ-em-NA8"/>
-                                    <constraint firstItem="Uc9-Te-ZCH" firstAttribute="top" secondItem="DsP-vO-yVK" secondAttribute="bottom" constant="14" id="LMP-me-oka"/>
-                                    <constraint firstItem="K1F-NP-krn" firstAttribute="leading" secondItem="6Xc-B2-kHg" secondAttribute="leading" id="MK0-WF-dbx"/>
-                                    <constraint firstItem="h48-vp-rIS" firstAttribute="baseline" secondItem="K4H-HJ-84H" secondAttribute="firstBaseline" id="MOX-LP-PgW"/>
-                                    <constraint firstItem="Uc9-Te-ZCH" firstAttribute="centerX" secondItem="NR3-8w-dWi" secondAttribute="centerX" id="PZb-Z6-eqj"/>
-                                    <constraint firstItem="K4H-HJ-84H" firstAttribute="leading" secondItem="6Xc-B2-kHg" secondAttribute="leading" constant="44" id="PuM-hd-ZHB"/>
-                                    <constraint firstItem="K4H-HJ-84H" firstAttribute="baseline" secondItem="h48-vp-rIS" secondAttribute="firstBaseline" id="RmV-VE-rnJ"/>
-                                    <constraint firstItem="NR3-8w-dWi" firstAttribute="centerX" secondItem="K1F-NP-krn" secondAttribute="centerX" id="eFH-Fz-vsx"/>
-                                    <constraint firstItem="qeS-bh-3zh" firstAttribute="top" secondItem="K4H-HJ-84H" secondAttribute="bottom" constant="33" id="f4X-6O-rd2"/>
-                                    <constraint firstItem="h48-vp-rIS" firstAttribute="leading" secondItem="K4H-HJ-84H" secondAttribute="trailing" constant="33" id="fU1-7R-8eD"/>
-                                    <constraint firstItem="qeS-bh-3zh" firstAttribute="leading" secondItem="6Xc-B2-kHg" secondAttribute="leading" constant="95" id="fl0-Ce-AhC"/>
-                                    <constraint firstItem="DsP-vO-yVK" firstAttribute="leading" secondItem="Uc9-Te-ZCH" secondAttribute="leading" id="jcQ-PJ-UBR"/>
-                                    <constraint firstItem="NR3-8w-dWi" firstAttribute="top" secondItem="Uc9-Te-ZCH" secondAttribute="bottom" constant="27" id="lYj-Wk-mIP"/>
-                                    <constraint firstAttribute="bottom" secondItem="qeS-bh-3zh" secondAttribute="bottom" constant="22" id="o0Q-bx-jfI"/>
-                                    <constraint firstAttribute="bottom" secondItem="lFA-kd-MCl" secondAttribute="bottom" constant="70" id="r1o-WS-hMs"/>
-                                    <constraint firstItem="K4H-HJ-84H" firstAttribute="top" secondItem="K1F-NP-krn" secondAttribute="bottom" constant="16" id="spd-7y-eMn"/>
-                                    <constraint firstItem="DsP-vO-yVK" firstAttribute="trailing" secondItem="Uc9-Te-ZCH" secondAttribute="trailing" id="wmC-US-FbA"/>
-                                    <constraint firstItem="K1F-NP-krn" firstAttribute="top" secondItem="NR3-8w-dWi" secondAttribute="bottom" constant="8" symbolic="YES" id="yMD-2o-Xi1"/>
-                                    <constraint firstItem="iyn-es-EHt" firstAttribute="centerX" secondItem="DsP-vO-yVK" secondAttribute="centerX" id="z2t-c8-o25"/>
+                                    <constraint firstItem="qeS-bh-3zh" firstAttribute="leading" secondItem="6Xc-B2-kHg" secondAttribute="leading" constant="95" id="50S-hE-nBp"/>
+                                    <constraint firstItem="NR3-8w-dWi" firstAttribute="centerX" secondItem="K1F-NP-krn" secondAttribute="centerX" id="6pS-0e-Edm"/>
+                                    <constraint firstItem="DsP-vO-yVK" firstAttribute="leading" secondItem="Uc9-Te-ZCH" secondAttribute="leading" id="7Gb-zc-14P"/>
+                                    <constraint firstItem="K4H-HJ-84H" firstAttribute="leading" secondItem="6Xc-B2-kHg" secondAttribute="leading" constant="44" id="7mc-a7-Smv"/>
+                                    <constraint firstItem="K4H-HJ-84H" firstAttribute="top" secondItem="K1F-NP-krn" secondAttribute="bottom" constant="16" id="AGy-w9-RWp"/>
+                                    <constraint firstItem="h48-vp-rIS" firstAttribute="leading" secondItem="K4H-HJ-84H" secondAttribute="trailing" constant="33" id="C7C-NU-hSU"/>
+                                    <constraint firstItem="qeS-bh-3zh" firstAttribute="top" secondItem="lFA-kd-MCl" secondAttribute="bottom" constant="8" symbolic="YES" id="Efq-HD-YIL"/>
+                                    <constraint firstAttribute="trailing" secondItem="h48-vp-rIS" secondAttribute="trailing" constant="34" id="G4z-w9-wBt"/>
+                                    <constraint firstItem="lFA-kd-MCl" firstAttribute="centerX" secondItem="qeS-bh-3zh" secondAttribute="centerX" id="LxX-Rq-XZf"/>
+                                    <constraint firstItem="lFA-kd-MCl" firstAttribute="top" secondItem="K4H-HJ-84H" secondAttribute="bottom" constant="23" id="M9d-Iu-BGF"/>
+                                    <constraint firstItem="Uc9-Te-ZCH" firstAttribute="top" secondItem="DsP-vO-yVK" secondAttribute="bottom" constant="14" id="PBt-mB-yHD"/>
+                                    <constraint firstItem="K4H-HJ-84H" firstAttribute="baseline" secondItem="h48-vp-rIS" secondAttribute="firstBaseline" id="TDy-iT-rry"/>
+                                    <constraint firstItem="K1F-NP-krn" firstAttribute="top" secondItem="NR3-8w-dWi" secondAttribute="bottom" constant="8" symbolic="YES" id="VJy-cS-b0V"/>
+                                    <constraint firstItem="K1F-NP-krn" firstAttribute="centerX" secondItem="lFA-kd-MCl" secondAttribute="centerX" id="aG8-vl-PWY"/>
+                                    <constraint firstItem="K4H-HJ-84H" firstAttribute="top" secondItem="h48-vp-rIS" secondAttribute="top" id="c9B-G3-EZH"/>
+                                    <constraint firstItem="h48-vp-rIS" firstAttribute="baseline" secondItem="K4H-HJ-84H" secondAttribute="firstBaseline" id="cdB-ec-oJv"/>
+                                    <constraint firstItem="iyn-es-EHt" firstAttribute="centerX" secondItem="DsP-vO-yVK" secondAttribute="centerX" id="gKr-7V-6dB"/>
+                                    <constraint firstItem="iyn-es-EHt" firstAttribute="top" secondItem="6Xc-B2-kHg" secondAttribute="top" constant="14" id="hE7-SW-zdR"/>
+                                    <constraint firstItem="DsP-vO-yVK" firstAttribute="trailing" secondItem="Uc9-Te-ZCH" secondAttribute="trailing" id="iry-cP-PDu"/>
+                                    <constraint firstItem="NR3-8w-dWi" firstAttribute="top" secondItem="Uc9-Te-ZCH" secondAttribute="bottom" constant="27" id="jef-iN-XPj"/>
+                                    <constraint firstItem="Uc9-Te-ZCH" firstAttribute="centerX" secondItem="NR3-8w-dWi" secondAttribute="centerX" id="kbR-Nl-Dae"/>
+                                    <constraint firstAttribute="trailing" secondItem="K1F-NP-krn" secondAttribute="trailing" id="mGy-KG-83v"/>
+                                    <constraint firstAttribute="bottom" secondItem="qeS-bh-3zh" secondAttribute="bottom" constant="22" id="nh3-Ih-FMg"/>
+                                    <constraint firstItem="K1F-NP-krn" firstAttribute="leading" secondItem="6Xc-B2-kHg" secondAttribute="leading" id="rZR-bg-f1Z"/>
+                                    <constraint firstItem="DsP-vO-yVK" firstAttribute="top" secondItem="iyn-es-EHt" secondAttribute="bottom" constant="6" id="upg-Gk-ZHS"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Xc-B2-kHg" firstAttribute="leading" secondItem="bam-Qv-JI0" secondAttribute="leading" id="999-hE-OrR"/>
-                            <constraint firstItem="6Xc-B2-kHg" firstAttribute="top" secondItem="gzn-BN-RNA" secondAttribute="bottom" id="Cmt-h7-jvt"/>
-                            <constraint firstItem="6Xc-B2-kHg" firstAttribute="bottom" secondItem="c0f-2W-H6R" secondAttribute="top" id="fF4-qT-H2X"/>
-                            <constraint firstAttribute="trailing" secondItem="6Xc-B2-kHg" secondAttribute="trailing" id="xmy-ls-2Ey"/>
+                            <constraint firstItem="6Xc-B2-kHg" firstAttribute="top" secondItem="gzn-BN-RNA" secondAttribute="bottom" id="3v5-Zf-Y7l"/>
+                            <constraint firstAttribute="trailing" secondItem="6Xc-B2-kHg" secondAttribute="trailing" id="URh-Uy-FkF"/>
+                            <constraint firstItem="6Xc-B2-kHg" firstAttribute="leading" secondItem="bam-Qv-JI0" secondAttribute="leading" id="xBt-iK-8rZ"/>
+                            <constraint firstItem="6Xc-B2-kHg" firstAttribute="bottom" secondItem="c0f-2W-H6R" secondAttribute="top" id="yrZ-Aj-Kji"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="QNX Home" id="aPt-JN-obt">
