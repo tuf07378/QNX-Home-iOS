@@ -24,5 +24,6 @@
 @property (retain) IBOutlet UISwitch *pSwitch;
 @property IBOutlet UITableView *tableView;
 @property (retain, readwrite) NSString *returned;
+@property IBOutlet UITableView *houseList;
 
 @end

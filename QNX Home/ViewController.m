@@ -474,6 +474,8 @@ NSArray *picker;
     GlobalVars *globals = [GlobalVars sharedInstance];
     if (section == 1 || globals.type == 2){
         NSString *title = picker[globals.house];
+        if ([[globals.houseData[title] allKeys][0] isEqualToString:@"Empty"])
+            return 0;
         return [globals.houseData[title] count];
     }
     return 5;

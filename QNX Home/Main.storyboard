@@ -519,6 +519,7 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="houseList" destination="K1F-NP-krn" id="stf-eG-MAc"/>
                         <outlet property="uname" destination="iyn-es-EHt" id="hfC-uV-Xnf"/>
                     </connections>
                 </viewController>

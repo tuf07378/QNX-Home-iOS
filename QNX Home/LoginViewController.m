@@ -310,16 +310,15 @@
     for (NSString *house in globals.houses){
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: house, @"HouseName", globals.seshToke, @"SessionToken", nil];
         NSString *relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/getrelayvaluesbyhouseid" withData:mapData];
-        [data setValue:@"Test" forKey:house];
+        [data setValue:@"" forKey:house];
         if ([relayData containsString:@"Peripheral"]){
             NSDictionary *relays = [self parseRelays:relayData];
             [data setObject:relays forKey:house];
         }
-        else if ([relayData containsString:@"message"]){
-            NSLog(@"BUG: %@", house);
+        else{
+            NSDictionary *relays = [NSDictionary dictionaryWithObject:@"1" forKey:@"Empty"];
+            [data setObject:relays forKey:house];
         }
-        else
-            [data setObject:relayData forKey:house];
     }
     return data;
 }
