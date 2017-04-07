@@ -176,6 +176,19 @@
             // Rarely you can get some visual bugs when you change view hierarchy and toggle side views in the same iteration
             // You can use delay to avoid this and probably other unexpected visual bugs
         }
+        case 9:{
+            [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
+            UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+            ViewController *viewController;
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+            
+            viewController = [storyboard instantiateViewControllerWithIdentifier:@"System"];
+            
+            [navigationController setViewControllers:@[viewController]];
+            break;
+            // Rarely you can get some visual bugs when you change view hierarchy and toggle side views in the same iteration
+            // You can use delay to avoid this and probably other unexpected visual bugs
+        }
         case 11:{
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
             UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"LoginNavigationController"];

@@ -440,7 +440,10 @@ NSArray *picker;
         //add a switch
 
     }
-    if (globals.type == 2 || indexPath.section == 1){
+    if(tableView == self.houseList){
+        cell.textLabel.text = (NSString *)picker[indexPath.row + 2];
+    }
+    else if (globals.type == 2 || indexPath.section == 1){
         NSString *title = picker[[self.house selectedRowInComponent:0]];
         UISwitch *switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
         cell.accessoryView = switchView;
@@ -453,18 +456,23 @@ NSArray *picker;
         cell.textLabel.text = [globals.houseData[title] allKeys][indexPath.row];
     }
     else if(indexPath.section == 0){
-        cell.textLabel.text = [NSString stringWithFormat:@"HI THIS IS A ROW"];
+        cell.textLabel.text = [NSString stringWithFormat:@"Sensor Data %ld", indexPath.row + 1];
         cell.accessoryView = NULL;
     }
     return cell;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     GlobalVars *globals = [GlobalVars sharedInstance];
-    switch(globals.type){
-        case 0:
-            return 2;
-        default:
-            return 1;
+    if(tableView == self.houseList){
+        return 1;
+    }
+    else {
+        switch(globals.type){
+            case 0:
+                return 2;
+            default:
+                return 1;
+        }
     }
     return 1;
 }
@@ -472,7 +480,10 @@ NSArray *picker;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     GlobalVars *globals = [GlobalVars sharedInstance];
-    if (section == 1 || globals.type == 2){
+    if(tableView == self.houseList){
+        return [picker count] - 2;
+    }
+    else if (section == 1 || globals.type == 2){
         NSString *title = picker[globals.house];
         if ([[globals.houseData[title] allKeys][0] isEqualToString:@"Empty"])
             return 0;
@@ -483,6 +494,9 @@ NSArray *picker;
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     GlobalVars *globals = [GlobalVars sharedInstance];
+    if(tableView == self.houseList){
+        return NULL;
+    }
     switch(globals.type){
         case 0:
             if (section == 0)
@@ -493,6 +507,20 @@ NSArray *picker;
             return NULL;
     }
     return NULL;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(tableView == self.houseList){
+        return YES;
+    }
+    return NO;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    // Perform the real delete action here. Note: you may need to check editing style
+    //   if you do not perform delete only.
+    NSLog(@"Deleted house: %@", globals.houses[indexPath.row]);
 }
 
 -(void) switchChanged:(id) sender{
