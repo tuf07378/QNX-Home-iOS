@@ -554,7 +554,7 @@ NSArray *picker;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(tableView == self.houseList){
+    if(tableView == self.houseList || tableView == self.system){
         return YES;
     }
     return NO;
@@ -564,7 +564,25 @@ NSArray *picker;
     GlobalVars *globals = [GlobalVars sharedInstance];
     // Perform the real delete action here. Note: you may need to check editing style
     //   if you do not perform delete only.
-    NSLog(@"Deleted house: %@", globals.houses[indexPath.row]);
+    if(tableView == self.houseList){
+        NSLog(@"Deleted house: %@", globals.houses[indexPath.row]);
+    }
+    else if (tableView == self.system){
+        NSString *title = picker[globals.house];
+        NSArray *data = [globals.allData objectForKey:title];
+        if([self.selector selectedSegmentIndex] == 0){
+            NSArray *boards = data[1];
+            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", picker[globals.house], @"HouseName", boards[indexPath.row], "BoardName", nil];
+            [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/removeboard" withData:mapData isAsync:YES];
+            NSLog(@"Deleted board: %@", boards[indexPath.row]);
+        }
+        else{
+            NSArray *boards = data[0];
+            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", picker[globals.house], @"houseName", boards[indexPath.row * 3], "peripheralName", nil];
+            [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/removeperipheral" withData:mapData isAsync:YES];
+            NSLog(@"Deleted peripheral: %@", boards[indexPath.row * 3]);
+        }
+    }
 }
 
 -(void) switchChanged:(id) sender{
