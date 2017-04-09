@@ -547,63 +547,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A3w-Gy-KOV">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T1L-Wu-gFy">
-                                        <rect key="frame" x="196" y="498" width="136" height="57"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="136" id="2BA-JW-oeV"/>
-                                        </constraints>
-                                        <state key="normal" title="Remove Peripheral"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                <integer key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="20"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SLx-S2-qtU">
-                                        <rect key="frame" x="35" y="498" width="137" height="57"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="57" id="HxE-B4-qbF"/>
-                                        </constraints>
-                                        <state key="normal" title="Add Peripheral"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                <integer key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="20"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dTe-tj-1ig">
-                                        <rect key="frame" x="190" y="409" width="160" height="52"/>
-                                        <state key="normal" title="Remove Board"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                <integer key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="20"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ooW-kD-ZZ6">
-                                        <rect key="frame" x="25" y="409" width="157" height="52"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="52" id="J1p-8C-Yyo"/>
-                                        </constraints>
-                                        <state key="normal" title="Add Board"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                <integer key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="20"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </button>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="I35-vM-d4F">
                                         <rect key="frame" x="8" y="114" width="359" height="281"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -615,7 +558,7 @@
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XIr-v0-zmw">
                                         <rect key="frame" x="8" y="8" width="359" height="58"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="58" id="0WR-re-0aJ"/>
+                                            <constraint firstAttribute="height" constant="58" id="JJF-NC-lCE"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="dataSource" destination="z3U-AS-H6P" id="3VT-fw-Sy7"/>
@@ -632,43 +575,63 @@
                                             <action selector="segChange:" destination="z3U-AS-H6P" eventType="valueChanged" id="VbW-tU-tv4"/>
                                         </connections>
                                     </segmentedControl>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SLx-S2-qtU">
+                                        <rect key="frame" x="137" y="504" width="101" height="57"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="57" id="H5T-rG-s92"/>
+                                        </constraints>
+                                        <state key="normal" title="Add Peripheral"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ooW-kD-ZZ6">
+                                        <rect key="frame" x="127" y="415" width="121" height="52"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="121" id="Njf-PY-rt4"/>
+                                            <constraint firstAttribute="height" constant="52" id="Tgl-G4-0E5"/>
+                                        </constraints>
+                                        <state key="normal" title="Add Board"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="ooW-kD-ZZ6" firstAttribute="top" secondItem="I35-vM-d4F" secondAttribute="bottom" constant="14" id="1Jt-pe-kQ4"/>
-                                    <constraint firstItem="XIr-v0-zmw" firstAttribute="leading" secondItem="I35-vM-d4F" secondAttribute="leading" id="1Pi-Y7-r12"/>
-                                    <constraint firstItem="SLx-S2-qtU" firstAttribute="baseline" secondItem="T1L-Wu-gFy" secondAttribute="firstBaseline" id="3Se-EE-rAd"/>
-                                    <constraint firstItem="XIr-v0-zmw" firstAttribute="top" secondItem="A3w-Gy-KOV" secondAttribute="topMargin" id="8yw-GT-xGF"/>
-                                    <constraint firstAttribute="trailing" secondItem="dTe-tj-1ig" secondAttribute="trailing" constant="25" id="CFK-ft-TZ7"/>
-                                    <constraint firstItem="ooW-kD-ZZ6" firstAttribute="leading" secondItem="A3w-Gy-KOV" secondAttribute="leading" constant="25" id="E4s-j2-mz3"/>
-                                    <constraint firstItem="XIr-v0-zmw" firstAttribute="centerX" secondItem="bmY-WT-znH" secondAttribute="centerX" id="IL6-bW-6sN"/>
-                                    <constraint firstItem="dTe-tj-1ig" firstAttribute="leading" secondItem="ooW-kD-ZZ6" secondAttribute="trailing" constant="8" symbolic="YES" id="JGr-ZB-Jo5"/>
-                                    <constraint firstItem="ooW-kD-ZZ6" firstAttribute="top" secondItem="dTe-tj-1ig" secondAttribute="top" id="Lls-kc-QIi"/>
-                                    <constraint firstItem="ooW-kD-ZZ6" firstAttribute="baseline" secondItem="dTe-tj-1ig" secondAttribute="firstBaseline" id="Mb6-pz-AWH"/>
-                                    <constraint firstItem="T1L-Wu-gFy" firstAttribute="baseline" secondItem="SLx-S2-qtU" secondAttribute="firstBaseline" id="PRW-pI-dQi"/>
-                                    <constraint firstItem="bmY-WT-znH" firstAttribute="top" secondItem="XIr-v0-zmw" secondAttribute="bottom" constant="8" symbolic="YES" id="QAE-He-KEe"/>
-                                    <constraint firstAttribute="trailing" secondItem="T1L-Wu-gFy" secondAttribute="trailing" constant="43" id="SyT-uI-bte"/>
-                                    <constraint firstItem="XIr-v0-zmw" firstAttribute="trailing" secondItem="I35-vM-d4F" secondAttribute="trailing" id="TpX-mO-J1q"/>
-                                    <constraint firstItem="SLx-S2-qtU" firstAttribute="leading" secondItem="A3w-Gy-KOV" secondAttribute="leading" constant="35" id="WbU-96-fPT"/>
-                                    <constraint firstItem="ooW-kD-ZZ6" firstAttribute="centerX" secondItem="SLx-S2-qtU" secondAttribute="centerX" id="Wun-R6-ebn"/>
-                                    <constraint firstItem="T1L-Wu-gFy" firstAttribute="leading" secondItem="SLx-S2-qtU" secondAttribute="trailing" constant="24" id="ZFC-ed-Ne6"/>
-                                    <constraint firstItem="SLx-S2-qtU" firstAttribute="top" secondItem="T1L-Wu-gFy" secondAttribute="top" id="d6C-pa-6vx"/>
-                                    <constraint firstItem="SLx-S2-qtU" firstAttribute="top" secondItem="ooW-kD-ZZ6" secondAttribute="bottom" constant="37" id="eKj-hT-KPL"/>
-                                    <constraint firstItem="dTe-tj-1ig" firstAttribute="baseline" secondItem="ooW-kD-ZZ6" secondAttribute="firstBaseline" id="gU3-Vh-cCB"/>
-                                    <constraint firstItem="I35-vM-d4F" firstAttribute="top" secondItem="bmY-WT-znH" secondAttribute="bottom" constant="12" id="pBq-3S-HYa"/>
-                                    <constraint firstItem="XIr-v0-zmw" firstAttribute="leading" secondItem="A3w-Gy-KOV" secondAttribute="leadingMargin" id="q58-l6-WOf"/>
-                                    <constraint firstItem="XIr-v0-zmw" firstAttribute="trailing" secondItem="A3w-Gy-KOV" secondAttribute="trailingMargin" id="r4p-Pj-jao"/>
-                                    <constraint firstItem="bmY-WT-znH" firstAttribute="leading" secondItem="A3w-Gy-KOV" secondAttribute="leading" constant="71" id="xK8-f6-z78"/>
-                                    <constraint firstAttribute="bottom" secondItem="SLx-S2-qtU" secondAttribute="bottom" constant="48" id="zcy-BH-XYB"/>
+                                    <constraint firstAttribute="bottom" secondItem="SLx-S2-qtU" secondAttribute="bottom" constant="42" id="2E3-Yd-rSN"/>
+                                    <constraint firstItem="I35-vM-d4F" firstAttribute="top" secondItem="bmY-WT-znH" secondAttribute="bottom" constant="12" id="Aoe-da-qtn"/>
+                                    <constraint firstItem="I35-vM-d4F" firstAttribute="centerX" secondItem="ooW-kD-ZZ6" secondAttribute="centerX" id="BH1-lz-FX5"/>
+                                    <constraint firstItem="XIr-v0-zmw" firstAttribute="leading" secondItem="I35-vM-d4F" secondAttribute="leading" id="Moy-DA-RRd"/>
+                                    <constraint firstItem="bmY-WT-znH" firstAttribute="top" secondItem="XIr-v0-zmw" secondAttribute="bottom" constant="8" symbolic="YES" id="WMe-HL-X9r"/>
+                                    <constraint firstItem="XIr-v0-zmw" firstAttribute="trailing" secondItem="I35-vM-d4F" secondAttribute="trailing" id="YZN-Dk-4kc"/>
+                                    <constraint firstItem="ooW-kD-ZZ6" firstAttribute="top" secondItem="I35-vM-d4F" secondAttribute="bottom" constant="20" id="aOi-DJ-vOZ"/>
+                                    <constraint firstItem="XIr-v0-zmw" firstAttribute="leading" secondItem="A3w-Gy-KOV" secondAttribute="leadingMargin" id="b5P-dP-2Nx"/>
+                                    <constraint firstItem="ooW-kD-ZZ6" firstAttribute="centerX" secondItem="SLx-S2-qtU" secondAttribute="centerX" id="fE7-Jy-VfA"/>
+                                    <constraint firstItem="XIr-v0-zmw" firstAttribute="trailing" secondItem="A3w-Gy-KOV" secondAttribute="trailingMargin" id="mtW-Vu-DJ5"/>
+                                    <constraint firstItem="XIr-v0-zmw" firstAttribute="centerX" secondItem="bmY-WT-znH" secondAttribute="centerX" id="p4k-cu-jcx"/>
+                                    <constraint firstItem="bmY-WT-znH" firstAttribute="leading" secondItem="A3w-Gy-KOV" secondAttribute="leading" constant="71" id="tGK-lB-gKo"/>
+                                    <constraint firstItem="XIr-v0-zmw" firstAttribute="top" secondItem="A3w-Gy-KOV" secondAttribute="topMargin" id="xXF-dH-aCX"/>
+                                    <constraint firstItem="SLx-S2-qtU" firstAttribute="top" secondItem="ooW-kD-ZZ6" secondAttribute="bottom" constant="37" id="yTF-0t-2JT"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="A3w-Gy-KOV" firstAttribute="leading" secondItem="2U2-vR-OXD" secondAttribute="leading" id="11Z-dV-zRW"/>
-                            <constraint firstItem="A3w-Gy-KOV" firstAttribute="bottom" secondItem="9JO-Yt-r4g" secondAttribute="top" id="Iac-L9-3Ap"/>
-                            <constraint firstAttribute="trailing" secondItem="A3w-Gy-KOV" secondAttribute="trailing" id="bQZ-QY-nhr"/>
-                            <constraint firstItem="A3w-Gy-KOV" firstAttribute="top" secondItem="xn7-H8-Mcm" secondAttribute="bottom" id="hzW-vp-io6"/>
+                            <constraint firstAttribute="trailing" secondItem="A3w-Gy-KOV" secondAttribute="trailing" id="IOE-JN-g4C"/>
+                            <constraint firstItem="A3w-Gy-KOV" firstAttribute="bottom" secondItem="9JO-Yt-r4g" secondAttribute="top" id="Woa-5U-Yxj"/>
+                            <constraint firstItem="A3w-Gy-KOV" firstAttribute="leading" secondItem="2U2-vR-OXD" secondAttribute="leading" id="nt6-Uh-Cpw"/>
+                            <constraint firstItem="A3w-Gy-KOV" firstAttribute="top" secondItem="xn7-H8-Mcm" secondAttribute="bottom" id="pdm-Wg-mch"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="QNX Home" id="5G2-2j-xcQ">
