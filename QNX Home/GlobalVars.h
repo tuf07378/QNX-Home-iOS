@@ -22,5 +22,8 @@
 @property(retain, nonatomic, readwrite) NSMutableArray<NSString *> *houses;
 @property(retain, nonatomic, readwrite) NSMutableDictionary *houseData;
 @property(assign, nonatomic, readwrite) NSInteger house;
+@property(assign, readwrite) BOOL isConfig;
+@property(retain, nonatomic, readwrite) NSMutableDictionary *allData;
+@property(assign, readwrite) BOOL seg;
 
 @end

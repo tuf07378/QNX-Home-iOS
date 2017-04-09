@@ -30,7 +30,7 @@
     UIAlertController *login = [UIAlertController alertControllerWithTitle:@"Logging In" message:@"Logging in and downloading user data." preferredStyle:UIAlertControllerStyleAlert];
     [self presentViewController:login animated:YES completion:nil];
     NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.user.text, @"username", [self sha256:self.pass.text], @"password", nil];
-    NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/login" withData:mapData];
+    NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/login" withData:mapData isAsync:NO];
     NSLog(@"Response Body:\n%@\n", body);
     if ([body containsString:@"[{\"SessionToken\":\""]){
         GlobalVars *globals = [GlobalVars sharedInstance];
@@ -42,10 +42,20 @@
         globals.seshToke = needle;
         globals.uname = self.user.text;
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", nil];
-        NSString *test = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/listhouses" withData:mapData];
+        NSString *test = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/listhouses" withData:mapData isAsync:NO];
         [self parseHouses:test];
         globals.houseData = (NSMutableDictionary *) [self getSensorData];
-        NSLog(@"%@", globals.houseData);
+        NSMutableDictionary *allData = [[NSMutableDictionary alloc] init];
+        for (NSString *house in globals.houses){
+            mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
+            NSString *received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getcurrentperipheralsbyhouse" withData:mapData isAsync:NO];
+            NSArray *periphs = [self parsePeripherals:received];
+            mapData = [[NSDictionary alloc] initWithObjectsAndKeys: house, @"HouseName", globals.seshToke, @"SessionToken", nil];
+            received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/getboardsbyhouse" withData:mapData isAsync:NO];
+            NSArray *boards = [self parseBoards:received];
+            [allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:house];
+        }
+        globals.allData = allData;
         [self dismissViewControllerAnimated:TRUE completion:nil];
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
@@ -97,11 +107,11 @@
                 UIAlertController *regAlert = [UIAlertController alertControllerWithTitle:@"Registering" message:@"Registering new user account." preferredStyle:UIAlertControllerStyleAlert];
                 [self presentViewController:regAlert animated:TRUE completion:nil];
                 NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.userReg.text, @"username", [self sha256:self.regPass.text], @"password", nil];
-                NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/register" withData:mapData];
+                NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/register" withData:mapData isAsync:NO];
                 NSLog(@"Response Body:\n%@\n", body);
                 if ([body containsString:@"Successfull inserted the user into the table"]){
                     NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.userReg.text, @"username", [self sha256:self.regPass.text], @"password", nil];
-                    NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/login" withData:mapData];
+                    NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/login" withData:mapData isAsync:NO];
                     NSLog(@"Response Body:\n%@\n", body);
                     if ([body containsString:@"[{\"SessionToken\":\""]){
                         [self dismissViewControllerAnimated:TRUE completion:nil];
@@ -113,7 +123,7 @@
                         NSString *needle = [body substringWithRange:needleRange];
                         globals.seshToke = needle;
                         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", nil];
-                        NSString *test = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/listhouses" withData:mapData];
+                        NSString *test = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/listhouses" withData:mapData isAsync:NO];
                         [self parseHouses:test];
                         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
                         UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
@@ -233,26 +243,32 @@
     [self.view endEditing:YES];
 }
 
-- (NSString *)post:(NSString *) link withData:(NSDictionary *) data{
+- (NSString *)post:(NSString *) link withData:(NSDictionary *) data isAsync:(BOOL)aSync{
     NSError *error;
-    dispatch_semaphore_t sem;
     NSURL *url = [[NSURL alloc] initWithString:link];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"POST";
     [request setValue:@"application/json; charset=UTF8" forHTTPHeaderField:@"Content-Type"];
     NSData *postData = [NSJSONSerialization dataWithJSONObject:data options:0 error:&error];
     request.HTTPBody = postData;
-    sem = dispatch_semaphore_create(0);
-    
-    NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error){
-        NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        self.returned = body;
-        dispatch_semaphore_signal(sem);
-        
-    }];
-    
-    [task resume];
-    dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+    if(aSync){
+        NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error){
+            NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            self.returned = body;
+        }];
+        [task resume];
+    }
+    else{
+        dispatch_semaphore_t sem;
+        sem = dispatch_semaphore_create(0);
+        NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error){
+            NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            self.returned = body;
+            dispatch_semaphore_signal(sem);
+        }];
+        [task resume];
+        dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+    }
     return self.returned;
 }
 
@@ -303,13 +319,68 @@
     }
     return relays;
 }
+- (NSArray *)parsePeripherals:(NSString *)body{
+    NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
+    NSString *haystackPrefix = @"[{";
+    NSString *haystackSuffix = @"}]";
+    NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
+    NSString *needle = [body substringWithRange:needleRange];
+    NSArray *houseArray = [needle componentsSeparatedByString:@","];
+    NSMutableArray *peripherals = [[NSMutableArray alloc] init];
+    for(int i = 0; i < numberOfOccurrences + 1; i++){
+        if (i % 3 == 0){
+            NSString *house = (NSString *)houseArray[i];
+            haystackPrefix = @"{\"PeripheralName\":\"";
+            haystackSuffix = @"\"";
+            needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+            needle = [house substringWithRange:needleRange];
+            [peripherals addObject:[NSString stringWithString:needle]];
+        }
+        else if (i % 3 == 1){
+            NSString *house = (NSString *)houseArray[i];
+            haystackPrefix = @"\"BoardName\":\"";
+            haystackSuffix = @"\"";
+            needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+            needle = [house substringWithRange:needleRange];
+            [peripherals addObject:[NSString stringWithString:needle]];
+        }
+        else{
+            NSString *house = (NSString *)houseArray[i];
+            haystackPrefix = @"\"PeripheralTypeName\":\"";
+            haystackSuffix = @"\"}";
+            needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+            needle = [house substringWithRange:needleRange];
+            [peripherals addObject:[NSString stringWithString:needle]];
+        }
+    }
+    return peripherals;
+}
+- (NSArray *)parseBoards:(NSString *)body{
+    NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
+    NSString *haystackPrefix = @"[[";
+    NSString *haystackSuffix = @"]]";
+    NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
+    NSString *needle = [body substringWithRange:needleRange];
+    NSArray *houseArray = [needle componentsSeparatedByString:@","];
+    NSMutableArray *boards = [[NSMutableArray alloc] init];
+    for(int i = 0; i < numberOfOccurrences + 1; i++){
+            NSString *house = (NSString *)houseArray[i];
+            haystackPrefix = @"{\"BoardName\":\"";
+            haystackSuffix = @"\"}";
+            needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+            needle = [house substringWithRange:needleRange];
+            [boards addObject:[NSString stringWithString:needle]];
+    }
+    return boards;
+}
 
 - (NSDictionary *)getSensorData{
     GlobalVars *globals = [GlobalVars sharedInstance];
     NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
     for (NSString *house in globals.houses){
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: house, @"HouseName", globals.seshToke, @"SessionToken", nil];
-        NSString *relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/getrelayvaluesbyhouseid" withData:mapData];
+        NSString *relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/getrelayvaluesbyhouseid" withData:mapData  isAsync:NO];
+        NSLog(@"%@", relayData);
         [data setValue:@"" forKey:house];
         if ([relayData containsString:@"Peripheral"]){
             NSDictionary *relays = [self parseRelays:relayData];

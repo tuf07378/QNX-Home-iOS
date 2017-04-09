@@ -25,5 +25,7 @@
 @property IBOutlet UITableView *tableView;
 @property (retain, readwrite) NSString *returned;
 @property IBOutlet UITableView *houseList;
+@property IBOutlet UITableView *system;
+@property IBOutlet UISegmentedControl *selector;
 
 @end

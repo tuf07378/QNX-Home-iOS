@@ -41,6 +41,12 @@ NSArray *picker;
     picker = [[picker arrayByAddingObjectsFromArray: globals.houses] mutableCopy];
     self.uname.text = globals.uname;
     [self.house selectRow:globals.house inComponent:0 animated:YES];
+    if(globals.isConfig){
+        if(globals.seg)
+            [self.selector setSelectedSegmentIndex:1];
+        else
+            [self.selector setSelectedSegmentIndex:0];
+    }
 }
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
@@ -61,14 +67,26 @@ NSArray *picker;
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
     GlobalVars *globals = [GlobalVars sharedInstance];
     globals.house = row;
-    MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
-    UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
-    ViewController *viewController;
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-    
-    viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
-    
-    [navigationController setViewControllers:@[viewController]];
+    if (!globals.isConfig){
+        MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
+        UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+        ViewController *viewController;
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+        
+        viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+        
+        [navigationController setViewControllers:@[viewController]];
+    }
+    else{
+        MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
+        UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+        ViewController *viewController;
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+        
+        viewController = [storyboard instantiateViewControllerWithIdentifier:@"System"];
+        
+        [navigationController setViewControllers:@[viewController]];
+    }
 }
 
 - (IBAction)voice:(id)sender{
@@ -443,6 +461,20 @@ NSArray *picker;
     if(tableView == self.houseList){
         cell.textLabel.text = (NSString *)picker[indexPath.row + 2];
     }
+    else if (tableView == self.system){
+        NSString *title = picker[globals.house];
+        NSArray *data = [globals.allData objectForKey:title];
+        if([self.selector selectedSegmentIndex] == 0){
+            NSArray *boards = data[1];
+            cell.textLabel.text = boards[indexPath.row];
+        }
+        else{
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+            NSArray *periphs = data[0];
+            cell.textLabel.text = periphs[indexPath.row * 3];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@", periphs[indexPath.row * 3 + 2],periphs[indexPath.row * 3 + 1]];
+        }
+    }
     else if (globals.type == 2 || indexPath.section == 1){
         NSString *title = picker[[self.house selectedRowInComponent:0]];
         UISwitch *switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
@@ -463,7 +495,7 @@ NSArray *picker;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     GlobalVars *globals = [GlobalVars sharedInstance];
-    if(tableView == self.houseList){
+    if(tableView == self.houseList || tableView == self.system){
         return 1;
     }
     else {
@@ -483,6 +515,18 @@ NSArray *picker;
     if(tableView == self.houseList){
         return [picker count] - 2;
     }
+    else if (tableView == self.system){
+        NSString *title = picker[globals.house];
+        NSArray *data = [globals.allData objectForKey:title];
+        if([self.selector selectedSegmentIndex] == 0){
+            NSArray *boards = data[1];
+            return boards.count;
+        }
+        else{
+            NSArray *boards = data[0];
+            return boards.count / 3;
+        }
+    }
     else if (section == 1 || globals.type == 2){
         NSString *title = picker[globals.house];
         if ([[globals.houseData[title] allKeys][0] isEqualToString:@"Empty"])
@@ -494,7 +538,7 @@ NSArray *picker;
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     GlobalVars *globals = [GlobalVars sharedInstance];
-    if(tableView == self.houseList){
+    if(tableView == self.houseList || tableView == self.system){
         return NULL;
     }
     switch(globals.type){
@@ -537,11 +581,6 @@ NSArray *picker;
     [self.view endEditing:YES];
 }
 
-- (void)parseHouses:(NSString *)body{
-    NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
-    NSLog(@"%lu", (unsigned long)numberOfOccurrences);
-}
-
 - (NSString *)post:(NSString *) link withData:(NSDictionary *) data isAsync:(BOOL)aSync{
     NSError *error;
     NSURL *url = [[NSURL alloc] initWithString:link];
@@ -569,6 +608,31 @@ NSArray *picker;
         dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
     }
     return self.returned;
+}
+-(IBAction)segChange:(id)sender{
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    if ([self.selector selectedSegmentIndex] == 0){
+        MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
+        UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+        ViewController *viewController;
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+        
+        viewController = [storyboard instantiateViewControllerWithIdentifier:@"System"];
+        
+        [navigationController setViewControllers:@[viewController]];
+        globals.seg = FALSE;
+    }
+    else{
+        globals.seg = YES;
+        MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
+        UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+        ViewController *viewController;
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+        
+        viewController = [storyboard instantiateViewControllerWithIdentifier:@"System"];
+        
+        [navigationController setViewControllers:@[viewController]];
+    }
 }
 
 @end

@@ -133,7 +133,7 @@
             UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
             ViewController *viewController;
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-            
+            globals.isConfig = FALSE;
             viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
             
             [navigationController setViewControllers:@[viewController]];
@@ -145,7 +145,7 @@
             UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
             ViewController *viewController;
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-            
+            globals.isConfig = FALSE;
             viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
             
             [navigationController setViewControllers:@[viewController]];
@@ -157,7 +157,7 @@
             UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
             ViewController *viewController;
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-            
+            globals.isConfig = FALSE;
             viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
             
             [navigationController setViewControllers:@[viewController]];
@@ -168,7 +168,7 @@
             UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
             ViewController *viewController;
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-
+            globals.isConfig = FALSE;
             viewController = [storyboard instantiateViewControllerWithIdentifier:@"Settings"];
             
             [navigationController setViewControllers:@[viewController]];
@@ -181,7 +181,7 @@
             UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
             ViewController *viewController;
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-            
+            globals.isConfig = TRUE;
             viewController = [storyboard instantiateViewControllerWithIdentifier:@"System"];
             
             [navigationController setViewControllers:@[viewController]];

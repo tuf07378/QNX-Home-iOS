@@ -28,6 +28,9 @@
         _houses = [[NSMutableArray alloc] init];
         _houseData = [[NSMutableDictionary alloc] init];
         _house = 0;
+        _isConfig = NO;
+        _allData = [[NSMutableDictionary alloc] init];
+        _seg = NO;
     }
     return self;
 }
