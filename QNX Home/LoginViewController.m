@@ -49,10 +49,22 @@
         for (NSString *house in globals.houses){
             mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
             NSString *received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getcurrentperipheralsbyhouse" withData:mapData isAsync:NO];
-            NSArray *periphs = [self parsePeripherals:received];
+            NSMutableArray *periphs;
+            if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
+                periphs = (NSMutableArray *)[self parsePeripherals:received];
+            }
+            else{
+                periphs = [[NSMutableArray alloc] init];
+            }
             mapData = [[NSDictionary alloc] initWithObjectsAndKeys: house, @"HouseName", globals.seshToke, @"SessionToken", nil];
             received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/getboardsbyhouse" withData:mapData isAsync:NO];
-            NSArray *boards = [self parseBoards:received];
+            NSMutableArray *boards;
+            if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
+                boards = (NSMutableArray *)[self parseBoards:received];
+            }
+            else{
+                boards = [[NSMutableArray alloc] init];
+            }
             [allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:house];
         }
         globals.allData = allData;

@@ -325,7 +325,7 @@ NSArray *picker;
             body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/changehousename" withData:mapData isAsync:NO];
             NSLog(@"Response Body:\n%@\n", body);
             if ([body containsString:@"Success"]){
-                [globals.houses addObject:self.pass.text];
+                [globals.houses replaceObjectAtIndex:[self.house selectedRowInComponent:0]-2 withObject:self.uNew];
                 UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Name Changed" message:@"Successfully changed house name." preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
                 [success addAction:ok];
@@ -370,7 +370,6 @@ NSArray *picker;
             NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/changehousepassword" withData:mapData isAsync:NO];
             NSLog(@"Response Body:\n%@\n", body);
             if ([body containsString:@"Success"]){
-                [globals.houses addObject:self.pass.text];
                 UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Password Changed" message:@"Successfully changed house password." preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
                 [success addAction:ok];
@@ -398,6 +397,7 @@ NSArray *picker;
     }];
     UIAlertAction *add = [UIAlertAction actionWithTitle:@"Join House" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
         GlobalVars *globals = [GlobalVars sharedInstance];
+        NSString *newHouse = self.hNew.text;
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", globals.seshToke, @"sessionToken", nil];
         NSString *hpass = [self sha256:self.uNew.text];
         NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability" withData:mapData isAsync:NO];
@@ -412,6 +412,22 @@ NSArray *picker;
                 UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
                 [success addAction:ok];
                 [self presentViewController:success animated:TRUE completion:nil];
+                globals.houseData = (NSMutableDictionary *) [self getSensorData];
+                mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", newHouse, @"houseName", nil];
+                NSString *received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getcurrentperipheralsbyhouse" withData:mapData isAsync:NO];
+                NSArray *periphs = [self parsePeripherals:received];
+                mapData = [[NSDictionary alloc] initWithObjectsAndKeys: newHouse, @"HouseName", globals.seshToke, @"SessionToken", nil];
+                received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/getboardsbyhouse" withData:mapData isAsync:NO];
+                NSArray *boards = [self parseBoards:received];
+                [globals.allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:newHouse];
+                MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
+                UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+                ViewController *viewController;
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+                
+                viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+                
+                [navigationController setViewControllers:@[viewController]];
             }
         }
     }];
@@ -571,15 +587,31 @@ NSArray *picker;
         NSString *title = picker[globals.house];
         NSArray *data = [globals.allData objectForKey:title];
         if([self.selector selectedSegmentIndex] == 0){
-            NSArray *boards = data[1];
-            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", picker[globals.house], @"HouseName", boards[indexPath.row], "BoardName", nil];
+            NSMutableArray *boards = data[1];
+            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", title, @"HouseName", [NSString stringWithFormat:@"%@", boards[indexPath.row]], @"BoardName", nil];
             [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/removeboard" withData:mapData isAsync:YES];
+            /*if ([boards containsObject:boards[indexPath.row]]){
+                [boards removeObject:boards[indexPath.row]];
+                NSArray *periphs = data[0];
+                [globals.allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:title];
+            }*/
+            [self.system deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView reloadData];
             NSLog(@"Deleted board: %@", boards[indexPath.row]);
         }
         else{
-            NSArray *boards = data[0];
-            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", picker[globals.house], @"houseName", boards[indexPath.row * 3], "peripheralName", nil];
+            NSMutableArray *boards = data[0];
+            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", title, @"houseName", boards[indexPath.row * 3], @"peripheralName", nil];
             [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/removeperipheral" withData:mapData isAsync:YES];
+            [self.system deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView reloadData];
+            /*if ([boards containsObject:boards[indexPath.row * 3]]){
+                [boards removeObject:boards[indexPath.row * 3]];
+                [boards removeObject:boards[(indexPath.row * 3) + 1]];
+                [boards removeObject:boards[(indexPath.row * 3) + 2]];
+                NSArray *periphs = data[1];
+                [globals.allData setObject:[NSArray arrayWithObjects:boards, periphs, nil] forKey:title];
+            }*/
             NSLog(@"Deleted peripheral: %@", boards[indexPath.row * 3]);
         }
     }
@@ -651,6 +683,109 @@ NSArray *picker;
         
         [navigationController setViewControllers:@[viewController]];
     }
+}
+- (NSDictionary *)getSensorData{
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
+    for (NSString *house in globals.houses){
+        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: house, @"HouseName", globals.seshToke, @"SessionToken", nil];
+        NSString *relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/getrelayvaluesbyhouseid" withData:mapData  isAsync:NO];
+        NSLog(@"%@", relayData);
+        [data setValue:@"" forKey:house];
+        if ([relayData containsString:@"Peripheral"]){
+            NSDictionary *relays = [self parseRelays:relayData];
+            [data setObject:relays forKey:house];
+        }
+        else{
+            NSDictionary *relays = [NSDictionary dictionaryWithObject:@"1" forKey:@"Empty"];
+            [data setObject:relays forKey:house];
+        }
+    }
+    return data;
+}
+
+- (NSDictionary *)parseRelays:(NSString *)body{
+    NSMutableDictionary *relays = [[NSMutableDictionary alloc] init];
+    NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
+    NSString *haystackPrefix = @"[{";
+    NSString *haystackSuffix = @"}]";
+    NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
+    NSString *needle = [body substringWithRange:needleRange];
+    NSArray *houseArray = [needle componentsSeparatedByString:@","];
+    NSMutableArray *keys = [[NSMutableArray alloc] init];
+    for(int i = 0; i < numberOfOccurrences + 1; i++){
+        if (i % 2 == 0){
+            NSString *house = (NSString *)houseArray[i];
+            haystackPrefix = @"{\"PeripheralName\":\"";
+            haystackSuffix = @"\"";
+            needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+            needle = [house substringWithRange:needleRange];
+            [keys addObject:[NSString stringWithString:needle]];
+        }
+        else{
+            NSString *house = (NSString *)houseArray[i];
+            haystackPrefix = @"\"PeripheralValue\":";
+            haystackSuffix = @"}";
+            needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+            needle = [house substringWithRange:needleRange];
+            [relays setObject:needle forKey:keys[i/2]];
+        }
+    }
+    return relays;
+}
+- (NSArray *)parsePeripherals:(NSString *)body{
+    NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
+    NSString *haystackPrefix = @"[{";
+    NSString *haystackSuffix = @"}]";
+    NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
+    NSString *needle = [body substringWithRange:needleRange];
+    NSArray *houseArray = [needle componentsSeparatedByString:@","];
+    NSMutableArray *peripherals = [[NSMutableArray alloc] init];
+    for(int i = 0; i < numberOfOccurrences + 1; i++){
+        if (i % 3 == 0){
+            NSString *house = (NSString *)houseArray[i];
+            haystackPrefix = @"{\"PeripheralName\":\"";
+            haystackSuffix = @"\"";
+            needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+            needle = [house substringWithRange:needleRange];
+            [peripherals addObject:[NSString stringWithString:needle]];
+        }
+        else if (i % 3 == 1){
+            NSString *house = (NSString *)houseArray[i];
+            haystackPrefix = @"\"BoardName\":\"";
+            haystackSuffix = @"\"";
+            needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+            needle = [house substringWithRange:needleRange];
+            [peripherals addObject:[NSString stringWithString:needle]];
+        }
+        else{
+            NSString *house = (NSString *)houseArray[i];
+            haystackPrefix = @"\"PeripheralTypeName\":\"";
+            haystackSuffix = @"\"}";
+            needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+            needle = [house substringWithRange:needleRange];
+            [peripherals addObject:[NSString stringWithString:needle]];
+        }
+    }
+    return peripherals;
+}
+- (NSArray *)parseBoards:(NSString *)body{
+    NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
+    NSString *haystackPrefix = @"[[";
+    NSString *haystackSuffix = @"]]";
+    NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
+    NSString *needle = [body substringWithRange:needleRange];
+    NSArray *houseArray = [needle componentsSeparatedByString:@","];
+    NSMutableArray *boards = [[NSMutableArray alloc] init];
+    for(int i = 0; i < numberOfOccurrences + 1; i++){
+        NSString *house = (NSString *)houseArray[i];
+        haystackPrefix = @"{\"BoardName\":\"";
+        haystackSuffix = @"\"}";
+        needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+        needle = [house substringWithRange:needleRange];
+        [boards addObject:[NSString stringWithString:needle]];
+    }
+    return boards;
 }
 
 @end
