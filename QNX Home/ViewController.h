@@ -29,5 +29,7 @@
 @property IBOutlet UISegmentedControl *selector;
 @property (retain, readwrite) IBOutlet UITextField *hpass;
 @property (assign, readwrite) NSInteger selected;
+@property (retain, readwrite) IBOutlet UITextField *board;
+@property (retain, readwrite) IBOutlet UITextField *boardSer;
 
 @end

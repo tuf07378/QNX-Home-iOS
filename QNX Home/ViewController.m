@@ -541,6 +541,59 @@ NSArray *picker;
         self.selected = indexPath.row;
         [self presentViewController:houseOpts animated:YES completion:nil];
     }
+    else if (tableView == self.system){
+        if ([self.selector selectedSegmentIndex] == 0){
+            NSString *title = picker[globals.house];
+            NSArray *data = [globals.allData objectForKey:title];
+            NSArray *boards = data[1];
+            UIAlertController *boardOpts = [UIAlertController alertControllerWithTitle:@"Board Options" message:[NSString stringWithFormat:@"%@ Board Options", [boards objectAtIndex:indexPath.row]] preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *chgname = [UIAlertAction actionWithTitle:@"Change Board Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                UIAlertController *house = [UIAlertController alertControllerWithTitle:@"Change Board Name" message:@"Enter the new board name." preferredStyle:UIAlertControllerStyleAlert];
+                [house addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+                    textField.placeholder = @"New Board Name";
+                    textField.delegate = self;
+                    self.board = textField;
+                }];
+                UIAlertAction *change = [UIAlertAction actionWithTitle:@"Change Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
+                    GlobalVars *globals = [GlobalVars sharedInstance];
+                    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", title, @"HouseName", [boards objectAtIndex:indexPath.row], @"OldBoardName", self.board.text, @"NewBoardName", nil];
+                    NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/changeboardname" withData:mapData isAsync:NO];
+                    NSLog(@"Response Body:\n%@\n", body);
+                    if ([body containsString:@"0 No Errors"]){
+                        UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Changed Name" message:@"Successfully changed board name." preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+                        [success addAction:ok];
+                        [self presentViewController:success animated:TRUE completion:nil];
+                        NSArray *data = [globals.allData objectForKey:title];
+                        NSMutableArray *boards = (NSMutableArray *)data[1];
+                        [boards removeObject:[boards objectAtIndex:indexPath.row]];
+                        [boards addObject:self.board.text];
+                        [globals.allData setObject:[NSArray arrayWithObjects:data[0], boards, nil] forKey:title];
+                        [tableView reloadData];
+                        MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
+                        UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+                        ViewController *viewController;
+                        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+                            
+                        viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+                            
+                        [navigationController setViewControllers:@[viewController]];
+                    }
+                }];
+                UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
+                [house addAction:change];
+                [house addAction:cancel];
+                [self presentViewController:house animated:TRUE completion:nil];
+            }];
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
+            [boardOpts addAction:chgname];
+            [boardOpts addAction:cancel];
+            [self presentViewController:boardOpts animated:YES completion:nil];
+        }
+        else{
+            
+        }
+    }
 }
 
 
@@ -783,6 +836,7 @@ NSArray *picker;
     }
     return peripherals;
 }
+
 - (NSArray *)parseBoards:(NSString *)body{
     NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
     NSString *haystackPrefix = @"[[";
@@ -800,6 +854,47 @@ NSArray *picker;
         [boards addObject:[NSString stringWithString:needle]];
     }
     return boards;
+}
+
+-(IBAction)newBoard:(id)sender{
+    UIAlertController *board = [UIAlertController alertControllerWithTitle:@"New Board" message:@"Register a new board." preferredStyle:UIAlertControllerStyleAlert];
+    [board addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"Board Serial #";
+        textField.delegate = self;
+        self.boardSer = textField;
+    }];
+    [board addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"Board Name";
+        textField.delegate = self;
+        self.board = textField;
+    }];
+    UIAlertAction *add = [UIAlertAction actionWithTitle:@"Add Board" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
+        GlobalVars *globals = [GlobalVars sharedInstance];
+        NSString *title = picker[globals.house];
+        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: title, @"HouseName", globals.seshToke, @"SessionToken", self.board.text, @"BoardName", nil];
+        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/checkboardnameavailability" withData:mapData isAsync:NO];
+        NSLog(@"%@", body);
+        if ([body containsString:@"1"]){
+            mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", self.boardSer.text, @"BoardSerialNumber", title, @"HouseName", self.board.text, @"BoardName", nil];
+            body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/createboard" withData:mapData isAsync:NO];
+            NSLog(@"Response Body:\n%@\n", body);
+            if ([body containsString:@"0"]){
+                UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Created Board" message:@"Successfully registered new board." preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+                [success addAction:ok];
+                [self presentViewController:success animated:TRUE completion:nil];
+                NSArray *data = [globals.allData objectForKey:title];
+                NSMutableArray *boards = (NSMutableArray *)data[1];
+                [boards addObject:self.board.text];
+                [globals.allData setObject:[NSArray arrayWithObjects:data[0], boards, nil] forKey:title];
+                [self.system reloadData];
+            }
+        }
+    }];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
+    [board addAction:add];
+    [board addAction:cancel];
+    [self presentViewController:board animated:TRUE completion:nil];
 }
 
 @end
