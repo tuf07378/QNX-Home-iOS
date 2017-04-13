@@ -299,15 +299,10 @@ NSArray *picker;
 - (IBAction)hName:(id)sender{
     UIAlertController *house = [UIAlertController alertControllerWithTitle:@"Change House Name" message:@"Enter new house name." preferredStyle:UIAlertControllerStyleAlert];
     [house addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = @"Old House Name";
-        textField.delegate = self;
-        self.hNew = textField;
-    }];
-    [house addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = @"House Password";
         textField.delegate = self;
         textField.secureTextEntry = TRUE;
-        self.pass = textField;
+        self.hpass = textField;
     }];
     [house addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = @"New House Name";
@@ -317,15 +312,24 @@ NSArray *picker;
     UIAlertAction *add = [UIAlertAction actionWithTitle:@"Change Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
         GlobalVars *globals = [GlobalVars sharedInstance];
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.uNew.text, @"houseName", globals.seshToke, @"sessionToken", nil];
-        NSString *hpass = [self sha256:self.pass.text];
+        NSString *hpass = [self sha256:self.hpass.text];
         NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability/" withData:mapData isAsync:NO];
         NSLog(@"Response Body:\n%@\n", body);
         if ([body containsString:@"1"]){
-            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"oldHouseName", hpass, @"housePassword", self.uNew.text, @"newHouseName", globals.seshToke, @"sessionToken", nil];
+            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: [globals.houses objectAtIndex:self.selected], @"oldHouseName", hpass, @"housePassword", self.uNew.text, @"newHouseName", globals.seshToke, @"sessionToken", nil];
             body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/changehousename" withData:mapData isAsync:NO];
             NSLog(@"Response Body:\n%@\n", body);
             if ([body containsString:@"Success"]){
-                [globals.houses replaceObjectAtIndex:[self.house selectedRowInComponent:0]-2 withObject:self.uNew];
+                [globals.houses removeObject:[globals.houses objectAtIndex:self.selected]];
+                [globals.houses addObject:self.uNew.text];
+                MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
+                UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+                ViewController *viewController;
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+                
+                viewController = [storyboard instantiateViewControllerWithIdentifier:@"Settings"];
+                
+                [navigationController setViewControllers:@[viewController]];
                 UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Name Changed" message:@"Successfully changed house name." preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
                 [success addAction:ok];
@@ -341,11 +345,6 @@ NSArray *picker;
 
 - (IBAction)hPass:(id)sender{
     UIAlertController *house = [UIAlertController alertControllerWithTitle:@"Change House Password" message:@"Enter new house password." preferredStyle:UIAlertControllerStyleAlert];
-    [house addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = @"House Name";
-        textField.delegate = self;
-        self.uNew = textField;
-    }];
     [house addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = @"Old Password";
         textField.delegate = self;
@@ -366,7 +365,7 @@ NSArray *picker;
         NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability" withData:mapData isAsync:NO];
         NSLog(@"Response Body:\n%@\n", body);
         if ([body containsString:@"0"]){
-            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.uNew.text, @"houseName", hpass, @"oldHousePassword", nhpass, @"newHousePassword", globals.seshToke, @"sessionToken", nil];
+            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: [globals.houses objectAtIndex:self.selected], @"houseName", hpass, @"oldHousePassword", nhpass, @"newHousePassword", globals.seshToke, @"sessionToken", nil];
             NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/changehousepassword" withData:mapData isAsync:NO];
             NSLog(@"Response Body:\n%@\n", body);
             if ([body containsString:@"Success"]){
@@ -525,6 +524,25 @@ NSArray *picker;
     return 1;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    if(tableView == self.houseList){
+        UIAlertController *houseOpts = [UIAlertController alertControllerWithTitle:@"House Options" message:[NSString stringWithFormat:@"%@ House Options", [globals.houses objectAtIndex:indexPath.row]] preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *chgname = [UIAlertAction actionWithTitle:@"Change House Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [self hName:self];
+        }];
+        UIAlertAction *chgpass = [UIAlertAction actionWithTitle:@"Change House Password" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [self hPass:self];
+        }];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
+        [houseOpts addAction:chgname];
+        [houseOpts addAction:chgpass];
+        [houseOpts addAction:cancel];
+        self.selected = indexPath.row;
+        [self presentViewController:houseOpts animated:YES completion:nil];
+    }
+}
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     GlobalVars *globals = [GlobalVars sharedInstance];
@@ -588,31 +606,27 @@ NSArray *picker;
         NSArray *data = [globals.allData objectForKey:title];
         if([self.selector selectedSegmentIndex] == 0){
             NSMutableArray *boards = data[1];
+            NSLog(@"%@", boards);
             NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", title, @"HouseName", [NSString stringWithFormat:@"%@", boards[indexPath.row]], @"BoardName", nil];
             [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/removeboard" withData:mapData isAsync:YES];
-            /*if ([boards containsObject:boards[indexPath.row]]){
-                [boards removeObject:boards[indexPath.row]];
-                NSArray *periphs = data[0];
-                [globals.allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:title];
-            }*/
-            [self.system deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [boards removeObject:boards[indexPath.row]];
+            NSArray *periphs = data[0];
+            [globals.allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:title];
             [tableView reloadData];
-            NSLog(@"Deleted board: %@", boards[indexPath.row]);
+            NSLog(@"%@", boards);
         }
         else{
             NSMutableArray *boards = data[0];
+            NSLog(@"%@", boards);
             NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", title, @"houseName", boards[indexPath.row * 3], @"peripheralName", nil];
             [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/removeperipheral" withData:mapData isAsync:YES];
-            [self.system deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [boards removeObject:boards[(indexPath.row * 3) + 2]];
+            [boards removeObject:boards[(indexPath.row * 3) + 1]];
+            [boards removeObject:boards[indexPath.row * 3]];
+            NSArray *periphs = data[1];
+            [globals.allData setObject:[NSArray arrayWithObjects:boards, periphs, nil] forKey:title];
             [tableView reloadData];
-            /*if ([boards containsObject:boards[indexPath.row * 3]]){
-                [boards removeObject:boards[indexPath.row * 3]];
-                [boards removeObject:boards[(indexPath.row * 3) + 1]];
-                [boards removeObject:boards[(indexPath.row * 3) + 2]];
-                NSArray *periphs = data[1];
-                [globals.allData setObject:[NSArray arrayWithObjects:boards, periphs, nil] forKey:title];
-            }*/
-            NSLog(@"Deleted peripheral: %@", boards[indexPath.row * 3]);
+            NSLog(@"%@", boards);
         }
     }
 }

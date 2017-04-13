@@ -27,5 +27,7 @@
 @property IBOutlet UITableView *houseList;
 @property IBOutlet UITableView *system;
 @property IBOutlet UISegmentedControl *selector;
+@property (retain, readwrite) IBOutlet UITextField *hpass;
+@property (assign, readwrite) NSInteger selected;
 
 @end

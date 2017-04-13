@@ -206,8 +206,9 @@
                                options:UIViewAnimationOptionTransitionCrossDissolve
                             animations:nil
                             completion:nil];
-            globals = nil;
-            globals.houses = nil;
+            [globals.houses removeAllObjects];
+            [globals.houseData removeAllObjects];
+            [globals.allData removeAllObjects];
         }
     }
 }
