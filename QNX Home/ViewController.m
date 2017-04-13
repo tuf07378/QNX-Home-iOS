@@ -238,17 +238,38 @@ NSArray *picker;
             self.pass2.backgroundColor = [UIColor greenColor];
         }
     }
-    if(textField == self.hNew){
+    else if(textField == self.hNew){
         GlobalVars *globals = [GlobalVars sharedInstance];
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", globals.seshToke, @"sessionToken", nil];
         NSLog(@"%@", mapData.allValues);
-        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability/" withData:mapData isAsync:TRUE];
+        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability/" withData:mapData isAsync:NO];
         NSLog(@"Response Body:\n%@\n", body);
         if ([body containsString:@"1"]){
             [self.hNew setBackgroundColor:[UIColor greenColor]];
         }
         else
             [self.hNew setBackgroundColor:[UIColor redColor]];
+    }
+    else if(textField == self.board){
+        GlobalVars *globals = [GlobalVars sharedInstance];
+        NSString *title = picker[globals.house];
+        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: title, @"HouseName", globals.seshToke, @"SessionToken", self.board.text, @"BoardName", nil];
+        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/checkboardnameavailability" withData:mapData isAsync:NO];
+        if ([body containsString:@"1"])
+            [self.board setBackgroundColor:[UIColor greenColor]];
+        else
+            [self.board setBackgroundColor:[UIColor redColor]];
+    }
+    else if(textField == self.chgH){
+        GlobalVars *globals = [GlobalVars sharedInstance];
+        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.chgH.text, @"houseName", globals.seshToke, @"sessionToken", nil];
+        NSLog(@"%@", mapData.allValues);
+        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability/" withData:mapData isAsync:TRUE];
+        NSLog(@"Response Body:\n%@\n", body);
+        if ([body containsString:@"1"])
+            [self.hNew setBackgroundColor:[UIColor redColor]];
+        else
+            [self.hNew setBackgroundColor:[UIColor greenColor]];
     }
     return YES;
 }
@@ -288,6 +309,7 @@ NSArray *picker;
                 UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
                 [success addAction:ok];
                 [self presentViewController:success animated:TRUE completion:nil];
+                [self.houseList reloadData];
             }
         }
     }];

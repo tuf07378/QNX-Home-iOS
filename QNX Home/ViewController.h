@@ -31,5 +31,6 @@
 @property (assign, readwrite) NSInteger selected;
 @property (retain, readwrite) IBOutlet UITextField *board;
 @property (retain, readwrite) IBOutlet UITextField *boardSer;
+@property (retain, readwrite) IBOutlet UITextField *chgH;
 
 @end
