@@ -310,6 +310,14 @@ NSArray *picker;
                 [success addAction:ok];
                 [self presentViewController:success animated:TRUE completion:nil];
                 [self.houseList reloadData];
+                MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
+                UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+                ViewController *viewController;
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+                
+                viewController = [storyboard instantiateViewControllerWithIdentifier:@"Settings"];
+                
+                [navigationController setViewControllers:@[viewController]];
             }
         }
     }];
@@ -556,9 +564,25 @@ NSArray *picker;
         UIAlertAction *chgpass = [UIAlertAction actionWithTitle:@"Change House Password" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
             [self hPass:self];
         }];
+        UIAlertAction *leave = [UIAlertAction actionWithTitle:@"Leave House" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", [globals.houses objectAtIndex:indexPath.row], @"houseName", nil];
+            NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/leavehouse/" withData:mapData isAsync:NO];
+            NSLog(@"%@", body);
+            [globals.houses removeObject:[globals.houses objectAtIndex:indexPath.row]];
+            [self.houseList reloadData];
+            MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
+            UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+            ViewController *viewController;
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+            
+            viewController = [storyboard instantiateViewControllerWithIdentifier:@"Settings"];
+            
+            [navigationController setViewControllers:@[viewController]];
+        }];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
         [houseOpts addAction:chgname];
         [houseOpts addAction:chgpass];
+        [houseOpts addAction:leave];
         [houseOpts addAction:cancel];
         self.selected = indexPath.row;
         [self presentViewController:houseOpts animated:YES completion:nil];
@@ -674,7 +698,36 @@ NSArray *picker;
     // Perform the real delete action here. Note: you may need to check editing style
     //   if you do not perform delete only.
     if(tableView == self.houseList){
-        NSLog(@"Deleted house: %@", globals.houses[indexPath.row]);
+        UIAlertController *deleteH = [UIAlertController alertControllerWithTitle:@"Delete House" message:[NSString stringWithFormat:@"Delete House: %@", [globals.houses objectAtIndex:indexPath.row]] preferredStyle:UIAlertControllerStyleAlert];
+        [deleteH addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.placeholder = @"House Password";
+            textField.delegate = self;
+            textField.secureTextEntry = TRUE;
+            self.hpass = textField;
+        }];
+        UIAlertAction *leave = [UIAlertAction actionWithTitle:@"Leave House" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", [globals.houses objectAtIndex:indexPath.row], @"houseName", [self sha256:self.hpass.text], @"housePassword", nil];
+            NSLog(@"%@", mapData);
+            NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/removehouse/" withData:mapData isAsync:NO];
+            NSLog(@"%@", body);
+            NSLog(@"Deleted house: %@", globals.houses[indexPath.row]);
+            NSString *house = [globals.houses objectAtIndex:indexPath.row];
+            [globals.houses removeObject:house];
+            MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
+            UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+            ViewController *viewController;
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+            
+            viewController = [storyboard instantiateViewControllerWithIdentifier:@"Settings"];
+            
+            [navigationController setViewControllers:@[viewController]];
+        }];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
+        [deleteH addAction:leave];
+        [deleteH addAction:cancel];
+        self.selected = indexPath.row;
+        [self presentViewController:deleteH animated:YES completion:nil];
+
     }
     else if (tableView == self.system){
         NSString *title = picker[globals.house];
