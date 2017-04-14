@@ -508,8 +508,8 @@ NSArray *picker;
         else{
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
             NSArray *periphs = data[0];
-            cell.textLabel.text = periphs[indexPath.row * 3];
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@", periphs[indexPath.row * 3 + 2],periphs[indexPath.row * 3 + 1]];
+            cell.textLabel.text = periphs[indexPath.row * 4];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@", periphs[indexPath.row * 4 + 2],periphs[indexPath.row * 4 + 1]];
         }
     }
     else if (globals.type == 2 || indexPath.section == 1){
@@ -633,7 +633,7 @@ NSArray *picker;
         }
         else{
             NSArray *boards = data[0];
-            return boards.count / 3;
+            return boards.count / 4;
         }
     }
     else if (section == 1 || globals.type == 2){

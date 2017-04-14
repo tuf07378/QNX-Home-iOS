@@ -305,8 +305,8 @@
 - (NSDictionary *)parseRelays:(NSString *)body{
     NSMutableDictionary *relays = [[NSMutableDictionary alloc] init];
     NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
-    NSString *haystackPrefix = @"[{";
-    NSString *haystackSuffix = @"}]";
+    NSString *haystackPrefix = @"[[";
+    NSString *haystackSuffix = @"]]";
     NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
     NSString *needle = [body substringWithRange:needleRange];
     NSArray *houseArray = [needle componentsSeparatedByString:@","];
@@ -332,15 +332,16 @@
     return relays;
 }
 - (NSArray *)parsePeripherals:(NSString *)body{
+    NSLog(@"%@", body);
     NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
-    NSString *haystackPrefix = @"[{";
-    NSString *haystackSuffix = @"}]";
+    NSString *haystackPrefix = @"[[";
+    NSString *haystackSuffix = @"]]";
     NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
     NSString *needle = [body substringWithRange:needleRange];
     NSArray *houseArray = [needle componentsSeparatedByString:@","];
     NSMutableArray *peripherals = [[NSMutableArray alloc] init];
     for(int i = 0; i < numberOfOccurrences + 1; i++){
-        if (i % 3 == 0){
+        if (i % 4 == 0){
             NSString *house = (NSString *)houseArray[i];
             haystackPrefix = @"{\"PeripheralName\":\"";
             haystackSuffix = @"\"";
@@ -348,7 +349,7 @@
             needle = [house substringWithRange:needleRange];
             [peripherals addObject:[NSString stringWithString:needle]];
         }
-        else if (i % 3 == 1){
+        else if (i % 4 == 1){
             NSString *house = (NSString *)houseArray[i];
             haystackPrefix = @"\"BoardName\":\"";
             haystackSuffix = @"\"";
@@ -356,9 +357,17 @@
             needle = [house substringWithRange:needleRange];
             [peripherals addObject:[NSString stringWithString:needle]];
         }
-        else{
+        else if (i % 4 == 2){
             NSString *house = (NSString *)houseArray[i];
             haystackPrefix = @"\"PeripheralTypeName\":\"";
+            haystackSuffix = @"\"";
+            needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+            needle = [house substringWithRange:needleRange];
+            [peripherals addObject:[NSString stringWithString:needle]];
+        }
+        else{
+            NSString *house = (NSString *)houseArray[i];
+            haystackPrefix = @"\"PeripheralCategoryName\":\"";
             haystackSuffix = @"\"}";
             needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
             needle = [house substringWithRange:needleRange];

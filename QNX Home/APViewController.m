@@ -30,6 +30,12 @@ NSMutableArray *pins;
     NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getperipheraltypes/" withData:mapData isAsync:NO];
     [self parseTypes:body];
     [self parseModels];
+    NSString *title = globals.houses[[self.house selectedRowInComponent:0]];
+    NSArray *data = [globals.allData objectForKey:title];
+    NSArray *boards = data[1];
+    mapData = [[NSDictionary alloc] initWithObjectsAndKeys: title, @"HouseName", globals.seshToke, @"SessionToken", boards[[self.board selectedRowInComponent:0]], @"BoardName", types[[self.pType selectedRowInComponent:0]], @"PeripheralTypeName", nil];
+    body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/getavailablepinconnections/" withData:mapData isAsync:NO];
+    [self parsePins:body];
     // Do any additional setup after loading the view.
 }
 
@@ -48,7 +54,7 @@ NSMutableArray *pins;
 }
 */
 - (IBAction)cancel:(id)sender{
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
     //One column
@@ -251,18 +257,24 @@ NSMutableArray *pins;
 -(IBAction)addP:(id)sender{
     GlobalVars *globals = [GlobalVars sharedInstance];
     NSString *title = globals.houses[[self.house selectedRowInComponent:0]];
-    NSArray *data = [globals.allData objectForKey:globals.houses[[self.house selectedRowInComponent:0]]];
+    NSArray *data = [globals.allData objectForKey:title];
     NSArray *boards = data[1];
+    NSMutableArray *periphs = data[0];
     NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", title, @"houseName", boards[[self.board selectedRowInComponent:0]], @"boardName", self.pName.text, @"peripheralName", models[[self.pMod selectedRowInComponent:0]], @"peripheralModelName", pins[[self.pCon selectedRowInComponent:0]], @"pinConnectionName", nil];
     NSLog(@"%@", mapData);
     NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/createperipheral/" withData:mapData isAsync:NO];
     NSLog(@"%@", body);
-    if([body isEqualToString:@"[[]]"]){
+    if([body isEqualToString:@"[]"]){
         UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Device Added" message:@"Successfully added device." preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
         [success addAction:ok];
         [self presentViewController:success animated:YES completion:nil];
-        
+        [periphs addObject:self.pName.text];
+        [periphs addObject:boards[[self.board selectedRowInComponent:0]]];
+        [periphs addObject:models[[self.pMod selectedRowInComponent:0]]];
+        [periphs addObject:@"Sensor"];
     }
+    [globals.allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:title];
+    NSLog(@"%@", globals.allData);
 }
 @end
