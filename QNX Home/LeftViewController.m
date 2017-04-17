@@ -42,7 +42,7 @@
     
     
     // -----
-    self.tableView.contentInset = UIEdgeInsetsMake(44.0, 0.0, 44.0, 0.0);
+    self.tableView.contentInset = UIEdgeInsetsMake(44.0, 0.0, 0.0, 0.0);
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -73,31 +73,31 @@
             break;
         }
         case 4:{
-            [cell.imageView setImage:[UIImage imageNamed:@"home"]];
+            [cell.imageView setImage:[self image:[UIImage imageNamed:@"home"] scaledToSize:CGSizeMake(26, 26)]];
             break;
         }
         case 5:{
-            [cell.imageView setImage:[UIImage imageNamed:@"sensor"]];
+            [cell.imageView setImage:[self image:[UIImage imageNamed:@"sensor"] scaledToSize:CGSizeMake(26, 26)]];
             break;
         }
         case 6:{
-            [cell.imageView setImage:[UIImage imageNamed:@"relays"]];
+            [cell.imageView setImage:[self image:[UIImage imageNamed:@"relays"] scaledToSize:CGSizeMake(26, 26)]];
             break;
         }
         case 7:{
-            [cell.imageView setImage:[UIImage imageNamed:@"automation"]];
+            [cell.imageView setImage:[self image:[UIImage imageNamed:@"automation"] scaledToSize:CGSizeMake(26, 26)]];
             break;
         }
         case 8:{
-            [cell.imageView setImage:[UIImage imageNamed:@"user"]];
+            [cell.imageView setImage:[self image:[UIImage imageNamed:@"user"] scaledToSize:CGSizeMake(26, 26)]];
             break;
         }
         case 9:{
-            [cell.imageView setImage:[UIImage imageNamed:@"settings"]];
+            [cell.imageView setImage:[self image:[UIImage imageNamed:@"settings"] scaledToSize:CGSizeMake(26, 26)]];
             break;
         }
         case 11:{
-            [cell.imageView setImage:[UIImage imageNamed:@"logout"]];
+            [cell.imageView setImage:[self image:[UIImage imageNamed:@"logout"] scaledToSize:CGSizeMake(26, 26)]];
             break;
         }
     }
@@ -212,5 +212,25 @@
         }
     }
 }
-
+- (UIImage *)image:(UIImage*)originalImage scaledToSize:(CGSize)size
+{
+    //avoid redundant drawing
+    if (CGSizeEqualToSize(originalImage.size, size))
+    {
+        return originalImage;
+    }
+    
+    //create drawing context
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
+    
+    //draw
+    [originalImage drawInRect:CGRectMake(0.0f, 0.0f, size.width, size.height)];
+    
+    //capture resultant image
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    //return image
+    return image;
+}
 @end

@@ -120,7 +120,10 @@ NSMutableArray *pins;
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
     GlobalVars *globals = [GlobalVars sharedInstance];
-    if(pickerView == self.pType){
+    if (pickerView == self.house){
+        [self.board reloadAllComponents];
+    }
+    else if(pickerView == self.pType){
         NSLog(@"%@ %@ %@", types, models, boardModels);
         GlobalVars *globals = [GlobalVars sharedInstance];
         NSString *title = globals.houses[[self.house selectedRowInComponent:0]];
@@ -147,9 +150,9 @@ NSMutableArray *pins;
     GlobalVars *globals = [GlobalVars sharedInstance];
     NSString *title = globals.houses[[self.house selectedRowInComponent:0]];
     NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", title, @"houseName", self.pName.text, @"peripheralName", nil];
-    NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/checkperipheralnameavailability/" withData:mapData isAsync:NO];
+    NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/checkpheriperalnameavailability" withData:mapData isAsync:NO];
     NSLog(@"%@", body);
-    if([body containsString:@"0"])
+    if([body containsString:@"1"])
         [self.pName setBackgroundColor:[UIColor greenColor]];
     else
         [self.pName setBackgroundColor:[UIColor redColor]];
@@ -265,16 +268,28 @@ NSMutableArray *pins;
     NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/createperipheral/" withData:mapData isAsync:NO];
     NSLog(@"%@", body);
     if([body isEqualToString:@"[]"]){
-        UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Device Added" message:@"Successfully added device." preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
-        [success addAction:ok];
-        [self presentViewController:success animated:YES completion:nil];
+        [self.navigationController popViewControllerAnimated:YES];
         [periphs addObject:self.pName.text];
         [periphs addObject:boards[[self.board selectedRowInComponent:0]]];
         [periphs addObject:models[[self.pMod selectedRowInComponent:0]]];
-        [periphs addObject:@"Sensor"];
+        NSString *type = types[[self.pType selectedRowInComponent:0]];
+        if([type.lowercaseString containsString:@"sensor"]){
+            [periphs addObject:@"Sensor"];
+        }
+        else if([type.lowercaseString containsString:@"relay"]){
+            [periphs addObject:@"Relay"];
+            NSMutableDictionary *newPeripheral = [globals.houseData objectForKey:title];
+            [newPeripheral setObject:@"0" forKey:self.pName.text];
+            [globals.allData setObject:newPeripheral forKey:title];
+        }
+        else{
+            [periphs addObject:@"Camera"];
+        }
     }
     [globals.allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:title];
-    NSLog(@"%@", globals.allData);
+    
+    
+    NSLog(@"%@", globals.houseData);
+    
 }
 @end

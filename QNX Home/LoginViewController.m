@@ -25,6 +25,10 @@
     [super viewDidLoad];
 }
 
+- (void)loadAccount{
+    
+}
+
 - (IBAction)loginClicked:(id)sender{
     [self.view endEditing:YES];
     UIAlertController *login = [UIAlertController alertControllerWithTitle:@"Logging In" message:@"Logging in and downloading user data." preferredStyle:UIAlertControllerStyleAlert];
