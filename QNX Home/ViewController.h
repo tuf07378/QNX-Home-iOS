@@ -32,5 +32,6 @@
 @property (retain, readwrite) IBOutlet UITextField *board;
 @property (retain, readwrite) IBOutlet UITextField *boardSer;
 @property (retain, readwrite) IBOutlet UITextField *chgH;
+@property (retain, readwrite) IBOutlet UITextField *chgP;
 
 @end

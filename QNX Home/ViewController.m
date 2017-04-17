@@ -634,7 +634,61 @@ NSArray *picker;
             [self presentViewController:boardOpts animated:YES completion:nil];
         }
         else{
-            
+            NSString *title = picker[globals.house];
+            NSArray *data = [globals.allData objectForKey:title];
+            NSMutableArray *periphs = data[0];
+            UIAlertController *boardOpts = [UIAlertController alertControllerWithTitle:@"Peripheral Options" message:[NSString stringWithFormat:@"%@ Peripheral Options", [periphs objectAtIndex:indexPath.row * 4]] preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *chgname = [UIAlertAction actionWithTitle:@"Change Peripheral Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                UIAlertController *house = [UIAlertController alertControllerWithTitle:@"Change Peripheral Name" message:@"Enter the new peripheral name." preferredStyle:UIAlertControllerStyleAlert];
+                [house addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+                    textField.placeholder = @"New Peripheral Name";
+                    textField.delegate = self;
+                    self.chgP = textField;
+                }];
+                UIAlertAction *change = [UIAlertAction actionWithTitle:@"Change Name" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
+                    NSString *name = self.chgP.text;
+                    GlobalVars *globals = [GlobalVars sharedInstance];
+                    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", title, @"houseName", [periphs objectAtIndex:indexPath.row * 4], @"oldPeripheralName", self.chgP.text, @"newPeripheralName", nil];
+                    NSLog(@"%@", mapData);
+                    NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/changeperipheralname/" withData:mapData isAsync:NO];
+                    NSLog(@"Response Body:\n%@\n", body);
+                    if ([body containsString:@"Successfully"]){
+                        UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Changed Name" message:@"Successfully changed peripheral name." preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+                        [success addAction:ok];
+                        [self presentViewController:success animated:TRUE completion:nil];
+                        NSArray *data = [globals.allData objectForKey:title];
+                        NSArray *boards = data[1];
+                        [periphs addObject:name];
+                        [periphs addObject:[periphs objectAtIndex:(indexPath.row * 4) + 1]];
+                        [periphs addObject:[periphs objectAtIndex:(indexPath.row * 4) + 2]];
+                        [periphs addObject:[periphs objectAtIndex:(indexPath.row * 4) + 3]];
+                        [periphs removeObjectAtIndex:(indexPath.row * 4) + 3];
+                        [periphs removeObjectAtIndex:(indexPath.row * 4) + 2];
+                        [periphs removeObjectAtIndex:(indexPath.row * 4) + 1];
+                        [periphs removeObjectAtIndex:indexPath.row * 4];
+                        [globals.allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:title];
+                        [tableView reloadData];
+                        NSLog(@"%@", periphs);
+                        MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
+                        UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+                        ViewController *viewController;
+                        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+                        
+                        viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+                        
+                        [navigationController setViewControllers:@[viewController]];
+                    }
+                }];
+                UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
+                [house addAction:change];
+                [house addAction:cancel];
+                [self presentViewController:house animated:TRUE completion:nil];
+            }];
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
+            [boardOpts addAction:chgname];
+            [boardOpts addAction:cancel];
+            [self presentViewController:boardOpts animated:YES completion:nil];
         }
     }
 }
