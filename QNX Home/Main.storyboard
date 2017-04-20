@@ -547,7 +547,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <segue destination="ydO-TL-6am" kind="show" id="Z85-lJ-3MH"/>
+                                            <action selector="newP:" destination="z3U-AS-H6P" eventType="touchUpInside" id="9Yg-bN-h6J"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ooW-kD-ZZ6">
@@ -614,6 +614,7 @@
                         <outlet property="house" destination="XIr-v0-zmw" id="4oy-Xz-Xvm"/>
                         <outlet property="selector" destination="bmY-WT-znH" id="rsR-ae-1nz"/>
                         <outlet property="system" destination="I35-vM-d4F" id="itW-La-QgP"/>
+                        <segue destination="ydO-TL-6am" kind="show" identifier="Peripheral" id="2HI-VE-yWg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rgW-qD-3Kz" userLabel="First Responder" sceneMemberID="firstResponder"/>

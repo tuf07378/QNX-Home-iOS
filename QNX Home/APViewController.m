@@ -26,6 +26,9 @@ NSMutableArray *pins;
 - (void)viewDidLoad {
     [super viewDidLoad];
     GlobalVars *globals = [GlobalVars sharedInstance];
+    if ([globals.houses count] == 0 || globals.houses == nil){
+        [self.navigationController popViewControllerAnimated:YES];
+    }
     NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", nil];
     NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getperipheraltypes/" withData:mapData isAsync:NO];
     [self parseTypes:body];
@@ -33,9 +36,11 @@ NSMutableArray *pins;
     NSString *title = globals.houses[[self.house selectedRowInComponent:0]];
     NSArray *data = [globals.allData objectForKey:title];
     NSArray *boards = data[1];
-    mapData = [[NSDictionary alloc] initWithObjectsAndKeys: title, @"HouseName", globals.seshToke, @"SessionToken", boards[[self.board selectedRowInComponent:0]], @"BoardName", types[[self.pType selectedRowInComponent:0]], @"PeripheralTypeName", nil];
-    body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/getavailablepinconnections/" withData:mapData isAsync:NO];
-    [self parsePins:body];
+    if ([boards count] != 0 && boards != nil){
+        mapData = [[NSDictionary alloc] initWithObjectsAndKeys: title, @"HouseName", globals.seshToke, @"SessionToken", boards[[self.board selectedRowInComponent:0]], @"BoardName", types[[self.pType selectedRowInComponent:0]], @"PeripheralTypeName", nil];
+        body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/getavailablepinconnections/" withData:mapData isAsync:NO];
+        [self parsePins:body];
+    }
     // Do any additional setup after loading the view.
 }
 
@@ -262,10 +267,12 @@ NSMutableArray *pins;
     NSString *title = globals.houses[[self.house selectedRowInComponent:0]];
     NSArray *data = [globals.allData objectForKey:title];
     NSArray *boards = data[1];
-    NSMutableArray *periphs = data[0];
+    NSMutableArray *periphs = [[NSMutableArray alloc] init];
+    [periphs addObjectsFromArray:data[0]];
+    NSLog(@"%@ - %@", models[[self.pMod selectedRowInComponent:0]], pins[[self.pCon selectedRowInComponent:0]]);
     NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", title, @"houseName", boards[[self.board selectedRowInComponent:0]], @"boardName", self.pName.text, @"peripheralName", models[[self.pMod selectedRowInComponent:0]], @"peripheralModelName", pins[[self.pCon selectedRowInComponent:0]], @"pinConnectionName", nil];
     NSLog(@"%@", mapData);
-    NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/createperipheral/" withData:mapData isAsync:NO];
+    NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/createperipheral/" withData:mapData isAsync:NO];
     NSLog(@"%@", body);
     if([body isEqualToString:@"[]"]){
         [self.navigationController popViewControllerAnimated:YES];

@@ -305,19 +305,14 @@ NSArray *picker;
             NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/createhouse" withData:mapData isAsync:NO];
             if ([body containsString:@"Success"]){
                 [globals.houses addObject:self.hNew.text];
+                NSArray *boards = [[NSArray alloc] init];
+                NSArray *periphs = [[NSArray alloc] init];
+                [globals.allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:self.hNew.text];
                 UIAlertController *success = [UIAlertController alertControllerWithTitle:@"House Added" message:@"Successfully created a new house." preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
                 [success addAction:ok];
-                [self presentViewController:success animated:TRUE completion:nil];
                 [self.houseList reloadData];
-                MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
-                UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
-                ViewController *viewController;
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-                
-                viewController = [storyboard instantiateViewControllerWithIdentifier:@"Settings"];
-                
-                [navigationController setViewControllers:@[viewController]];
+                [self presentViewController:success animated:TRUE completion:nil];
             }
         }
     }];
@@ -427,12 +422,12 @@ NSArray *picker;
     UIAlertAction *add = [UIAlertAction actionWithTitle:@"Join House" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
         GlobalVars *globals = [GlobalVars sharedInstance];
         NSString *newHouse = self.temp.text;
-        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", globals.seshToke, @"sessionToken", nil];
+        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.temp.text, @"houseName", globals.seshToke, @"sessionToken", nil];
         NSString *hpass = [self sha256:self.uNew.text];
         NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability" withData:mapData isAsync:NO];
         NSLog(@"Response Body:\n%@\n", body);
         if ([body containsString:@"0"]){
-            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", hpass, @"housePassword", globals.seshToke, @"sessionToken", nil];
+            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.temp.text, @"houseName", hpass, @"housePassword", globals.seshToke, @"sessionToken", nil];
             NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/joinhouse" withData:mapData isAsync:NO];
             NSLog(@"Response Body:\n%@\n", body);
             if ([body containsString:@"Success"]){
@@ -461,6 +456,7 @@ NSArray *picker;
                     boards = [[NSMutableArray alloc] init];
                 }
                 [globals.allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:newHouse];
+                [self.houseList reloadData];
             }
         }
     }];
@@ -501,7 +497,7 @@ NSArray *picker;
 
     }
     if(tableView == self.houseList){
-        cell.textLabel.text = (NSString *)picker[indexPath.row + 2];
+        cell.textLabel.text = globals.houses[indexPath.row];
     }
     else if (tableView == self.system){
         NSString *title = picker[globals.house];
@@ -697,7 +693,7 @@ NSArray *picker;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     GlobalVars *globals = [GlobalVars sharedInstance];
     if(tableView == self.houseList){
-        return [picker count] - 2;
+        return [globals.houses count];
     }
     else if (tableView == self.system){
         NSString *title = picker[globals.house];
@@ -994,44 +990,66 @@ NSArray *picker;
 }
 
 -(IBAction)newBoard:(id)sender{
-    UIAlertController *board = [UIAlertController alertControllerWithTitle:@"New Board" message:@"Register a new board." preferredStyle:UIAlertControllerStyleAlert];
-    [board addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = @"Board Serial #";
-        textField.delegate = self;
-        self.boardSer = textField;
-    }];
-    [board addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = @"Board Name";
-        textField.delegate = self;
-        self.board = textField;
-    }];
-    UIAlertAction *add = [UIAlertAction actionWithTitle:@"Add Board" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
-        GlobalVars *globals = [GlobalVars sharedInstance];
-        NSString *title = picker[globals.house];
-        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: title, @"HouseName", globals.seshToke, @"SessionToken", self.board.text, @"BoardName", nil];
-        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/checkboardnameavailability" withData:mapData isAsync:NO];
-        NSLog(@"%@", body);
-        if ([body containsString:@"1"]){
-            mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", self.boardSer.text, @"BoardSerialNumber", title, @"HouseName", self.board.text, @"BoardName", nil];
-            body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/createboard" withData:mapData isAsync:NO];
-            NSLog(@"Response Body:\n%@\n", body);
-            if ([body containsString:@"0"]){
-                UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Created Board" message:@"Successfully registered new board." preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
-                [success addAction:ok];
-                [self presentViewController:success animated:TRUE completion:nil];
-                NSArray *data = [globals.allData objectForKey:title];
-                NSMutableArray *boards = (NSMutableArray *)data[1];
-                [boards addObject:self.board.text];
-                [globals.allData setObject:[NSArray arrayWithObjects:data[0], boards, nil] forKey:title];
-                [self.system reloadData];
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    if ([globals.houses count] == 0 || globals.houses == nil){
+        UIAlertController *house = [UIAlertController alertControllerWithTitle:@"No House" message:@"You must create or join a house before you can add a board." preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+        [house addAction:ok];
+        [self presentViewController:house animated:TRUE completion:nil];
+    }
+    else{
+        UIAlertController *board = [UIAlertController alertControllerWithTitle:@"New Board" message:@"Register a new board." preferredStyle:UIAlertControllerStyleAlert];
+        [board addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.placeholder = @"Board Serial #";
+            textField.delegate = self;
+            self.boardSer = textField;
+        }];
+        [board addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            textField.placeholder = @"Board Name";
+            textField.delegate = self;
+            self.board = textField;
+        }];
+        UIAlertAction *add = [UIAlertAction actionWithTitle:@"Add Board" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
+            NSString *title = picker[globals.house];
+            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: title, @"HouseName", globals.seshToke, @"SessionToken", self.board.text, @"BoardName", nil];
+            NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/checkboardnameavailability" withData:mapData isAsync:NO];
+            NSLog(@"%@", body);
+            if ([body containsString:@"1"]){
+                mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", self.boardSer.text, @"BoardSerialNumber", title, @"HouseName", self.board.text, @"BoardName", nil];
+                body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/createboard" withData:mapData isAsync:NO];
+                NSLog(@"Response Body:\n%@\n", body);
+                if ([body containsString:@"0"]){
+                    UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Created Board" message:@"Successfully registered new board." preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+                    [success addAction:ok];
+                    [self presentViewController:success animated:TRUE completion:nil];
+                    NSArray *data = [globals.allData objectForKey:title];
+                    NSMutableArray *boards = [[NSMutableArray alloc] init];
+                    [boards addObjectsFromArray:data[1]];
+                    [boards addObject:self.board.text];
+                    [globals.allData setObject:[NSArray arrayWithObjects:data[0], boards, nil] forKey:title];
+                    [self.system reloadData];
+                }
             }
-        }
-    }];
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
-    [board addAction:add];
-    [board addAction:cancel];
-    [self presentViewController:board animated:TRUE completion:nil];
+        }];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
+        [board addAction:add];
+        [board addAction:cancel];
+        [self presentViewController:board animated:TRUE completion:nil];
+    }
+}
+
+-(IBAction)newP:(id)sender{
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    if ([globals.houses count] == 0 || globals.houses == nil){
+        UIAlertController *house = [UIAlertController alertControllerWithTitle:@"No House" message:@"You must create or join a house before you can add a peripheral." preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+        [house addAction:ok];
+        [self presentViewController:house animated:TRUE completion:nil];
+    }
+    else{
+        [self performSegueWithIdentifier:@"Peripheral" sender:self];
+    }
 }
 
 @end

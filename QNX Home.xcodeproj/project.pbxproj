@@ -192,8 +192,8 @@
 			children = (
 				2DAD44671E6B3CCF0098BB0E /* Login View Controller */,
 				2DAD44701E6B3CF70098BB0E /* Main View Controller */,
-				2D6958171E607E95008C918F /* AppDelegate.h */,
 				2D6958181E607E95008C918F /* AppDelegate.m */,
+				2D6958171E607E95008C918F /* AppDelegate.h */,
 				2D6958231E607E95008C918F /* Assets.xcassets */,
 				2D6958251E607E95008C918F /* LaunchScreen.storyboard */,
 				2D6958281E607E95008C918F /* Info.plist */,
