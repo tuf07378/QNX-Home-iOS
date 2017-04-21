@@ -194,6 +194,7 @@
             // You can use delay to avoid this and probably other unexpected visual bugs
         }
         case 10:{
+            globals.type = 6;
             [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
             UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
             ViewController *viewController;

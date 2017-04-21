@@ -323,6 +323,8 @@ NSArray *picker;
         self.pass = textField;
     }];
     UIAlertAction *add = [UIAlertAction actionWithTitle:@"Add House" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
+        UIAlertController *adding = [UIAlertController alertControllerWithTitle:@"Adding House" message:@"Waiting for house to be added to your account." preferredStyle:UIAlertControllerStyleAlert];
+        [self presentViewController:adding animated:TRUE completion:nil];
         GlobalVars *globals = [GlobalVars sharedInstance];
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.hNew.text, @"houseName", globals.seshToke, @"sessionToken", nil];
         NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability/" withData:mapData isAsync:NO];
@@ -335,6 +337,7 @@ NSArray *picker;
                 NSArray *boards = [[NSArray alloc] init];
                 NSArray *periphs = [[NSArray alloc] init];
                 [globals.allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:self.hNew.text];
+                [self dismissViewControllerAnimated:YES completion:nil];
                 UIAlertController *success = [UIAlertController alertControllerWithTitle:@"House Added" message:@"Successfully created a new house." preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
                 [success addAction:ok];
@@ -447,6 +450,8 @@ NSArray *picker;
         self.uNew = textField;
     }];
     UIAlertAction *add = [UIAlertAction actionWithTitle:@"Join House" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
+        UIAlertController *adding = [UIAlertController alertControllerWithTitle:@"Joining House" message:@"Waiting for house to be added to your account." preferredStyle:UIAlertControllerStyleAlert];
+        [self presentViewController:adding animated:TRUE completion:nil];
         GlobalVars *globals = [GlobalVars sharedInstance];
         NSString *newHouse = self.temp.text;
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.temp.text, @"houseName", globals.seshToke, @"sessionToken", nil];
@@ -459,6 +464,7 @@ NSArray *picker;
             NSLog(@"Response Body:\n%@\n", body);
             if ([body containsString:@"Success"]){
                 [globals.houses addObject:self.temp.text];
+                [self dismissViewControllerAnimated:TRUE completion:nil];
                 UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Joined House" message:@"Successfully joined existing house." preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
                 [success addAction:ok];
@@ -1037,6 +1043,8 @@ NSArray *picker;
             self.board = textField;
         }];
         UIAlertAction *add = [UIAlertAction actionWithTitle:@"Add Board" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
+            UIAlertController *adding = [UIAlertController alertControllerWithTitle:@"Adding Board" message:@"Waiting for board to be added to your account." preferredStyle:UIAlertControllerStyleAlert];
+            [self presentViewController:adding animated:TRUE completion:nil];
             NSString *title = picker[globals.house];
             NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: title, @"HouseName", globals.seshToke, @"SessionToken", self.board.text, @"BoardName", nil];
             NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/checkboardnameavailability" withData:mapData isAsync:NO];
@@ -1046,6 +1054,7 @@ NSArray *picker;
                 body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/createboard" withData:mapData isAsync:NO];
                 NSLog(@"Response Body:\n%@\n", body);
                 if ([body containsString:@"0"]){
+                    [self dismissViewControllerAnimated:YES completion:nil];
                     UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Created Board" message:@"Successfully registered new board." preferredStyle:UIAlertControllerStyleAlert];
                     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
                     [success addAction:ok];
