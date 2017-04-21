@@ -834,6 +834,7 @@ NSArray *picker;
             [boards removeObjectAtIndex:(indexPath.row * 4) + 1];
             [boards removeObjectAtIndex:(indexPath.row * 4)];
             NSArray *periphs = data[1];
+            [[globals.houseData objectForKey:title] removeObjectForKey:boards[indexPath.row * 4]];
             [globals.allData setObject:[NSArray arrayWithObjects:boards, periphs, nil] forKey:title];
             [tableView reloadData];
             NSLog(@"%@", boards);
