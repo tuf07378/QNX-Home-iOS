@@ -829,15 +829,16 @@ NSArray *picker;
             NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", title, @"houseName", boards[indexPath.row * 4], @"peripheralName", nil];
             NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/removeperipheral" withData:mapData isAsync:NO];
             NSLog(@"%@", body);
+            NSMutableDictionary *houseData = [globals.houseData objectForKey:title];
+            [houseData removeObjectForKey:[boards objectAtIndex:indexPath.row * 4]];
+            globals.houseData = houseData;
             [boards removeObjectAtIndex:(indexPath.row * 4) + 3];
             [boards removeObjectAtIndex:(indexPath.row * 4) + 2];
             [boards removeObjectAtIndex:(indexPath.row * 4) + 1];
             [boards removeObjectAtIndex:(indexPath.row * 4)];
             NSArray *periphs = data[1];
-            [[globals.houseData objectForKey:title] removeObjectForKey:boards[indexPath.row * 4]];
             [globals.allData setObject:[NSArray arrayWithObjects:boards, periphs, nil] forKey:title];
             [tableView reloadData];
-            NSLog(@"%@", boards);
         }
     }
 }

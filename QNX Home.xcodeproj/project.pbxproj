@@ -263,8 +263,8 @@
 				2DAD44731E6B3D190098BB0E /* NavigationController.m */,
 				2DAD44741E6B3D190098BB0E /* ViewController.h */,
 				2DAD44751E6B3D190098BB0E /* ViewController.m */,
-				2DCF77CF1E9FAFDD00EB7813 /* APViewController.h */,
 				2DCF77D01E9FAFDD00EB7813 /* APViewController.m */,
+				2DCF77CF1E9FAFDD00EB7813 /* APViewController.h */,
 			);
 			name = "Root View Controller";
 			sourceTree = "<group>";
