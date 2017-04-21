@@ -34,6 +34,7 @@
                          @"Dashboard",
                          @"Sensors",
                          @"Relays",
+                         @"Cameras",
                          @"Automation\\Notifications",
                          @"User Account Settings",
                          @"System Configuration",
@@ -85,30 +86,34 @@
             break;
         }
         case 7:{
-            [cell.imageView setImage:[self image:[UIImage imageNamed:@"automation"] scaledToSize:CGSizeMake(26, 26)]];
+            [cell.imageView setImage:[self image:[UIImage imageNamed:@"webcam"] scaledToSize:CGSizeMake(26, 26)]];
             break;
         }
         case 8:{
-            [cell.imageView setImage:[self image:[UIImage imageNamed:@"user"] scaledToSize:CGSizeMake(26, 26)]];
+            [cell.imageView setImage:[self image:[UIImage imageNamed:@"automation"] scaledToSize:CGSizeMake(26, 26)]];
             break;
         }
         case 9:{
+            [cell.imageView setImage:[self image:[UIImage imageNamed:@"user"] scaledToSize:CGSizeMake(26, 26)]];
+            break;
+        }
+        case 10:{
             [cell.imageView setImage:[self image:[UIImage imageNamed:@"settings"] scaledToSize:CGSizeMake(26, 26)]];
             break;
         }
-        case 11:{
+        case 12:{
             [cell.imageView setImage:[self image:[UIImage imageNamed:@"logout"] scaledToSize:CGSizeMake(26, 26)]];
             break;
         }
     }
-    cell.separatorView.hidden = (indexPath.row <= 3 || indexPath.row == self.titlesArray.count-1 || indexPath.row == 10);
-    cell.userInteractionEnabled = (indexPath.row != 1 && indexPath.row != 3 && indexPath.row != 10 && indexPath.row != 2);
+    cell.separatorView.hidden = (indexPath.row <= 3 || indexPath.row == self.titlesArray.count-1 || indexPath.row == 11);
+    cell.userInteractionEnabled = (indexPath.row != 1 && indexPath.row != 3 && indexPath.row != 11 && indexPath.row != 2);
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return (indexPath.row == 1 || indexPath.row == 3 || indexPath.row == 10) ? 22.0 : 44.0;
+    return (indexPath.row == 1 || indexPath.row == 3 || indexPath.row == 11) ? 22.0 : 44.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -163,7 +168,19 @@
             [navigationController setViewControllers:@[viewController]];
             break;
         }
-        case 8:{
+        case 7:{
+            globals.type = 3;
+            [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
+            UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+            ViewController *viewController;
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+            globals.isConfig = FALSE;
+            viewController = [storyboard instantiateViewControllerWithIdentifier:@"Camera"];
+            
+            [navigationController setViewControllers:@[viewController]];
+            break;
+        }
+        case 9:{
             [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
             UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
             ViewController *viewController;
@@ -176,7 +193,7 @@
             // Rarely you can get some visual bugs when you change view hierarchy and toggle side views in the same iteration
             // You can use delay to avoid this and probably other unexpected visual bugs
         }
-        case 9:{
+        case 10:{
             [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
             UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
             ViewController *viewController;
@@ -189,7 +206,7 @@
             // Rarely you can get some visual bugs when you change view hierarchy and toggle side views in the same iteration
             // You can use delay to avoid this and probably other unexpected visual bugs
         }
-        case 11:{
+        case 12:{
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
             UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"LoginNavigationController"];
             

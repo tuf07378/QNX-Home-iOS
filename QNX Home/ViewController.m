@@ -67,13 +67,23 @@ NSArray *picker;
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
     GlobalVars *globals = [GlobalVars sharedInstance];
     globals.house = row;
-    if (!globals.isConfig){
+    if (!globals.isConfig && globals.type != 3){
         MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
         UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
         ViewController *viewController;
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
         
         viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+        
+        [navigationController setViewControllers:@[viewController]];
+    }
+    else if (globals.type == 3){
+        MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
+        UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+        ViewController *viewController;
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+        
+        viewController = [storyboard instantiateViewControllerWithIdentifier:@"Camera"];
         
         [navigationController setViewControllers:@[viewController]];
     }
