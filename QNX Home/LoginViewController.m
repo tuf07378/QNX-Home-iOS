@@ -32,66 +32,67 @@
 - (IBAction)loginClicked:(id)sender{
     [self.view endEditing:YES];
     UIAlertController *login = [UIAlertController alertControllerWithTitle:@"Logging In" message:@"Logging in and downloading user data." preferredStyle:UIAlertControllerStyleAlert];
-    [self presentViewController:login animated:YES completion:nil];
-    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.user.text, @"username", [self sha256:self.pass.text], @"password", nil];
-    NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/login" withData:mapData isAsync:NO];
-    NSLog(@"Response Body:\n%@\n", body);
-    if ([body containsString:@"[{\"SessionToken\":\""]){
-        GlobalVars *globals = [GlobalVars sharedInstance];
-        NSString *haystackPrefix = @"[{\"SessionToken\":\"";
-        NSString *haystackSuffix = @"\"}]";
-        NSRange needleRange = NSMakeRange(haystackPrefix.length,
+    [self presentViewController:login animated:YES completion:^{
+        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.user.text, @"username", [self sha256:self.pass.text], @"password", nil];
+        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/login" withData:mapData isAsync:NO];
+        NSLog(@"Response Body:\n%@\n", body);
+        if ([body containsString:@"[{\"SessionToken\":\""]){
+            GlobalVars *globals = [GlobalVars sharedInstance];
+            NSString *haystackPrefix = @"[{\"SessionToken\":\"";
+            NSString *haystackSuffix = @"\"}]";
+            NSRange needleRange = NSMakeRange(haystackPrefix.length,
                                               body.length - haystackPrefix.length - haystackSuffix.length);
-        NSString *needle = [body substringWithRange:needleRange];
-        globals.seshToke = needle;
-        globals.uname = self.user.text;
-        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", nil];
-        NSString *test = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/listhouses" withData:mapData isAsync:NO];
-        [self parseHouses:test];
-        globals.houseData = (NSMutableDictionary *) [self getSensorData];
-        NSMutableDictionary *allData = [[NSMutableDictionary alloc] init];
-        for (NSString *house in globals.houses){
-            mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
-            NSString *received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getcurrentperipheralsbyhouse" withData:mapData isAsync:NO];
-            NSMutableArray *periphs;
-            if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
-                periphs = (NSMutableArray *)[self parsePeripherals:received];
+            NSString *needle = [body substringWithRange:needleRange];
+            globals.seshToke = needle;
+            globals.uname = self.user.text;
+            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", nil];
+            NSString *test = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/listhouses" withData:mapData isAsync:NO];
+            [self parseHouses:test];
+            globals.houseData = (NSMutableDictionary *) [self getSensorData];
+            NSMutableDictionary *allData = [[NSMutableDictionary alloc] init];
+            for (NSString *house in globals.houses){
+                mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
+                NSString *received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getcurrentperipheralsbyhouse" withData:mapData isAsync:NO];
+                NSMutableArray *periphs;
+                if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
+                    periphs = (NSMutableArray *)[self parsePeripherals:received];
+                }
+                else{
+                    periphs = [[NSMutableArray alloc] init];
+                }
+                mapData = [[NSDictionary alloc] initWithObjectsAndKeys: house, @"HouseName", globals.seshToke, @"SessionToken", nil];
+                received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/getboardsbyhouse" withData:mapData isAsync:NO];
+                NSMutableArray *boards;
+                if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
+                    boards = (NSMutableArray *)[self parseBoards:received];
+                }
+                else{
+                    boards = [[NSMutableArray alloc] init];
+                }
+                [allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:house];
             }
-            else{
-                periphs = [[NSMutableArray alloc] init];
-            }
-            mapData = [[NSDictionary alloc] initWithObjectsAndKeys: house, @"HouseName", globals.seshToke, @"SessionToken", nil];
-            received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/getboardsbyhouse" withData:mapData isAsync:NO];
-            NSMutableArray *boards;
-            if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
-                boards = (NSMutableArray *)[self parseBoards:received];
-            }
-            else{
-                boards = [[NSMutableArray alloc] init];
-            }
-            [allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:house];
-        }
-        globals.allData = allData;
-        [self dismissViewControllerAnimated:TRUE completion:nil];
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
-        [navigationController setViewControllers:@[[storyboard instantiateViewControllerWithIdentifier:@"ViewController"]]];
-        MainViewController *mainViewController = [storyboard instantiateInitialViewController];
-        mainViewController.rootViewController = navigationController;
-        [mainViewController setupWithType:2];
-        UIWindow *window = UIApplication.sharedApplication.delegate.window;
-        window.rootViewController = mainViewController;
-        [UIView transitionWithView:window
+            globals.allData = allData;
+            [self dismissViewControllerAnimated:TRUE completion:nil];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
+            [navigationController setViewControllers:@[[storyboard instantiateViewControllerWithIdentifier:@"ViewController"]]];
+            MainViewController *mainViewController = [storyboard instantiateInitialViewController];
+            mainViewController.rootViewController = navigationController;
+            [mainViewController setupWithType:2];
+            UIWindow *window = UIApplication.sharedApplication.delegate.window;
+            window.rootViewController = mainViewController;
+            [UIView transitionWithView:window
                               duration:0.3
                                options:UIViewAnimationOptionTransitionCrossDissolve
                             animations:nil
                             completion:nil];
-    }
-    else{
-        [self dismissViewControllerAnimated:TRUE completion:nil];
-        self.pass.backgroundColor = [UIColor redColor];
-        self.user.backgroundColor = [UIColor redColor];
-    }
+        }
+        else{
+            [self dismissViewControllerAnimated:TRUE completion:nil];
+            self.pass.backgroundColor = [UIColor redColor];
+            self.user.backgroundColor = [UIColor redColor];
+        }
+    }];
 }
 
 - (IBAction)registerClicked:(id)sender{

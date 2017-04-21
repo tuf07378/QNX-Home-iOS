@@ -20,7 +20,7 @@ NSArray *picker;
 - (void)viewDidLoad{
     OELanguageModelGenerator *lmGenerator = [[OELanguageModelGenerator alloc] init];
     
-    NSArray *words = [NSArray arrayWithObjects:@"TURN", @"LIGHT", @"TURN ON", @"THE LIGHT", @"ON", nil];
+    NSMutableArray *words = [NSMutableArray arrayWithObjects:@"Dashboard", @"Sensors", @"Relays", @"Cameras", nil];
     NSString *name = @"NameIWantForMyLanguageModelFiles";
     NSError *err = [lmGenerator generateLanguageModelFromArray:words withFilesNamed:name forAcousticModelAtPath:[OEAcousticModel pathToModel:@"AcousticModelEnglish"]]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to create a Spanish language model instead of an English one.
     
@@ -111,12 +111,29 @@ NSArray *picker;
     [self presentViewController:command animated:YES completion:nil];
 }
 - (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID {
+    GlobalVars *globals = [GlobalVars sharedInstance];
     [self dismissViewControllerAnimated:TRUE completion:nil];
     [[OEPocketsphinxController sharedInstance] setActive:FALSE error:nil];
     [[OEPocketsphinxController sharedInstance] stopListening];
     NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID);
     UIAlertController *textConfirm = [UIAlertController alertControllerWithTitle:@"Confirm Command" message:hypothesis preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:nil];
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
+        if ([hypothesis isEqualToString:@"Dashboard"] || [hypothesis isEqualToString:@"Sensors"] || [hypothesis isEqualToString:@"Relays"]){
+            if ([hypothesis isEqualToString:@"Dashboard"])
+                globals.type = 0;
+            else if ([hypothesis isEqualToString:@"Sensors"])
+                globals.type = 1;
+            else if ([hypothesis isEqualToString:@"Relays"])
+                globals.type = 2;
+            else if ([hypothesis isEqualToString:@"Cameras"])
+                globals.type = 3;
+            globals.isConfig = NO;
+            [self transition:@"ViewController"];
+        }
+        else{
+            
+        }
+    }];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
     [textConfirm addAction:confirm];
     [textConfirm addAction:cancel];
@@ -1060,6 +1077,17 @@ NSArray *picker;
     else{
         [self performSegueWithIdentifier:@"Peripheral" sender:self];
     }
+}
+
+-(void)transition:(NSString *)page{
+    MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
+    UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+    ViewController *viewController;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+    
+    viewController = [storyboard instantiateViewControllerWithIdentifier:page];
+    
+    [navigationController setViewControllers:@[viewController]];
 }
 
 @end

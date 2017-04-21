@@ -783,45 +783,42 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QuA-5y-2xj">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5ZW-rh-8N2">
-                                        <rect key="frame" x="0.0" y="176" width="375" height="197"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="197" id="czr-8a-qT6"/>
-                                        </constraints>
-                                        <connections>
-                                            <outlet property="dataSource" destination="WhR-h2-Mss" id="hqD-dL-Yrl"/>
-                                            <outlet property="delegate" destination="WhR-h2-Mss" id="tMF-fI-4nw"/>
-                                        </connections>
-                                    </tableView>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y8c-J0-sFI">
                                         <rect key="frame" x="8" y="8" width="359" height="58"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="58" id="Doc-GB-XYq"/>
-                                        </constraints>
                                         <connections>
                                             <outlet property="dataSource" destination="WhR-h2-Mss" id="w6U-gp-WkQ"/>
                                             <outlet property="delegate" destination="WhR-h2-Mss" id="0jO-5D-k7S"/>
                                         </connections>
                                     </pickerView>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5ZW-rh-8N2">
+                                        <rect key="frame" x="0.0" y="92" width="375" height="418"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <sections/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="WhR-h2-Mss" id="hqD-dL-Yrl"/>
+                                            <outlet property="delegate" destination="WhR-h2-Mss" id="tMF-fI-4nw"/>
+                                        </connections>
+                                    </tableView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="5ZW-rh-8N2" firstAttribute="leading" secondItem="QuA-5y-2xj" secondAttribute="leading" id="15X-uf-wHB"/>
-                                    <constraint firstAttribute="trailing" secondItem="5ZW-rh-8N2" secondAttribute="trailing" id="3dj-oP-ojJ"/>
-                                    <constraint firstItem="5ZW-rh-8N2" firstAttribute="top" secondItem="QuA-5y-2xj" secondAttribute="top" constant="176" id="EIz-xH-sD7"/>
-                                    <constraint firstItem="y8c-J0-sFI" firstAttribute="centerX" secondItem="5ZW-rh-8N2" secondAttribute="centerX" id="GUA-Ow-rB3"/>
-                                    <constraint firstItem="y8c-J0-sFI" firstAttribute="leading" secondItem="QuA-5y-2xj" secondAttribute="leadingMargin" id="WrL-Jn-l7j"/>
-                                    <constraint firstItem="y8c-J0-sFI" firstAttribute="top" secondItem="QuA-5y-2xj" secondAttribute="topMargin" id="hfj-gU-QAi"/>
+                                    <constraint firstItem="y8c-J0-sFI" firstAttribute="centerX" secondItem="5ZW-rh-8N2" secondAttribute="centerX" id="1db-Sh-Mqa"/>
+                                    <constraint firstItem="y8c-J0-sFI" firstAttribute="leading" secondItem="QuA-5y-2xj" secondAttribute="leadingMargin" id="3mU-MO-FoX"/>
+                                    <constraint firstItem="y8c-J0-sFI" firstAttribute="top" secondItem="QuA-5y-2xj" secondAttribute="topMargin" id="5dd-18-PiB"/>
+                                    <constraint firstItem="5ZW-rh-8N2" firstAttribute="top" secondItem="y8c-J0-sFI" secondAttribute="bottom" constant="26" id="8xs-Vp-OcX"/>
+                                    <constraint firstAttribute="trailing" secondItem="5ZW-rh-8N2" secondAttribute="trailing" id="Txm-x7-S8A"/>
+                                    <constraint firstItem="5ZW-rh-8N2" firstAttribute="leading" secondItem="QuA-5y-2xj" secondAttribute="leading" id="nzp-r9-iDd"/>
+                                    <constraint firstAttribute="bottom" secondItem="5ZW-rh-8N2" secondAttribute="bottom" constant="93" id="oJk-cv-Xea"/>
+                                    <constraint firstItem="5ZW-rh-8N2" firstAttribute="centerY" secondItem="QuA-5y-2xj" secondAttribute="centerY" id="unD-hf-8Jw"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="QuA-5y-2xj" secondAttribute="trailing" id="agc-Vl-cha"/>
-                            <constraint firstItem="QuA-5y-2xj" firstAttribute="leading" secondItem="W6F-ju-3D4" secondAttribute="leading" id="iz3-kk-4jK"/>
-                            <constraint firstItem="QuA-5y-2xj" firstAttribute="top" secondItem="mlD-uw-uCg" secondAttribute="bottom" id="uoA-wS-GZF"/>
-                            <constraint firstItem="QuA-5y-2xj" firstAttribute="bottom" secondItem="Ccv-1Q-wwb" secondAttribute="top" id="ySB-IP-crE"/>
+                            <constraint firstAttribute="trailing" secondItem="QuA-5y-2xj" secondAttribute="trailing" id="HdR-DA-WNj"/>
+                            <constraint firstItem="QuA-5y-2xj" firstAttribute="top" secondItem="mlD-uw-uCg" secondAttribute="bottom" id="Y2b-Z7-x1Q"/>
+                            <constraint firstItem="QuA-5y-2xj" firstAttribute="bottom" secondItem="Ccv-1Q-wwb" secondAttribute="top" id="riB-4o-OsR"/>
+                            <constraint firstItem="QuA-5y-2xj" firstAttribute="leading" secondItem="W6F-ju-3D4" secondAttribute="leading" id="z75-AM-xXn"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="QNX Home" id="ow8-Pt-6PT">
@@ -843,11 +840,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a5o-V8-ftg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3983" y="573"/>
+            <point key="canvasLocation" x="3981.5999999999999" y="572.56371814092961"/>
         </scene>
     </scenes>
     <resources>
-        <image name="menu" width="702" height="551"/>
-        <image name="microphone" width="512" height="512"/>
+        <image name="menu" width="28" height="28"/>
+        <image name="microphone" width="28" height="28"/>
     </resources>
 </document>
