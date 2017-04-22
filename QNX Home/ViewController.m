@@ -894,13 +894,10 @@ NSArray *picker;
         }
         else{
             NSMutableArray *boards = data[0];
-            NSLog(@"%@", boards);
             NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", title, @"houseName", boards[indexPath.row * 4], @"peripheralName", nil];
-            NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/removeperipheral" withData:mapData isAsync:NO];
-            NSLog(@"%@", body);
+            [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/removeperipheral" withData:mapData isAsync:YES];
             NSMutableArray *houseData = [globals.houseData objectForKey:title];
-            NSString *type = [globals.allData objectForKey:title][(indexPath.row * 4) + 3];
-            NSLog(@"%@", type);
+            NSString *type = [globals.allData objectForKey:title][0][(indexPath.row * 4) + 3];
             if ([type isEqualToString:@"Sensor"]){
                 NSMutableArray *sensors = houseData[1];
                 NSUInteger ind = [sensors indexOfObject:boards[indexPath.row * 4]];
@@ -909,12 +906,18 @@ NSArray *picker;
                 [sensors removeObjectAtIndex:(ind + 2)];
                 [sensors removeObjectAtIndex:(ind + 1)];
                 [sensors removeObjectAtIndex:(ind)];
+                if ([sensors count] == 0){
+                    [sensors addObject:@"Empty"];
+                }
                 [houseData replaceObjectAtIndex:1 withObject:sensors];
             }
             else if ([type isEqualToString:@"Relay"]){
                 NSMutableDictionary *relays = houseData[0];
                 [relays removeObjectForKey:boards[indexPath.row * 4]];
-                [houseData replaceObjectAtIndex:1 withObject:relays];
+                if ([relays count] == 0){
+                    [relays setObject:@"1" forKey:@"Empty"];
+                }
+                [houseData replaceObjectAtIndex:0 withObject:relays];
             }
             else if ([type isEqualToString:@"Camera"]){
                 
@@ -1027,7 +1030,7 @@ NSArray *picker;
             sensorData = [self parseSensors:relayData];
         }
         else{
-            sensorData = [[NSArray alloc] init];
+            sensorData = [NSArray arrayWithObject:@"Empty"];
         }
         [periphData addObject: sensorData];
         [data setObject:periphData forKey:house];
@@ -1267,14 +1270,15 @@ NSArray *picker;
 
 -(IBAction)refresh:(id)sender{
     GlobalVars *globals = [GlobalVars sharedInstance];
-    NSString *house = picker[globals.house];
-    NSLog(@"%@", house);
     UIAlertController *refresh = [UIAlertController alertControllerWithTitle:@"Refreshing" message:@"Refreshing user data, please wait." preferredStyle:UIAlertControllerStyleAlert];
     [self presentViewController:refresh animated:YES completion:^(void){
         globals.houseData = (NSMutableDictionary *) [self getSensorData];
         [self.tableView reloadData];
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:^(void){
+            [self transition:@"ViewController"];
+        }];
     }];
+    
 }
 
 @end
