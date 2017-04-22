@@ -129,7 +129,6 @@
                 [self presentViewController:regAlert animated:TRUE completion:nil];
                 NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.userReg.text, @"username", [self sha256:self.regPass.text], @"password", nil];
                 NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/register" withData:mapData isAsync:NO];
-                NSLog(@"Response Body:\n%@\n", body);
                 if ([body containsString:@"Successfull inserted the user into the table"]){
                     NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.userReg.text, @"username", [self sha256:self.regPass.text], @"password", nil];
                     NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/login" withData:mapData isAsync:NO];
@@ -343,8 +342,65 @@
     }
     return relays;
 }
-- (NSArray *)parsePeripherals:(NSString *)body{
+- (NSArray *)parseSensors:(NSString *)body{
     NSLog(@"%@", body);
+    NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@"},{"] count] - 1;
+    NSString *haystackPrefix = @"[[{";
+    NSString *haystackSuffix = @"}]]";
+    NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
+    NSString *needle = [body substringWithRange:needleRange];
+    NSArray *houseArray = [needle componentsSeparatedByString:@"},{"];
+    NSMutableArray *sens = [[NSMutableArray alloc] init];
+    for(int i = 0; i < numberOfOccurrences + 1; i++){
+        NSUInteger numberOfSens = [[houseArray[i] componentsSeparatedByString:@","] count];
+        NSArray *senArray = [houseArray[i] componentsSeparatedByString:@","];
+        for(int j = 0; j < numberOfSens; j++){
+            if (j % 5 == 0){
+                NSString *house = (NSString *)senArray[j];
+                haystackPrefix = @"\"PeripheralName\":\"";
+                haystackSuffix = @"\"";
+                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                needle = [house substringWithRange:needleRange];
+                [sens addObject:[NSString stringWithString:needle]];
+            }
+            else if (j % 5 == 1){
+                NSString *house = (NSString *)senArray[j];
+                haystackPrefix = @"\"DisplayStyleName\":\"";
+                haystackSuffix = @"\"";
+                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                needle = [house substringWithRange:needleRange];
+                [sens addObject:[NSString stringWithString:needle]];
+            }
+            else if (j % 5 == 2){
+                NSString *house = (NSString *)senArray[j];
+                haystackPrefix = @"\"DisplayUnitsName\":\"";
+                haystackSuffix = @"\"";
+                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                needle = [house substringWithRange:needleRange];
+                [sens addObject:[NSString stringWithString:needle]];
+            }
+            else if (j % 5 == 3){
+                NSString *house = (NSString *)senArray[j];
+                haystackPrefix = @"\"PeripheralValue\":";
+                haystackSuffix = @"\"";
+                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                needle = [house substringWithRange:needleRange];
+                [sens addObject:[NSString stringWithString:needle]];
+            }
+            else{
+                NSString *house = (NSString *)senArray[j];
+                haystackPrefix = @"\"PeripheralValueWithUnits\":\"";
+                haystackSuffix = @"\"";
+                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                needle = [house substringWithRange:needleRange];
+                [sens addObject:[NSString stringWithString:needle]];
+            }
+        }
+        
+    }
+    return sens;
+}
+- (NSArray *)parsePeripherals:(NSString *)body{
     NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
     NSString *haystackPrefix = @"[[";
     NSString *haystackSuffix = @"]]";
@@ -413,16 +469,28 @@
     for (NSString *house in globals.houses){
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: house, @"HouseName", globals.seshToke, @"SessionToken", nil];
         NSString *relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/getrelayvaluesbyhouseid" withData:mapData  isAsync:NO];
-        NSLog(@"%@", relayData);
         [data setValue:@"" forKey:house];
+        NSMutableArray *periphData = [[NSMutableArray alloc] init];
         if ([relayData containsString:@"Peripheral"]){
             NSDictionary *relays = [self parseRelays:relayData];
-            [data setObject:relays forKey:house];
+            [periphData addObject:relays];
         }
         else{
             NSDictionary *relays = [NSDictionary dictionaryWithObject:@"1" forKey:@"Empty"];
-            [data setObject:relays forKey:house];
+            [periphData addObject:relays];
         }
+        mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
+        relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/sensor/getsensorvaluesbyhouse" withData:mapData  isAsync:NO];
+        NSArray *sensorData;
+        if ([relayData containsString:@"Peripheral"]){
+            sensorData = [self parseSensors:relayData];
+        }
+        else{
+            sensorData = [[NSArray alloc] init];
+        }
+        [periphData addObject: sensorData];
+        [data setObject:periphData forKey:house];
+        NSLog(@"%@", data);
     }
     return data;
 }
