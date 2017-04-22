@@ -694,6 +694,14 @@
                                             <constraint firstAttribute="width" constant="117" id="lFx-WN-Ua9"/>
                                         </constraints>
                                         <state key="normal" title="Add Peripheral"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="addP:" destination="ydO-TL-6am" eventType="touchUpInside" id="3F0-ho-4Qr"/>
                                         </connections>
@@ -701,11 +709,19 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zg5-bg-ulU">
                                         <rect key="frame" x="228" y="517" width="117" height="57"/>
                                         <state key="normal" title="Cancel"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="cancel:" destination="ydO-TL-6am" eventType="touchUpInside" id="Lk7-0P-eKv"/>
                                         </connections>
                                     </button>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Peripheral Name" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="X9i-WR-S8n">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Peripheral Name" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="X9i-WR-S8n">
                                         <rect key="frame" x="71" y="74" width="232" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -715,7 +731,7 @@
                                         </connections>
                                     </textField>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="VDo-oE-GzE" firstAttribute="trailing" secondItem="pp0-BL-72D" secondAttribute="trailing" id="0Al-Bx-02i"/>
                                     <constraint firstItem="pp0-BL-72D" firstAttribute="leading" secondItem="kNU-25-C7Y" secondAttribute="leading" id="0fj-rI-8iX"/>
@@ -783,13 +799,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QuA-5y-2xj">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
-                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y8c-J0-sFI">
-                                        <rect key="frame" x="8" y="8" width="359" height="58"/>
-                                        <connections>
-                                            <outlet property="dataSource" destination="WhR-h2-Mss" id="w6U-gp-WkQ"/>
-                                            <outlet property="delegate" destination="WhR-h2-Mss" id="0jO-5D-k7S"/>
-                                        </connections>
-                                    </pickerView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5ZW-rh-8N2">
                                         <rect key="frame" x="0.0" y="92" width="375" height="418"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -799,8 +808,15 @@
                                             <outlet property="delegate" destination="WhR-h2-Mss" id="tMF-fI-4nw"/>
                                         </connections>
                                     </tableView>
+                                    <pickerView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y8c-J0-sFI">
+                                        <rect key="frame" x="0.0" y="8" width="375" height="76"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="WhR-h2-Mss" id="w6U-gp-WkQ"/>
+                                            <outlet property="delegate" destination="WhR-h2-Mss" id="0jO-5D-k7S"/>
+                                        </connections>
+                                    </pickerView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="y8c-J0-sFI" firstAttribute="centerX" secondItem="5ZW-rh-8N2" secondAttribute="centerX" id="1db-Sh-Mqa"/>
                                     <constraint firstItem="y8c-J0-sFI" firstAttribute="leading" secondItem="QuA-5y-2xj" secondAttribute="leadingMargin" id="3mU-MO-FoX"/>

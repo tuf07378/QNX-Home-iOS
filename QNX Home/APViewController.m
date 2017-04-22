@@ -41,6 +41,11 @@ NSMutableArray *pins;
         body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/getavailablepinconnections/" withData:mapData isAsync:NO];
         [self parsePins:body];
     }
+    [self.house selectRow:0 inComponent:0 animated:YES];
+    [self.board selectRow:0 inComponent:0 animated:YES];
+    [self.pType selectRow:0 inComponent:0 animated:YES];
+    [self.pMod selectRow:0 inComponent:0 animated:YES];
+    [self.pCon selectRow:0 inComponent:0 animated:YES];
     // Do any additional setup after loading the view.
 }
 
@@ -134,12 +139,20 @@ NSMutableArray *pins;
         NSString *title = globals.houses[[self.house selectedRowInComponent:0]];
         NSArray *data = [globals.allData objectForKey:title];
         NSArray *boards = data[1];
-        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: title, @"HouseName", globals.seshToke, @"SessionToken", boards[[self.board selectedRowInComponent:0]], @"BoardName", types[row], @"PeripheralTypeName", nil];
-        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/getavailablepinconnections/" withData:mapData isAsync:NO];
-        [self parsePins:body];
-        models = [boardModels objectForKey:types[[self.pType selectedRowInComponent:0]]];
-        [self.pCon reloadAllComponents];
-        [self.pMod reloadAllComponents];
+        if (boards == nil || [boards count] == 0){
+            UIAlertController *noBoard = [UIAlertController alertControllerWithTitle:@"No Board" message:@"You must add/select a board first." preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+            [noBoard addAction:ok];
+            [self presentViewController:noBoard animated:YES completion:nil];
+        }
+        else{
+            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: title, @"HouseName", globals.seshToke, @"SessionToken", boards[[self.board selectedRowInComponent:0]], @"BoardName", types[row], @"PeripheralTypeName", nil];
+            NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/getavailablepinconnections/" withData:mapData isAsync:NO];
+            [self parsePins:body];
+            models = [boardModels objectForKey:types[[self.pType selectedRowInComponent:0]]];
+            [self.pCon reloadAllComponents];
+            [self.pMod reloadAllComponents];
+        }
     }
     if(pickerView == self.pMod){
         
@@ -267,36 +280,43 @@ NSMutableArray *pins;
     NSString *title = globals.houses[[self.house selectedRowInComponent:0]];
     NSArray *data = [globals.allData objectForKey:title];
     NSArray *boards = data[1];
-    NSMutableArray *periphs = [[NSMutableArray alloc] init];
-    [periphs addObjectsFromArray:data[0]];
-    NSLog(@"%@ - %@", models[[self.pMod selectedRowInComponent:0]], pins[[self.pCon selectedRowInComponent:0]]);
-    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", title, @"houseName", boards[[self.board selectedRowInComponent:0]], @"boardName", self.pName.text, @"peripheralName", models[[self.pMod selectedRowInComponent:0]], @"peripheralModelName", pins[[self.pCon selectedRowInComponent:0]], @"pinConnectionName", nil];
-    NSLog(@"%@", mapData);
-    NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/createperipheral/" withData:mapData isAsync:NO];
-    NSLog(@"%@", body);
-    if([body isEqualToString:@"[]"]){
-        [self.navigationController popViewControllerAnimated:YES];
-        [periphs addObject:self.pName.text];
-        [periphs addObject:boards[[self.board selectedRowInComponent:0]]];
-        [periphs addObject:models[[self.pMod selectedRowInComponent:0]]];
-        NSString *type = types[[self.pType selectedRowInComponent:0]];
-        if([type.lowercaseString containsString:@"sensor"]){
-            [periphs addObject:@"Sensor"];
-        }
-        else if([type.lowercaseString containsString:@"relay"]){
-            [periphs addObject:@"Relay"];
-            NSMutableDictionary *newPeripheral = [globals.houseData objectForKey:title];
-            [newPeripheral setObject:@"0" forKey:self.pName.text];
-            [globals.allData setObject:newPeripheral forKey:title];
-        }
-        else{
-            [periphs addObject:@"Camera"];
-        }
+    if (boards == nil || [boards count] == 0 || boards[[self.board selectedRowInComponent:0]] == nil){
+        UIAlertController *noBoard = [UIAlertController alertControllerWithTitle:@"No Board" message:@"You must add a board first." preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+        [noBoard addAction:ok];
+        [self presentViewController:noBoard animated:YES completion:nil];
     }
-    [globals.allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:title];
-    
-    
-    NSLog(@"%@", globals.houseData);
-    
+    else{
+        NSMutableArray *periphs = [[NSMutableArray alloc] init];
+        [periphs addObjectsFromArray:data[0]];
+        NSLog(@"%@ - %@", models[[self.pMod selectedRowInComponent:0]], pins[[self.pCon selectedRowInComponent:0]]);
+        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", title, @"houseName", boards[[self.board selectedRowInComponent:0]], @"boardName", self.pName.text, @"peripheralName", models[[self.pMod selectedRowInComponent:0]], @"peripheralModelName", pins[[self.pCon selectedRowInComponent:0]], @"pinConnectionName", nil];
+        NSLog(@"%@", mapData);
+        NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/createperipheral/" withData:mapData isAsync:NO];
+        NSLog(@"%@", body);
+        if([body isEqualToString:@"[]"]){
+            [self.navigationController popViewControllerAnimated:YES];
+            [periphs addObject:self.pName.text];
+            [periphs addObject:boards[[self.board selectedRowInComponent:0]]];
+            [periphs addObject:models[[self.pMod selectedRowInComponent:0]]];
+            NSString *type = types[[self.pType selectedRowInComponent:0]];
+            if([type.lowercaseString containsString:@"sensor"]){
+                [periphs addObject:@"Sensor"];
+            }
+            else if([type.lowercaseString containsString:@"relay"]){
+                [periphs addObject:@"Relay"];
+                NSMutableDictionary *newPeripheral = [globals.houseData objectForKey:title];
+                [newPeripheral setObject:@"0" forKey:self.pName.text];
+                [globals.allData setObject:newPeripheral forKey:title];
+            }
+            else{
+                [periphs addObject:@"Camera"];
+            }
+        }
+        [globals.allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:title];
+        
+        
+        NSLog(@"%@", globals.houseData);
+    }
 }
 @end
