@@ -504,37 +504,39 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A3w-Gy-KOV">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="I35-vM-d4F">
-                                        <rect key="frame" x="8" y="110" width="359" height="285"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="I35-vM-d4F">
+                                        <rect key="frame" x="8" y="122" width="359" height="285"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <sections/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="dataSource" destination="z3U-AS-H6P" id="N9a-LX-FHg"/>
                                             <outlet property="delegate" destination="z3U-AS-H6P" id="ujC-ZN-pyp"/>
                                         </connections>
                                     </tableView>
-                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XIr-v0-zmw">
-                                        <rect key="frame" x="8" y="8" width="359" height="58"/>
+                                    <pickerView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XIr-v0-zmw">
+                                        <rect key="frame" x="8" y="8" width="359" height="70"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="58" id="dE8-ZP-dgK"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="dataSource" destination="z3U-AS-H6P" id="3VT-fw-Sy7"/>
                                             <outlet property="delegate" destination="z3U-AS-H6P" id="bqt-Er-H1c"/>
                                         </connections>
                                     </pickerView>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="bmY-WT-znH">
-                                        <rect key="frame" x="71" y="74" width="233" height="29"/>
-                                        <segments>
-                                            <segment title="Boards"/>
-                                            <segment title="Peripherals"/>
-                                        </segments>
-                                        <connections>
-                                            <action selector="segChange:" destination="z3U-AS-H6P" eventType="valueChanged" id="VbW-tU-tv4"/>
-                                        </connections>
-                                    </segmentedControl>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SLx-S2-qtU">
                                         <rect key="frame" x="137" y="504" width="101" height="57"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="57" id="VSa-Xf-NRK"/>
                                         </constraints>
@@ -553,6 +555,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ooW-kD-ZZ6">
                                         <rect key="frame" x="127" y="415" width="121" height="52"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="52" id="3uU-rn-nTX"/>
                                             <constraint firstAttribute="width" constant="121" id="Xoq-cy-y0B"/>
@@ -570,8 +573,24 @@
                                             <action selector="newBoard:" destination="z3U-AS-H6P" eventType="touchUpInside" id="MDP-o9-s1G"/>
                                         </connections>
                                     </button>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="bmY-WT-znH">
+                                        <rect key="frame" x="71" y="86" width="233" height="29"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <segments>
+                                            <segment title="Boards"/>
+                                            <segment title="Peripherals"/>
+                                        </segments>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="segChange:" destination="z3U-AS-H6P" eventType="valueChanged" id="VbW-tU-tv4"/>
+                                        </connections>
+                                    </segmentedControl>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="bmY-WT-znH" firstAttribute="top" secondItem="XIr-v0-zmw" secondAttribute="bottom" constant="8" symbolic="YES" id="2PX-YC-c5m"/>
                                     <constraint firstItem="ooW-kD-ZZ6" firstAttribute="top" secondItem="I35-vM-d4F" secondAttribute="bottom" constant="20" id="7m5-Sj-6on"/>
@@ -638,50 +657,80 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dxm-TP-umx">
-                                        <rect key="frame" x="8" y="8" width="359" height="58"/>
+                                        <rect key="frame" x="8" y="8" width="359" height="75"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="58" id="Vad-Vo-MeM"/>
+                                            <constraint firstAttribute="height" constant="75" id="dNf-Ee-f69"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="dataSource" destination="ydO-TL-6am" id="32e-gz-9hJ"/>
                                             <outlet property="delegate" destination="ydO-TL-6am" id="vgR-VO-hUS"/>
                                         </connections>
                                     </pickerView>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VDo-oE-GzE">
-                                        <rect key="frame" x="8" y="119" width="359" height="58"/>
+                                        <rect key="frame" x="8" y="129" width="359" height="58"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="58" id="Wwf-6w-mKN"/>
+                                            <constraint firstAttribute="height" constant="58" id="nDW-zJ-5qb"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="dataSource" destination="ydO-TL-6am" id="NxO-nb-V8r"/>
                                             <outlet property="delegate" destination="ydO-TL-6am" id="RZ3-6T-TmH"/>
                                         </connections>
                                     </pickerView>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pp0-BL-72D">
-                                        <rect key="frame" x="8" y="185" width="359" height="58"/>
+                                        <rect key="frame" x="8" y="195" width="359" height="58"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="58" id="Cxo-33-LDQ"/>
+                                            <constraint firstAttribute="height" constant="58" id="BBY-sf-XOj"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="dataSource" destination="ydO-TL-6am" id="aOb-aT-I87"/>
                                             <outlet property="delegate" destination="ydO-TL-6am" id="LXL-1G-ik8"/>
                                         </connections>
                                     </pickerView>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kNU-25-C7Y">
-                                        <rect key="frame" x="8" y="251" width="359" height="58"/>
+                                        <rect key="frame" x="8" y="261" width="359" height="58"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="58" id="g17-3d-T4o"/>
+                                            <constraint firstAttribute="height" constant="58" id="ZwR-ZD-fkI"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="dataSource" destination="ydO-TL-6am" id="B1z-Pi-yMM"/>
                                             <outlet property="delegate" destination="ydO-TL-6am" id="v0E-AF-e5I"/>
                                         </connections>
                                     </pickerView>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v7p-S1-Y1o">
-                                        <rect key="frame" x="8" y="317" width="359" height="58"/>
+                                        <rect key="frame" x="8" y="327" width="359" height="58"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="58" id="qOb-iO-mUU"/>
+                                            <constraint firstAttribute="height" constant="58" id="O6C-zm-u9u"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="dataSource" destination="ydO-TL-6am" id="eMa-7T-poG"/>
                                             <outlet property="delegate" destination="ydO-TL-6am" id="iqO-2C-Tsj"/>
@@ -689,9 +738,10 @@
                                     </pickerView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0tF-aO-kIH">
                                         <rect key="frame" x="25" y="517" width="117" height="57"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="57" id="Z0h-Zn-jhi"/>
-                                            <constraint firstAttribute="width" constant="117" id="lFx-WN-Ua9"/>
+                                            <constraint firstAttribute="height" constant="57" id="Fo4-jU-z1q"/>
+                                            <constraint firstAttribute="width" constant="117" id="iKV-5I-pWn"/>
                                         </constraints>
                                         <state key="normal" title="Add Peripheral"/>
                                         <userDefinedRuntimeAttributes>
@@ -708,6 +758,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zg5-bg-ulU">
                                         <rect key="frame" x="228" y="517" width="117" height="57"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="Cancel"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -722,7 +773,7 @@
                                         </connections>
                                     </button>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Peripheral Name" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="X9i-WR-S8n">
-                                        <rect key="frame" x="71" y="74" width="232" height="30"/>
+                                        <rect key="frame" x="71" y="91" width="232" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
@@ -733,40 +784,40 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="VDo-oE-GzE" firstAttribute="trailing" secondItem="pp0-BL-72D" secondAttribute="trailing" id="0Al-Bx-02i"/>
-                                    <constraint firstItem="pp0-BL-72D" firstAttribute="leading" secondItem="kNU-25-C7Y" secondAttribute="leading" id="0fj-rI-8iX"/>
-                                    <constraint firstItem="0tF-aO-kIH" firstAttribute="leading" secondItem="Xuc-ze-Fxy" secondAttribute="leading" constant="25" id="1JD-Vw-DT4"/>
-                                    <constraint firstItem="Dxm-TP-umx" firstAttribute="centerX" secondItem="X9i-WR-S8n" secondAttribute="centerX" id="29g-UM-tUK"/>
-                                    <constraint firstItem="Dxm-TP-umx" firstAttribute="trailing" secondItem="VDo-oE-GzE" secondAttribute="trailing" id="2Aj-AN-Y3S"/>
-                                    <constraint firstItem="Dxm-TP-umx" firstAttribute="top" secondItem="Xuc-ze-Fxy" secondAttribute="topMargin" id="2Qr-k7-jKn"/>
-                                    <constraint firstItem="0tF-aO-kIH" firstAttribute="top" secondItem="zg5-bg-ulU" secondAttribute="top" id="7Tm-bU-CLO"/>
-                                    <constraint firstAttribute="bottom" secondItem="0tF-aO-kIH" secondAttribute="bottom" constant="29" id="8ic-Iq-Z0j"/>
-                                    <constraint firstItem="Dxm-TP-umx" firstAttribute="leading" secondItem="VDo-oE-GzE" secondAttribute="leading" id="9Vq-uy-sfV"/>
-                                    <constraint firstItem="VDo-oE-GzE" firstAttribute="leading" secondItem="pp0-BL-72D" secondAttribute="leading" id="AiI-ZV-UGA"/>
-                                    <constraint firstItem="0tF-aO-kIH" firstAttribute="baseline" secondItem="zg5-bg-ulU" secondAttribute="firstBaseline" id="EIP-bD-boz"/>
-                                    <constraint firstItem="zg5-bg-ulU" firstAttribute="baseline" secondItem="0tF-aO-kIH" secondAttribute="firstBaseline" id="Ijs-kb-rJ4"/>
-                                    <constraint firstItem="zg5-bg-ulU" firstAttribute="leading" secondItem="0tF-aO-kIH" secondAttribute="trailing" constant="86" id="JNR-EG-hpu"/>
-                                    <constraint firstItem="Dxm-TP-umx" firstAttribute="leading" secondItem="Xuc-ze-Fxy" secondAttribute="leadingMargin" id="LuZ-55-wB0"/>
-                                    <constraint firstItem="kNU-25-C7Y" firstAttribute="trailing" secondItem="v7p-S1-Y1o" secondAttribute="trailing" id="PTh-Oq-3c3"/>
-                                    <constraint firstItem="VDo-oE-GzE" firstAttribute="top" secondItem="X9i-WR-S8n" secondAttribute="bottom" constant="15" id="QdR-vA-Szn"/>
-                                    <constraint firstItem="kNU-25-C7Y" firstAttribute="leading" secondItem="v7p-S1-Y1o" secondAttribute="leading" id="SDG-Ya-th4"/>
-                                    <constraint firstAttribute="trailing" secondItem="zg5-bg-ulU" secondAttribute="trailing" constant="30" id="g32-Gg-MFl"/>
-                                    <constraint firstItem="pp0-BL-72D" firstAttribute="top" secondItem="VDo-oE-GzE" secondAttribute="bottom" constant="8" symbolic="YES" id="nQU-Ov-3jr"/>
-                                    <constraint firstItem="pp0-BL-72D" firstAttribute="trailing" secondItem="kNU-25-C7Y" secondAttribute="trailing" id="oY3-Dx-Tp9"/>
-                                    <constraint firstItem="Dxm-TP-umx" firstAttribute="trailing" secondItem="Xuc-ze-Fxy" secondAttribute="trailingMargin" id="oYO-az-SMD"/>
-                                    <constraint firstItem="X9i-WR-S8n" firstAttribute="top" secondItem="Dxm-TP-umx" secondAttribute="bottom" constant="8" symbolic="YES" id="rYq-vd-5W0"/>
-                                    <constraint firstItem="v7p-S1-Y1o" firstAttribute="top" secondItem="kNU-25-C7Y" secondAttribute="bottom" constant="8" symbolic="YES" id="uCO-P3-1FJ"/>
-                                    <constraint firstItem="kNU-25-C7Y" firstAttribute="top" secondItem="pp0-BL-72D" secondAttribute="bottom" constant="8" symbolic="YES" id="uRB-Ac-Dd8"/>
-                                    <constraint firstItem="X9i-WR-S8n" firstAttribute="leading" secondItem="Xuc-ze-Fxy" secondAttribute="leading" constant="71" id="z3a-kD-Dvr"/>
+                                    <constraint firstItem="Dxm-TP-umx" firstAttribute="trailing" secondItem="Xuc-ze-Fxy" secondAttribute="trailingMargin" id="1B1-80-J6u"/>
+                                    <constraint firstItem="0tF-aO-kIH" firstAttribute="baseline" secondItem="zg5-bg-ulU" secondAttribute="firstBaseline" id="1GI-Nd-Gbu"/>
+                                    <constraint firstItem="kNU-25-C7Y" firstAttribute="trailing" secondItem="v7p-S1-Y1o" secondAttribute="trailing" id="5ox-B4-pkh"/>
+                                    <constraint firstItem="pp0-BL-72D" firstAttribute="top" secondItem="VDo-oE-GzE" secondAttribute="bottom" constant="8" symbolic="YES" id="7FT-KM-feS"/>
+                                    <constraint firstItem="zg5-bg-ulU" firstAttribute="leading" secondItem="0tF-aO-kIH" secondAttribute="trailing" constant="86" id="9et-tH-gpw"/>
+                                    <constraint firstAttribute="bottom" secondItem="0tF-aO-kIH" secondAttribute="bottom" constant="29" id="EjJ-6K-rMd"/>
+                                    <constraint firstItem="Dxm-TP-umx" firstAttribute="trailing" secondItem="VDo-oE-GzE" secondAttribute="trailing" id="Ewe-Vb-zuk"/>
+                                    <constraint firstItem="kNU-25-C7Y" firstAttribute="leading" secondItem="v7p-S1-Y1o" secondAttribute="leading" id="JUm-FU-goa"/>
+                                    <constraint firstItem="pp0-BL-72D" firstAttribute="trailing" secondItem="kNU-25-C7Y" secondAttribute="trailing" id="Jo6-lZ-DJQ"/>
+                                    <constraint firstItem="0tF-aO-kIH" firstAttribute="leading" secondItem="Xuc-ze-Fxy" secondAttribute="leading" constant="25" id="Ml4-Oy-DA6"/>
+                                    <constraint firstItem="VDo-oE-GzE" firstAttribute="trailing" secondItem="pp0-BL-72D" secondAttribute="trailing" id="PGv-Fw-c6i"/>
+                                    <constraint firstItem="Dxm-TP-umx" firstAttribute="top" secondItem="Xuc-ze-Fxy" secondAttribute="topMargin" id="PKd-ma-FIQ"/>
+                                    <constraint firstItem="X9i-WR-S8n" firstAttribute="top" secondItem="Dxm-TP-umx" secondAttribute="bottom" constant="8" symbolic="YES" id="SPK-gD-5Ii"/>
+                                    <constraint firstItem="0tF-aO-kIH" firstAttribute="top" secondItem="zg5-bg-ulU" secondAttribute="top" id="TnX-qg-0jP"/>
+                                    <constraint firstItem="v7p-S1-Y1o" firstAttribute="top" secondItem="kNU-25-C7Y" secondAttribute="bottom" constant="8" symbolic="YES" id="V6L-fx-pPt"/>
+                                    <constraint firstItem="pp0-BL-72D" firstAttribute="leading" secondItem="kNU-25-C7Y" secondAttribute="leading" id="eRs-20-x0K"/>
+                                    <constraint firstItem="VDo-oE-GzE" firstAttribute="top" secondItem="X9i-WR-S8n" secondAttribute="bottom" constant="8" symbolic="YES" id="jTX-kH-tS7"/>
+                                    <constraint firstItem="X9i-WR-S8n" firstAttribute="centerX" secondItem="VDo-oE-GzE" secondAttribute="centerX" id="l3q-KU-P9j"/>
+                                    <constraint firstItem="Dxm-TP-umx" firstAttribute="leading" secondItem="VDo-oE-GzE" secondAttribute="leading" id="lEB-Qk-BWM"/>
+                                    <constraint firstItem="zg5-bg-ulU" firstAttribute="baseline" secondItem="0tF-aO-kIH" secondAttribute="firstBaseline" id="oRU-8v-UVd"/>
+                                    <constraint firstAttribute="trailing" secondItem="zg5-bg-ulU" secondAttribute="trailing" constant="30" id="umv-dK-bB1"/>
+                                    <constraint firstItem="kNU-25-C7Y" firstAttribute="top" secondItem="pp0-BL-72D" secondAttribute="bottom" constant="8" symbolic="YES" id="vdo-5Y-w6e"/>
+                                    <constraint firstItem="X9i-WR-S8n" firstAttribute="leading" secondItem="Xuc-ze-Fxy" secondAttribute="leading" constant="71" id="yvH-L9-nQw"/>
+                                    <constraint firstItem="VDo-oE-GzE" firstAttribute="leading" secondItem="pp0-BL-72D" secondAttribute="leading" id="z05-8B-bSP"/>
+                                    <constraint firstItem="Dxm-TP-umx" firstAttribute="leading" secondItem="Xuc-ze-Fxy" secondAttribute="leadingMargin" id="z9R-QF-9Bq"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Xuc-ze-Fxy" secondAttribute="trailing" id="W0v-fG-g9A"/>
-                            <constraint firstItem="Xuc-ze-Fxy" firstAttribute="bottom" secondItem="3DD-N2-MC7" secondAttribute="top" id="X4u-M8-25n"/>
-                            <constraint firstItem="Xuc-ze-Fxy" firstAttribute="leading" secondItem="WKa-r6-sHz" secondAttribute="leading" id="vOc-bZ-y0Z"/>
-                            <constraint firstItem="Xuc-ze-Fxy" firstAttribute="top" secondItem="0Kc-G8-Sle" secondAttribute="bottom" id="yVA-bf-JNO"/>
+                            <constraint firstItem="Xuc-ze-Fxy" firstAttribute="bottom" secondItem="3DD-N2-MC7" secondAttribute="top" id="TMH-A2-JnW"/>
+                            <constraint firstAttribute="trailing" secondItem="Xuc-ze-Fxy" secondAttribute="trailing" id="eAj-9f-Zz2"/>
+                            <constraint firstItem="Xuc-ze-Fxy" firstAttribute="leading" secondItem="WKa-r6-sHz" secondAttribute="leading" id="fbJ-lT-hzb"/>
+                            <constraint firstItem="Xuc-ze-Fxy" firstAttribute="top" secondItem="0Kc-G8-Sle" secondAttribute="bottom" id="ga1-UQ-8Xp"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="QNX Home" id="cXM-Vn-Ftd"/>
@@ -799,42 +850,55 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QuA-5y-2xj">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5ZW-rh-8N2">
-                                        <rect key="frame" x="0.0" y="92" width="375" height="418"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <sections/>
-                                        <connections>
-                                            <outlet property="dataSource" destination="WhR-h2-Mss" id="hqD-dL-Yrl"/>
-                                            <outlet property="delegate" destination="WhR-h2-Mss" id="tMF-fI-4nw"/>
-                                        </connections>
-                                    </tableView>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y8c-J0-sFI">
-                                        <rect key="frame" x="0.0" y="8" width="375" height="76"/>
+                                        <rect key="frame" x="8" y="8" width="359" height="83"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="83" id="soI-5Q-df1"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="dataSource" destination="WhR-h2-Mss" id="w6U-gp-WkQ"/>
                                             <outlet property="delegate" destination="WhR-h2-Mss" id="0jO-5D-k7S"/>
                                         </connections>
                                     </pickerView>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5ZW-rh-8N2">
+                                        <rect key="frame" x="8" y="99" width="359" height="418"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <sections/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="WhR-h2-Mss" id="hqD-dL-Yrl"/>
+                                            <outlet property="delegate" destination="WhR-h2-Mss" id="tMF-fI-4nw"/>
+                                        </connections>
+                                    </tableView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="y8c-J0-sFI" firstAttribute="trailing" secondItem="5ZW-rh-8N2" secondAttribute="trailing" id="9cC-6o-Mx4"/>
-                                    <constraint firstItem="5ZW-rh-8N2" firstAttribute="top" secondItem="y8c-J0-sFI" secondAttribute="bottom" constant="8" symbolic="YES" id="Fxt-07-fBu"/>
-                                    <constraint firstItem="5ZW-rh-8N2" firstAttribute="centerY" secondItem="QuA-5y-2xj" secondAttribute="centerY" id="P2H-2n-APm"/>
-                                    <constraint firstAttribute="trailing" secondItem="y8c-J0-sFI" secondAttribute="trailing" id="oyq-b1-PRb"/>
-                                    <constraint firstItem="y8c-J0-sFI" firstAttribute="leading" secondItem="5ZW-rh-8N2" secondAttribute="leading" id="p1I-Pw-2j3"/>
-                                    <constraint firstItem="y8c-J0-sFI" firstAttribute="leading" secondItem="QuA-5y-2xj" secondAttribute="leading" id="r6H-lw-0BN"/>
-                                    <constraint firstItem="y8c-J0-sFI" firstAttribute="top" secondItem="QuA-5y-2xj" secondAttribute="topMargin" id="tJk-OG-xAL"/>
-                                    <constraint firstAttribute="bottom" secondItem="5ZW-rh-8N2" secondAttribute="bottom" constant="93" id="usf-0u-4eT"/>
+                                    <constraint firstItem="y8c-J0-sFI" firstAttribute="top" secondItem="QuA-5y-2xj" secondAttribute="topMargin" id="5YK-bO-jN4"/>
+                                    <constraint firstAttribute="bottom" secondItem="5ZW-rh-8N2" secondAttribute="bottom" constant="86" id="Avk-Af-Hil"/>
+                                    <constraint firstItem="y8c-J0-sFI" firstAttribute="leading" secondItem="QuA-5y-2xj" secondAttribute="leadingMargin" id="NKt-Ck-Chv"/>
+                                    <constraint firstItem="y8c-J0-sFI" firstAttribute="trailing" secondItem="QuA-5y-2xj" secondAttribute="trailingMargin" id="lgy-RS-TF5"/>
+                                    <constraint firstItem="y8c-J0-sFI" firstAttribute="trailing" secondItem="5ZW-rh-8N2" secondAttribute="trailing" id="q2N-Bf-Fa2"/>
+                                    <constraint firstItem="y8c-J0-sFI" firstAttribute="leading" secondItem="5ZW-rh-8N2" secondAttribute="leading" id="vFw-Wv-dla"/>
+                                    <constraint firstItem="5ZW-rh-8N2" firstAttribute="top" secondItem="y8c-J0-sFI" secondAttribute="bottom" constant="8" symbolic="YES" id="xbz-7P-94Y"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="QuA-5y-2xj" firstAttribute="bottom" secondItem="Ccv-1Q-wwb" secondAttribute="top" id="LJV-P4-Qug"/>
-                            <constraint firstItem="QuA-5y-2xj" firstAttribute="top" secondItem="mlD-uw-uCg" secondAttribute="bottom" id="QsF-Ky-h3P"/>
-                            <constraint firstItem="QuA-5y-2xj" firstAttribute="leading" secondItem="W6F-ju-3D4" secondAttribute="leading" id="ub8-Yc-7Ax"/>
-                            <constraint firstAttribute="trailing" secondItem="QuA-5y-2xj" secondAttribute="trailing" id="zDM-d8-GEm"/>
+                            <constraint firstAttribute="trailing" secondItem="QuA-5y-2xj" secondAttribute="trailing" id="W6x-bX-Pf7"/>
+                            <constraint firstItem="QuA-5y-2xj" firstAttribute="leading" secondItem="W6F-ju-3D4" secondAttribute="leading" id="meo-bm-Iwd"/>
+                            <constraint firstItem="QuA-5y-2xj" firstAttribute="top" secondItem="mlD-uw-uCg" secondAttribute="bottom" id="scm-Vd-Htg"/>
+                            <constraint firstItem="QuA-5y-2xj" firstAttribute="bottom" secondItem="Ccv-1Q-wwb" secondAttribute="top" id="xZC-1i-Ok0"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="QNX Home" id="ow8-Pt-6PT">

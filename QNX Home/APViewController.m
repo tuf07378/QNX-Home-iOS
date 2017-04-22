@@ -31,11 +31,7 @@ NSMutableArray *pins;
     }
     types = globals.peripheralTypes;
     boardModels = globals.peripheralModels;
-    [self.house selectRow:0 inComponent:0 animated:YES];
-    [self.board selectRow:0 inComponent:0 animated:YES];
-    [self.pType selectRow:0 inComponent:0 animated:YES];
-    [self.pMod selectRow:0 inComponent:0 animated:YES];
-    [self.pCon selectRow:0 inComponent:0 animated:YES];
+    models = [[NSMutableArray alloc] init];
     NSString *title = globals.houses[[self.house selectedRowInComponent:0]];
     NSArray *data = [globals.allData objectForKey:title];
     NSArray *boards = data[1];
@@ -43,6 +39,12 @@ NSMutableArray *pins;
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
     [newP addAction:ok];
     [self presentViewController:newP animated:YES completion:^{
+        [self.house selectRow:0 inComponent:0 animated:YES];
+        [self.board selectRow:0 inComponent:0 animated:YES];
+        [self.pType selectRow:0 inComponent:0 animated:YES];
+        [self.pMod selectRow:0 inComponent:0 animated:YES];
+        [self.pCon selectRow:0 inComponent:0 animated:YES];
+        [models addObjectsFromArray:[globals.peripheralModels objectForKey:globals.peripheralTypes[[self.pType selectedRowInComponent:0]]]];
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: title, @"HouseName", globals.seshToke, @"SessionToken", boards[[self.board selectedRowInComponent:0]], @"BoardName", globals.peripheralTypes[[self.pType selectedRowInComponent:0]], @"PeripheralTypeName", nil];
         NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/getavailablepinconnections/" withData:mapData isAsync:NO];
         [self parsePins:body];
@@ -136,6 +138,8 @@ NSMutableArray *pins;
         [self.board reloadAllComponents];
     }
     else if(pickerView == self.pType){
+        [models removeAllObjects];
+        [models addObjectsFromArray:[globals.peripheralModels objectForKey:globals.peripheralTypes[row]]];
         NSLog(@"%@ %@ %@", types, models, boardModels);
         GlobalVars *globals = [GlobalVars sharedInstance];
         NSString *title = globals.houses[[self.house selectedRowInComponent:0]];
@@ -242,6 +246,7 @@ NSMutableArray *pins;
     else{
         NSMutableArray *periphs = [[NSMutableArray alloc] init];
         [periphs addObjectsFromArray:data[0]];
+        
         NSLog(@"%@ - %@", models[[self.pMod selectedRowInComponent:0]], pins[[self.pCon selectedRowInComponent:0]]);
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", title, @"houseName", boards[[self.board selectedRowInComponent:0]], @"boardName", self.pName.text, @"peripheralName", models[[self.pMod selectedRowInComponent:0]], @"peripheralModelName", pins[[self.pCon selectedRowInComponent:0]], @"pinConnectionName", nil];
         NSLog(@"%@", mapData);
