@@ -946,7 +946,8 @@ NSArray *picker;
         [relays setValue:@"1" forKey:pName];
     else
         [relays setValue:@"0" forKey:pName];
-    [globals.houseData objectForKey:houseN][0] = relays;
+    NSMutableArray *house = [globals.houseData objectForKey:houseN];
+    [globals.houseData setObject:house forKey:houseN];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
