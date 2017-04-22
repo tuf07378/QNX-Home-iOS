@@ -23,10 +23,8 @@
         [self.capture setHidden:YES];
     }
     else{
-        NSString *ImageURL = @"https://s3.amazonaws.com/smart-home-gateway/test5.jpeg";
-        NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:ImageURL]];
-        self.imageView.image = [UIImage imageWithData:imageData];
-        [self.imageView setClipsToBounds:YES];
+        [self loadImage];
+        NSTimer *imageTimer = [NSTimer scheduledTimerWithTimeInterval: 2.0 target:self selector:@selector(loadImage) userInfo:nil repeats: YES];
     }
     // Do any additional setup after loading the view.
 }
@@ -34,6 +32,12 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+-(void)loadImage{
+    NSString *ImageURL = @"https://s3.amazonaws.com/smart-home-gateway/test5.jpeg";
+    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:ImageURL]];
+    self.imageView.image = [UIImage imageWithData:imageData];
+    [self.imageView setClipsToBounds:YES];
 }
 
 - (NSString *)post:(NSString *) link withData:(NSDictionary *) data isAsync:(BOOL)aSync{
