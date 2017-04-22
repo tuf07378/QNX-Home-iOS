@@ -50,6 +50,7 @@
             [self parseHouses:test];
             globals.houseData = (NSMutableDictionary *) [self getSensorData];
             NSMutableDictionary *allData = [[NSMutableDictionary alloc] init];
+            NSMutableArray *words = [NSMutableArray arrayWithObjects:@"Dashboard", @"Sensors", @"Relays", @"Cameras", nil];
             for (NSString *house in globals.houses){
                 mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
                 NSString *received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getcurrentperipheralsbyhouse" withData:mapData isAsync:NO];
@@ -70,7 +71,21 @@
                     boards = [[NSMutableArray alloc] init];
                 }
                 [allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:house];
+                for (int i = 0; i < [periphs count]; i+=4){
+                    NSString *periph = [periphs objectAtIndex:i];
+                    if ([periphs[[periphs indexOfObject:periph] + 3] isEqualToString:@"Sensor"]){
+                        [words addObject:[NSString stringWithFormat:@"%@ %@ %@", house, @"Show", periph]];
+                    }
+                    else if ([periphs[[periphs indexOfObject:periph] + 3] isEqualToString:@"Relay"]){
+                        [words addObject:[NSString stringWithFormat:@"%@ %@ %@", house, @"Turn On", periph]];
+                        [words addObject:[NSString stringWithFormat:@"%@ %@ %@", house, @"Turn Off", periph]];
+                    }
+                    else{
+                        [words addObject:[NSString stringWithFormat:@"%@ %@ %@", house, @"Show", periph]];
+                    }
+                }
             }
+            globals.commands = words;
             globals.allData = allData;
             mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", nil];
             body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getperipheraltypes/" withData:mapData isAsync:NO];

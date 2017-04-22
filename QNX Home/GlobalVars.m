@@ -33,6 +33,7 @@
         _seg = NO;
         _peripheralTypes = [[NSMutableArray alloc] init];
         _peripheralModels = [[NSMutableDictionary alloc] init];
+        _commands = [[NSMutableArray alloc] init];
     }
     return self;
 }

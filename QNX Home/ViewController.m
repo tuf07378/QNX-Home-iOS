@@ -19,8 +19,8 @@ NSArray *picker;
 
 - (void)viewDidLoad{
     OELanguageModelGenerator *lmGenerator = [[OELanguageModelGenerator alloc] init];
-    
-    NSMutableArray *words = [NSMutableArray arrayWithObjects:@"Dashboard", @"Sensors", @"Relays", @"Cameras", nil];
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    NSMutableArray *words = globals.commands;
     NSString *name = @"NameIWantForMyLanguageModelFiles";
     NSError *err = [lmGenerator generateLanguageModelFromArray:words withFilesNamed:name forAcousticModelAtPath:[OEAcousticModel pathToModel:@"AcousticModelEnglish"]]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to create a Spanish language model instead of an English one.
     
@@ -36,7 +36,6 @@ NSArray *picker;
     }
     self.openEarsEventsObserver = [[OEEventsObserver alloc] init];
     [self.openEarsEventsObserver setDelegate:self];
-    GlobalVars *globals = [GlobalVars sharedInstance];
     picker = [[NSMutableArray alloc] initWithObjects:@"Choose a House", @"", nil];
     picker = [[picker arrayByAddingObjectsFromArray: globals.houses] mutableCopy];
     self.uname.text = globals.uname;
@@ -47,6 +46,7 @@ NSArray *picker;
         else
             [self.selector setSelectedSegmentIndex:0];
     }
+    
 }
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
@@ -134,7 +134,35 @@ NSArray *picker;
     else{
         UIAlertController *textConfirm = [UIAlertController alertControllerWithTitle:@"Confirm Command" message:hypothesis preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
-            
+            NSArray *commandArray = [hypothesis componentsSeparatedByString:@" "];
+            if ([hypothesis containsString:@" Show "]){
+
+            }
+            else{
+                NSMutableString *relay = [[NSMutableString alloc] init];
+                NSUInteger loc = [commandArray indexOfObject:@"Turn"];
+                NSMutableString *house = [[NSMutableString alloc] init];
+                for(int h = 0; h < (int)loc; h++){
+                    [house appendString:commandArray[h]];
+                }
+                NSDictionary *relays = [globals.houseData objectForKey:house][0];
+                for(int i = (int)loc + 2; i < [commandArray count]; i++){
+                    [relay appendString:commandArray[i]];
+                }
+                if ([commandArray[(int)loc + 1] isEqualToString:@"On"]){
+                    [relays setValue:@"1" forKey:relay];
+                }
+                else{
+                    [relays setValue:@"0" forKey:relay];
+                }
+                NSArray *data = [NSArray arrayWithObjects:relays, [globals.houseData objectForKey:house][1], nil];
+                [globals.houseData setObject:data forKey:house];
+                [self.tableView reloadData];
+                NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", relay, @"PeripheralName", house, @"HouseName", [relays objectForKey:relay], @"PeripheralValue", nil];
+                [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/setrelaystatus" withData:mapData isAsync:YES];
+                if (globals.type < 3)
+                    [self transition:@"ViewController"];
+            }
             
         }];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
@@ -556,13 +584,13 @@ NSArray *picker;
         cell.accessoryView = switchView;
         NSArray *periphs = [globals.houseData objectForKey:title];
         NSDictionary *relays = periphs[0];
-        if ([[relays objectForKey:[[globals.houseData objectForKey:title][0] allKeys][indexPath.row]]  isEqual: @"0"])
-            [switchView setOn:NO animated:NO];
+        NSString *text = [[globals.houseData objectForKey:title][0] allKeys][indexPath.row];
+        if ([[relays objectForKey:text]  isEqual: @"0"])
+            [switchView setOn:NO animated:YES];
         else
-            [switchView setOn:YES animated:NO];
+            [switchView setOn:YES animated:YES];
         [switchView addTarget:self action:@selector(switchChanged:) forControlEvents:UIControlEventValueChanged];
         switchView.tag = indexPath.row;
-        NSString *text = [[globals.houseData objectForKey:title][0] allKeys][indexPath.row];
         cell.textLabel.text = text;
         cell.detailTextLabel.text = nil;
     }
@@ -897,9 +925,9 @@ NSArray *picker;
     NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", pName, @"PeripheralName", houseN, @"HouseName", [NSString stringWithFormat:@"%d", [sender isOn]], @"PeripheralValue", nil];
     [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/setrelaystatus" withData:mapData isAsync:YES];
     if ([sender isOn])
-        [relays setValue:@"0" forKey:pName];
-    else
         [relays setValue:@"1" forKey:pName];
+    else
+        [relays setValue:@"0" forKey:pName];
     [globals.houseData objectForKey:houseN][0] = relays;
 }
 
