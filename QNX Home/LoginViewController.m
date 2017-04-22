@@ -501,7 +501,7 @@
             sensorData = [self parseSensors:relayData];
         }
         else{
-            sensorData = [[NSArray alloc] init];
+            sensorData = [NSArray arrayWithObject:@"Empty"];
         }
         [periphData addObject: sensorData];
         [data setObject:periphData forKey:house];
