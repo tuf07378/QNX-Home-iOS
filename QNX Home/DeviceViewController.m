@@ -22,12 +22,54 @@
     if(globals.type != 3){
         [self.capture setHidden:YES];
     }
+    else{
+        NSString *ImageURL = @"https://s3.amazonaws.com/smart-home-gateway/test5.jpeg";
+        NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:ImageURL]];
+        self.imageView.image = [UIImage imageWithData:imageData];
+        [self.imageView setClipsToBounds:YES];
+    }
     // Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (NSString *)post:(NSString *) link withData:(NSDictionary *) data isAsync:(BOOL)aSync{
+    NSError *error;
+    NSURL *url = [[NSURL alloc] initWithString:link];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    request.HTTPMethod = @"POST";
+    [request setValue:@"application/json; charset=UTF8" forHTTPHeaderField:@"Content-Type"];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:data options:0 error:&error];
+    request.HTTPBody = postData;
+    if(aSync){
+        NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error){
+            NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            self.returned = body;
+        }];
+        [task resume];
+    }
+    else{
+        dispatch_semaphore_t sem;
+        sem = dispatch_semaphore_create(0);
+        NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error){
+            NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            self.returned = body;
+            dispatch_semaphore_signal(sem);
+        }];
+        [task resume];
+        dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+    }
+    return self.returned;
+}
+-(IBAction)capture:(id)sender{
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", @"HardwickCameraOne", @"peripheralName", @"Hardwick", @"houseName", nil];
+    //NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", globals.device, @"peripheralName", [globals.houses objectAtIndex:globals.house-2], @"houseName", nil];
+    NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/takepicture" withData:mapData isAsync:NO];
+    NSLog(@"%@", body);
 }
 
 /*

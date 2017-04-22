@@ -1020,7 +1020,9 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="cameras" destination="5ZW-rh-8N2" id="Und-1Z-hfC"/>
                         <outlet property="house" destination="y8c-J0-sFI" id="vv9-1G-gFT"/>
+                        <segue destination="8t8-Tw-HR6" kind="show" identifier="History" id="1kg-va-SxJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a5o-V8-ftg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1071,6 +1073,9 @@
                                                 <integer key="value" value="5"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="capture:" destination="8t8-Tw-HR6" eventType="touchUpInside" id="hze-JJ-U4j"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -1108,4 +1113,7 @@
         <image name="menu" width="28" height="28"/>
         <image name="microphone" width="28" height="28"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="1kg-va-SxJ"/>
+    </inferredMetricsTieBreakers>
 </document>

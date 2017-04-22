@@ -602,7 +602,7 @@ NSArray *picker;
         cell.accessoryView = NULL;
     }
     else{
-        
+        cell.textLabel.text = @"HardwickCameraOne";
     }
     
     return cell;
@@ -813,7 +813,7 @@ NSArray *picker;
         return [sensors count] / 5;
     }
     else if (globals.type == 3){
-        return 0;
+        return 1;
     }
     return 5;
 }

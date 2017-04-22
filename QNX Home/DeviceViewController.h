@@ -12,5 +12,6 @@
 
 @property (retain, readwrite) IBOutlet UIImageView *imageView;
 @property IBOutlet UIButton *capture;
+@property (retain, readwrite) NSString *returned;
 
 @end
