@@ -251,7 +251,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jfJ-7z-fXa">
-                                        <rect key="frame" x="8" y="100" width="359" height="495"/>
+                                        <rect key="frame" x="8" y="100" width="359" height="447"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" textLabel="odz-QD-HVa" detailTextLabel="TCl-7k-0UG" style="IBUITableViewCellStyleValue1" id="6y9-EA-hvr">
@@ -296,7 +296,7 @@
                                         <rect key="frame" x="8" y="8" width="359" height="84"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="84" id="6zj-8F-7cg"/>
+                                            <constraint firstAttribute="height" constant="84" id="h6T-He-sav"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -311,25 +311,47 @@
                                             <outlet property="delegate" destination="pjz-eZ-enX" id="0yd-08-GX7"/>
                                         </connections>
                                     </pickerView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aRa-vH-3dT">
+                                        <rect key="frame" x="8" y="555" width="359" height="40"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="AXp-xM-LCp"/>
+                                        </constraints>
+                                        <state key="normal" title="Refresh"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="refresh:" destination="pjz-eZ-enX" eventType="touchUpInside" id="EjR-sw-Cz6"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="v3V-TH-hcl" firstAttribute="trailing" secondItem="43h-Vg-M08" secondAttribute="trailingMargin" id="2dt-9D-hCa"/>
-                                    <constraint firstItem="v3V-TH-hcl" firstAttribute="leading" secondItem="jfJ-7z-fXa" secondAttribute="leading" id="4v5-fV-wZ6"/>
-                                    <constraint firstItem="v3V-TH-hcl" firstAttribute="trailing" secondItem="jfJ-7z-fXa" secondAttribute="trailing" id="ZBI-XS-rAQ"/>
-                                    <constraint firstItem="jfJ-7z-fXa" firstAttribute="bottom" secondItem="43h-Vg-M08" secondAttribute="bottomMargin" id="aQ2-74-Xd3"/>
-                                    <constraint firstItem="jfJ-7z-fXa" firstAttribute="top" secondItem="v3V-TH-hcl" secondAttribute="bottom" constant="8" symbolic="YES" id="kvC-PP-SeP"/>
-                                    <constraint firstItem="v3V-TH-hcl" firstAttribute="top" secondItem="43h-Vg-M08" secondAttribute="topMargin" id="tdo-mt-t1o"/>
-                                    <constraint firstItem="v3V-TH-hcl" firstAttribute="leading" secondItem="43h-Vg-M08" secondAttribute="leadingMargin" id="ziX-Nh-wc8"/>
+                                    <constraint firstItem="aRa-vH-3dT" firstAttribute="bottom" secondItem="43h-Vg-M08" secondAttribute="bottomMargin" id="0E2-It-s8c"/>
+                                    <constraint firstItem="jfJ-7z-fXa" firstAttribute="trailing" secondItem="aRa-vH-3dT" secondAttribute="trailing" id="Att-HL-7CH"/>
+                                    <constraint firstItem="v3V-TH-hcl" firstAttribute="top" secondItem="43h-Vg-M08" secondAttribute="topMargin" id="JzO-Pb-8An"/>
+                                    <constraint firstItem="v3V-TH-hcl" firstAttribute="leading" secondItem="jfJ-7z-fXa" secondAttribute="leading" id="KjM-uZ-aj6"/>
+                                    <constraint firstItem="v3V-TH-hcl" firstAttribute="leading" secondItem="43h-Vg-M08" secondAttribute="leadingMargin" id="VOE-Eb-iZO"/>
+                                    <constraint firstItem="v3V-TH-hcl" firstAttribute="trailing" secondItem="jfJ-7z-fXa" secondAttribute="trailing" id="XVW-uc-EIP"/>
+                                    <constraint firstItem="aRa-vH-3dT" firstAttribute="top" secondItem="jfJ-7z-fXa" secondAttribute="bottom" constant="8" symbolic="YES" id="hkC-mi-klc"/>
+                                    <constraint firstItem="v3V-TH-hcl" firstAttribute="trailing" secondItem="43h-Vg-M08" secondAttribute="trailingMargin" id="kfp-zu-JO1"/>
+                                    <constraint firstItem="jfJ-7z-fXa" firstAttribute="leading" secondItem="aRa-vH-3dT" secondAttribute="leading" id="luv-NH-ON1"/>
+                                    <constraint firstItem="jfJ-7z-fXa" firstAttribute="top" secondItem="v3V-TH-hcl" secondAttribute="bottom" constant="8" symbolic="YES" id="qIz-gk-qVv"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="43h-Vg-M08" secondAttribute="trailing" id="60m-Mg-1NX"/>
-                            <constraint firstItem="43h-Vg-M08" firstAttribute="leading" secondItem="5In-uK-q34" secondAttribute="leading" id="Jg7-On-flu"/>
-                            <constraint firstItem="43h-Vg-M08" firstAttribute="bottom" secondItem="u7e-Uc-Mqp" secondAttribute="top" id="r76-Bo-ckc"/>
-                            <constraint firstItem="43h-Vg-M08" firstAttribute="top" secondItem="2Qn-wt-eaq" secondAttribute="bottom" id="uuR-fI-7ZV"/>
+                            <constraint firstAttribute="trailing" secondItem="43h-Vg-M08" secondAttribute="trailing" id="9jo-ks-uWM"/>
+                            <constraint firstItem="43h-Vg-M08" firstAttribute="top" secondItem="2Qn-wt-eaq" secondAttribute="bottom" id="Gx0-cQ-9tj"/>
+                            <constraint firstItem="43h-Vg-M08" firstAttribute="bottom" secondItem="u7e-Uc-Mqp" secondAttribute="top" id="Vyk-Sl-c3K"/>
+                            <constraint firstItem="43h-Vg-M08" firstAttribute="leading" secondItem="5In-uK-q34" secondAttribute="leading" id="ep9-CK-anf"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="QNX Home" id="vxq-bc-iFP">

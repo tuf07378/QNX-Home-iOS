@@ -1265,5 +1265,16 @@ NSArray *picker;
     return sens;
 }
 
+-(IBAction)refresh:(id)sender{
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    NSString *house = picker[globals.house];
+    NSLog(@"%@", house);
+    UIAlertController *refresh = [UIAlertController alertControllerWithTitle:@"Refreshing" message:@"Refreshing user data, please wait." preferredStyle:UIAlertControllerStyleAlert];
+    [self presentViewController:refresh animated:YES completion:^(void){
+        globals.houseData = (NSMutableDictionary *) [self getSensorData];
+        [self.tableView reloadData];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }];
+}
 
 @end
