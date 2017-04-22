@@ -31,6 +31,8 @@
         _isConfig = NO;
         _allData = [[NSMutableDictionary alloc] init];
         _seg = NO;
+        _peripheralTypes = [[NSMutableArray alloc] init];
+        _peripheralModels = [[NSMutableDictionary alloc] init];
     }
     return self;
 }

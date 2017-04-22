@@ -25,5 +25,9 @@
 @property(assign, readwrite) BOOL isConfig;
 @property(retain, nonatomic, readwrite) NSMutableDictionary *allData;
 @property(assign, readwrite) BOOL seg;
+@property(strong, nonatomic, readwrite) NSMutableArray *peripheralTypes;
+@property(strong, nonatomic, readwrite) NSMutableDictionary *peripheralModels;
+
+
 
 @end

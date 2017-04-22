@@ -15,7 +15,7 @@
 
 @end
 
-NSMutableArray *types;
+NSArray *types;
 NSMutableArray *models;
 NSMutableDictionary *boardModels;
 NSMutableArray *pins;
@@ -29,23 +29,25 @@ NSMutableArray *pins;
     if ([globals.houses count] == 0 || globals.houses == nil){
         [self.navigationController popViewControllerAnimated:YES];
     }
-    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", nil];
-    NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getperipheraltypes/" withData:mapData isAsync:NO];
-    [self parseTypes:body];
-    [self parseModels];
-    NSString *title = globals.houses[[self.house selectedRowInComponent:0]];
-    NSArray *data = [globals.allData objectForKey:title];
-    NSArray *boards = data[1];
-    if ([boards count] != 0 && boards != nil){
-        mapData = [[NSDictionary alloc] initWithObjectsAndKeys: title, @"HouseName", globals.seshToke, @"SessionToken", boards[[self.board selectedRowInComponent:0]], @"BoardName", types[[self.pType selectedRowInComponent:0]], @"PeripheralTypeName", nil];
-        body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/getavailablepinconnections/" withData:mapData isAsync:NO];
-        [self parsePins:body];
-    }
+    types = globals.peripheralTypes;
+    boardModels = globals.peripheralModels;
     [self.house selectRow:0 inComponent:0 animated:YES];
     [self.board selectRow:0 inComponent:0 animated:YES];
     [self.pType selectRow:0 inComponent:0 animated:YES];
     [self.pMod selectRow:0 inComponent:0 animated:YES];
     [self.pCon selectRow:0 inComponent:0 animated:YES];
+    NSString *title = globals.houses[[self.house selectedRowInComponent:0]];
+    NSArray *data = [globals.allData objectForKey:title];
+    NSArray *boards = data[1];
+    UIAlertController *newP = [UIAlertController alertControllerWithTitle:@"New Device" message:@"Please select location and peripheral data." preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+    [newP addAction:ok];
+    [self presentViewController:newP animated:YES completion:^{
+        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: title, @"HouseName", globals.seshToke, @"SessionToken", boards[[self.board selectedRowInComponent:0]], @"BoardName", globals.peripheralTypes[[self.pType selectedRowInComponent:0]], @"PeripheralTypeName", nil];
+        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/getavailablepinconnections/" withData:mapData isAsync:NO];
+        [self parsePins:body];
+        [self.pCon reloadAllComponents];
+    }];
     // Do any additional setup after loading the view.
 }
 
@@ -209,54 +211,6 @@ NSMutableArray *pins;
     [self.view endEditing:YES];
 }
 
-- (void)parseTypes:(NSString *)body{
-    types = [[NSMutableArray alloc] init];
-    NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
-    NSString *haystackPrefix = @"[[";
-    NSString *haystackSuffix = @"]]";
-    NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
-    NSString *needle = [body substringWithRange:needleRange];
-    NSArray *houseArray = [needle componentsSeparatedByString:@","];
-    NSMutableArray *peripherals = [[NSMutableArray alloc] init];
-    for(int i = 0; i < numberOfOccurrences + 1; i++){
-        NSString *house = (NSString *)houseArray[i];
-        haystackPrefix = @"{\"PeripheralTypeName\":\"";
-        haystackSuffix = @"\"}";
-        needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
-        needle = [house substringWithRange:needleRange];
-        [types addObject:[NSString stringWithString:needle]];
-    }
-}
-- (void)parseModels{
-    GlobalVars *globals = [GlobalVars sharedInstance];
-    boardModels = [[NSMutableDictionary alloc] init];
-    for(int i = 0; i < [types count]; i++){
-        models = [[NSMutableArray alloc] init];
-        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: [types objectAtIndex:i], @"PeripheralTypeName", globals.seshToke, @"SessionToken", nil];
-        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getperipheralmodelsbyperipheraltype/" withData:mapData isAsync:NO];
-        NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
-        if ([body isEqualToString:@"[[]]"] || [body isEqualToString:@"{\"message\":null}"]){
-            [boardModels setObject:models forKey:[types objectAtIndex:i]];
-        }
-        else{
-            NSString *haystackPrefix = @"[[";
-            NSString *haystackSuffix = @"]]";
-            NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
-            NSString *needle = [body substringWithRange:needleRange];
-            NSArray *houseArray = [needle componentsSeparatedByString:@","];
-            NSMutableArray *peripherals = [[NSMutableArray alloc] init];
-            for(int i = 0; i < numberOfOccurrences + 1; i++){
-                NSString *house = (NSString *)houseArray[i];
-                haystackPrefix = @"{\"PeripheralTypeName\":\"\"";
-                haystackSuffix = @"\"}";
-                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
-                needle = [house substringWithRange:needleRange];
-                [models addObject:[NSString stringWithString:needle]];
-            }
-            [boardModels setObject:models forKey:[types objectAtIndex:i]];
-        }
-    }
-}
 - (void)parsePins:(NSString *)body{
     pins = [[NSMutableArray alloc] init];
     NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
@@ -265,7 +219,6 @@ NSMutableArray *pins;
     NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
     NSString *needle = [body substringWithRange:needleRange];
     NSArray *houseArray = [needle componentsSeparatedByString:@","];
-    NSMutableArray *peripherals = [[NSMutableArray alloc] init];
     for(int i = 0; i < numberOfOccurrences + 1; i++){
                 NSString *house = (NSString *)houseArray[i];
                 haystackPrefix = @"{\"PinConnectionName\":\"";

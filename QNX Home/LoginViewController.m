@@ -72,6 +72,10 @@
                 [allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:house];
             }
             globals.allData = allData;
+            mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", nil];
+            body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getperipheraltypes/" withData:mapData isAsync:NO];
+            [self parseTypes:body];
+            [self parseModels];
             [self dismissViewControllerAnimated:TRUE completion:nil];
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
@@ -421,6 +425,53 @@
         }
     }
     return data;
+}
+
+- (void)parseTypes:(NSString *)body{
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
+    NSString *haystackPrefix = @"[[";
+    NSString *haystackSuffix = @"]]";
+    NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
+    NSString *needle = [body substringWithRange:needleRange];
+    NSArray *houseArray = [needle componentsSeparatedByString:@","];
+    for(int i = 0; i < numberOfOccurrences + 1; i++){
+        NSString *house = (NSString *)houseArray[i];
+        haystackPrefix = @"{\"PeripheralTypeName\":\"";
+        haystackSuffix = @"\"}";
+        needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+        needle = [house substringWithRange:needleRange];
+        [globals.peripheralTypes addObject:[NSString stringWithString:needle]];
+    }
+}
+
+- (void)parseModels{
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    for(int i = 0; i < [globals.peripheralTypes count]; i++){
+        NSMutableArray *models = [[NSMutableArray alloc] init];
+        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: [globals.peripheralTypes objectAtIndex:i], @"PeripheralTypeName", globals.seshToke, @"SessionToken", nil];
+        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getperipheralmodelsbyperipheraltype/" withData:mapData isAsync:NO];
+        NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
+        if ([body isEqualToString:@"[[]]"] || [body isEqualToString:@"{\"message\":null}"]){
+            [globals.peripheralModels setObject:models forKey:[globals.peripheralTypes objectAtIndex:i]];
+        }
+        else{
+            NSString *haystackPrefix = @"[[";
+            NSString *haystackSuffix = @"]]";
+            NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
+            NSString *needle = [body substringWithRange:needleRange];
+            NSArray *houseArray = [needle componentsSeparatedByString:@","];
+            for(int i = 0; i < numberOfOccurrences + 1; i++){
+                NSString *house = (NSString *)houseArray[i];
+                haystackPrefix = @"{\"PeripheralTypeName\":\"\"";
+                haystackSuffix = @"\"}";
+                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                needle = [house substringWithRange:needleRange];
+                [models addObject:[NSString stringWithString:needle]];
+            }
+            [globals.peripheralModels setObject:models forKey:[globals.peripheralTypes objectAtIndex:i]];
+        }
+    }
 }
 
 @end
