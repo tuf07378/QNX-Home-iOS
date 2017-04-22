@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ulQ-c1-Igg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ulQ-c1-Igg">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -44,19 +45,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Onp-Zt-ih3">
-                                <rect key="frame" x="54" y="364" width="266" height="197"/>
+                                <rect key="frame" x="53" y="341" width="268" height="194.5"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Username" borderStyle="roundedRect" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="U4M-SN-E4E">
-                                        <rect key="frame" x="25" y="30" width="217" height="30"/>
+                                        <rect key="frame" x="25" y="30" width="215" height="30"/>
                                         <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
                                                 <real key="value" value="0.5"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="10"/>
+                                                <integer key="value" value="5"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
@@ -64,7 +65,7 @@
                                         </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D2e-Qu-2oO">
-                                        <rect key="frame" x="72" y="160" width="123" height="40"/>
+                                        <rect key="frame" x="26" y="160" width="214" height="40"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                         <state key="normal" title="Login"/>
@@ -73,7 +74,7 @@
                                                 <integer key="value" value="1"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="15"/>
+                                                <integer key="value" value="5"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
@@ -81,7 +82,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RVA-Qk-Vfp">
-                                        <rect key="frame" x="72" y="208" width="123" height="40"/>
+                                        <rect key="frame" x="26" y="208" width="214" height="40"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                         <state key="normal" title="Register"/>
@@ -90,7 +91,7 @@
                                                 <integer key="value" value="1"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="15"/>
+                                                <integer key="value" value="5"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
@@ -98,16 +99,16 @@
                                         </connections>
                                     </button>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Password" borderStyle="roundedRect" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="YcP-WG-jBN">
-                                        <rect key="frame" x="26" y="78" width="216" height="30"/>
+                                        <rect key="frame" x="26" y="78" width="214" height="30"/>
                                         <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
                                                 <real key="value" value="0.5"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="10"/>
+                                                <integer key="value" value="5"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
@@ -115,20 +116,20 @@
                                         </connections>
                                     </textField>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="1" alpha="0.12604345034246575" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="U4M-SN-E4E" firstAttribute="centerX" secondItem="Onp-Zt-ih3" secondAttribute="centerX" id="G60-BH-MdF"/>
-                                    <constraint firstItem="YcP-WG-jBN" firstAttribute="top" secondItem="U4M-SN-E4E" secondAttribute="bottom" constant="18" id="GU7-9k-v7a"/>
-                                    <constraint firstItem="D2e-Qu-2oO" firstAttribute="leading" secondItem="RVA-Qk-Vfp" secondAttribute="leading" id="T6e-8M-nuU"/>
-                                    <constraint firstItem="D2e-Qu-2oO" firstAttribute="leading" secondItem="Onp-Zt-ih3" secondAttribute="leading" constant="72" id="Wqi-JU-Sg4"/>
-                                    <constraint firstItem="U4M-SN-E4E" firstAttribute="trailing" secondItem="YcP-WG-jBN" secondAttribute="trailing" id="XE3-1V-iQu"/>
-                                    <constraint firstItem="U4M-SN-E4E" firstAttribute="leading" secondItem="Onp-Zt-ih3" secondAttribute="leading" constant="25" id="ax8-Fv-3WY"/>
-                                    <constraint firstItem="U4M-SN-E4E" firstAttribute="top" secondItem="Onp-Zt-ih3" secondAttribute="top" constant="30" id="cV4-VR-Msb"/>
-                                    <constraint firstItem="YcP-WG-jBN" firstAttribute="centerX" secondItem="D2e-Qu-2oO" secondAttribute="centerX" id="jFf-OI-A4t"/>
-                                    <constraint firstItem="U4M-SN-E4E" firstAttribute="centerX" secondItem="YcP-WG-jBN" secondAttribute="centerX" id="nTW-36-qaS"/>
-                                    <constraint firstItem="RVA-Qk-Vfp" firstAttribute="top" secondItem="D2e-Qu-2oO" secondAttribute="bottom" constant="8" symbolic="YES" id="nk5-3W-CcX"/>
-                                    <constraint firstItem="D2e-Qu-2oO" firstAttribute="trailing" secondItem="RVA-Qk-Vfp" secondAttribute="trailing" id="sy3-Bi-qMF"/>
-                                    <constraint firstItem="D2e-Qu-2oO" firstAttribute="top" secondItem="YcP-WG-jBN" secondAttribute="bottom" constant="52" id="zZ5-ll-poO"/>
+                                    <constraint firstItem="U4M-SN-E4E" firstAttribute="trailing" secondItem="YcP-WG-jBN" secondAttribute="trailing" id="1v5-aa-Rnj"/>
+                                    <constraint firstItem="D2e-Qu-2oO" firstAttribute="trailing" secondItem="RVA-Qk-Vfp" secondAttribute="trailing" id="FOr-xE-iYG"/>
+                                    <constraint firstItem="RVA-Qk-Vfp" firstAttribute="top" secondItem="D2e-Qu-2oO" secondAttribute="bottom" constant="8" symbolic="YES" id="Fba-3g-rjv"/>
+                                    <constraint firstAttribute="trailing" secondItem="U4M-SN-E4E" secondAttribute="trailing" constant="28" id="Lh5-E4-i5x"/>
+                                    <constraint firstItem="YcP-WG-jBN" firstAttribute="trailing" secondItem="D2e-Qu-2oO" secondAttribute="trailing" id="NYj-6w-bz4"/>
+                                    <constraint firstItem="U4M-SN-E4E" firstAttribute="leading" secondItem="Onp-Zt-ih3" secondAttribute="leading" constant="25" id="Ntw-fK-XOk"/>
+                                    <constraint firstItem="U4M-SN-E4E" firstAttribute="top" secondItem="Onp-Zt-ih3" secondAttribute="top" constant="30" id="Nyu-6N-orn"/>
+                                    <constraint firstItem="YcP-WG-jBN" firstAttribute="leading" secondItem="D2e-Qu-2oO" secondAttribute="leading" id="dxv-Un-gb8"/>
+                                    <constraint firstItem="U4M-SN-E4E" firstAttribute="centerX" secondItem="YcP-WG-jBN" secondAttribute="centerX" id="hHg-Sx-9AE"/>
+                                    <constraint firstItem="D2e-Qu-2oO" firstAttribute="leading" secondItem="RVA-Qk-Vfp" secondAttribute="leading" id="jgJ-Sx-7Jg"/>
+                                    <constraint firstItem="D2e-Qu-2oO" firstAttribute="top" secondItem="YcP-WG-jBN" secondAttribute="bottom" constant="52" id="nBF-aD-T46"/>
+                                    <constraint firstItem="YcP-WG-jBN" firstAttribute="top" secondItem="U4M-SN-E4E" secondAttribute="bottom" constant="18" id="tnz-Bu-KRz"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -139,10 +140,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="7Ai-2Y-S8m" firstAttribute="top" secondItem="Onp-Zt-ih3" secondAttribute="bottom" constant="106" id="0l1-Tk-b12"/>
-                            <constraint firstItem="Onp-Zt-ih3" firstAttribute="leading" secondItem="1Ep-B9-nX8" secondAttribute="leadingMargin" constant="38" id="QA0-pr-tnl"/>
-                            <constraint firstItem="Onp-Zt-ih3" firstAttribute="top" secondItem="Af0-k9-P32" secondAttribute="bottom" constant="300" id="T2h-4u-PJc"/>
-                            <constraint firstItem="Onp-Zt-ih3" firstAttribute="centerX" secondItem="1Ep-B9-nX8" secondAttribute="centerX" id="fy7-O7-eX8"/>
+                            <constraint firstItem="Onp-Zt-ih3" firstAttribute="top" secondItem="Af0-k9-P32" secondAttribute="bottom" constant="277" id="89z-1c-rxo"/>
+                            <constraint firstItem="Onp-Zt-ih3" firstAttribute="bottom" secondItem="7Ai-2Y-S8m" secondAttribute="top" multiplier="0.9" constant="-65" id="Meh-cR-kDL"/>
+                            <constraint firstItem="Onp-Zt-ih3" firstAttribute="leading" secondItem="1Ep-B9-nX8" secondAttribute="leadingMargin" constant="37" id="jk6-zM-Nvo"/>
+                            <constraint firstItem="Onp-Zt-ih3" firstAttribute="centerX" secondItem="1Ep-B9-nX8" secondAttribute="centerX" id="oAt-Qg-N9m"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="cYa-xH-k3h"/>

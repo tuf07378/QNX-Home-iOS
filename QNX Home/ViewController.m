@@ -116,28 +116,32 @@ NSArray *picker;
     [[OEPocketsphinxController sharedInstance] setActive:FALSE error:nil];
     [[OEPocketsphinxController sharedInstance] stopListening];
     NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID);
-    UIAlertController *textConfirm = [UIAlertController alertControllerWithTitle:@"Confirm Command" message:hypothesis preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
-        if ([hypothesis isEqualToString:@"Dashboard"] || [hypothesis isEqualToString:@"Sensors"] || [hypothesis isEqualToString:@"Relays"]){
-            if ([hypothesis isEqualToString:@"Dashboard"])
-                globals.type = 0;
-            else if ([hypothesis isEqualToString:@"Sensors"])
-                globals.type = 1;
-            else if ([hypothesis isEqualToString:@"Relays"])
-                globals.type = 2;
-            else if ([hypothesis isEqualToString:@"Cameras"])
-                globals.type = 3;
+    if ([hypothesis isEqualToString:@"Dashboard"] || [hypothesis isEqualToString:@"Sensors"] || [hypothesis isEqualToString:@"Relays"] || [hypothesis isEqualToString:@"Cameras"]){
+        if ([hypothesis isEqualToString:@"Dashboard"])
+            globals.type = 0;
+        else if ([hypothesis isEqualToString:@"Sensors"])
+            globals.type = 1;
+        else if ([hypothesis isEqualToString:@"Relays"])
+            globals.type = 2;
+        else if ([hypothesis isEqualToString:@"Cameras"]){
+            globals.type = 3;
             globals.isConfig = NO;
-            [self transition:@"ViewController"];
+            [self transition:@"Camera"];
         }
-        else{
+        globals.isConfig = NO;
+        [self transition:@"ViewController"];
+    }
+    else{
+        UIAlertController *textConfirm = [UIAlertController alertControllerWithTitle:@"Confirm Command" message:hypothesis preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
             
-        }
-    }];
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
-    [textConfirm addAction:confirm];
-    [textConfirm addAction:cancel];
-    [self presentViewController:textConfirm animated:YES completion:nil];
+            
+        }];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
+        [textConfirm addAction:confirm];
+        [textConfirm addAction:cancel];
+        [self presentViewController:textConfirm animated:YES completion:nil];
+    }
 }
 
 - (void) pocketsphinxDidStartListening {
