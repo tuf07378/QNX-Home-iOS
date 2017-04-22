@@ -34,6 +34,7 @@
         _peripheralTypes = [[NSMutableArray alloc] init];
         _peripheralModels = [[NSMutableDictionary alloc] init];
         _commands = [[NSMutableArray alloc] init];
+        _device = nil;
     }
     return self;
 }

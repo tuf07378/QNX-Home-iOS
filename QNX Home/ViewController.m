@@ -763,6 +763,21 @@ NSArray *picker;
             [self presentViewController:boardOpts animated:YES completion:nil];
         }
     }
+    else{
+        NSString *title = picker[globals.house];
+        NSArray *data = [globals.houseData objectForKey:title];
+        NSDictionary *relays = data[0];
+        NSArray *sensors = data[1];
+        NSString *bar;
+        if (indexPath.section == 1 || globals.type == 2){
+            bar = [relays allKeys][indexPath.row];
+        }
+        else{
+            bar = sensors[(indexPath.row) * 5];
+        }
+        globals.device = bar;
+        [self performSegueWithIdentifier:@"History" sender:self];
+    }
 }
 
 

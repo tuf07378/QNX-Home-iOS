@@ -35,6 +35,7 @@
 		2DAD44881E6B3D530098BB0E /* RightViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD44861E6B3D530098BB0E /* RightViewCell.m */; };
 		2DAD448C1E6B3D630098BB0E /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD448A1E6B3D630098BB0E /* MainViewController.m */; };
 		2DCF77D11E9FAFDD00EB7813 /* APViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCF77D01E9FAFDD00EB7813 /* APViewController.m */; };
+		2DD86F181EABC4C200B083E0 /* DeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD86F171EABC4C200B083E0 /* DeviceViewController.m */; };
 		2DEB3C091E8491B7007487AF /* GlobalVars.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DEB3C081E8491B7007487AF /* GlobalVars.m */; };
 /* End PBXBuildFile section */
 
@@ -105,6 +106,8 @@
 		2DAD448A1E6B3D630098BB0E /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		2DCF77CF1E9FAFDD00EB7813 /* APViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APViewController.h; sourceTree = "<group>"; };
 		2DCF77D01E9FAFDD00EB7813 /* APViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APViewController.m; sourceTree = "<group>"; };
+		2DD86F161EABC4C200B083E0 /* DeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceViewController.h; sourceTree = "<group>"; };
+		2DD86F171EABC4C200B083E0 /* DeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceViewController.m; sourceTree = "<group>"; };
 		2DEB3C071E8491B7007487AF /* GlobalVars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalVars.h; sourceTree = "<group>"; };
 		2DEB3C081E8491B7007487AF /* GlobalVars.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalVars.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -263,6 +266,8 @@
 				2DAD44731E6B3D190098BB0E /* NavigationController.m */,
 				2DAD44741E6B3D190098BB0E /* ViewController.h */,
 				2DAD44751E6B3D190098BB0E /* ViewController.m */,
+				2DD86F161EABC4C200B083E0 /* DeviceViewController.h */,
+				2DD86F171EABC4C200B083E0 /* DeviceViewController.m */,
 				2DCF77D01E9FAFDD00EB7813 /* APViewController.m */,
 				2DCF77CF1E9FAFDD00EB7813 /* APViewController.h */,
 			);
@@ -432,6 +437,7 @@
 				2DAD44791E6B3D190098BB0E /* ViewController.m in Sources */,
 				2DCF77D11E9FAFDD00EB7813 /* APViewController.m in Sources */,
 				2D33D12D1E6B42640033202C /* LGSideMenuView.m in Sources */,
+				2DD86F181EABC4C200B083E0 /* DeviceViewController.m in Sources */,
 				2DAD44821E6B3D490098BB0E /* LeftViewCell.m in Sources */,
 				2DAD448C1E6B3D630098BB0E /* MainViewController.m in Sources */,
 				2D33D12C1E6B42640033202C /* LGSideMenuControllerGesturesHandler.m in Sources */,

@@ -28,7 +28,7 @@
 @property(strong, nonatomic, readwrite) NSMutableArray *peripheralTypes;
 @property(strong, nonatomic, readwrite) NSMutableDictionary *peripheralModels;
 @property(strong, nonatomic, readwrite) NSMutableArray *commands;
-
+@property(strong, nonatomic, readwrite) NSString *device;
 
 
 
