@@ -51,6 +51,7 @@
             globals.houseData = (NSMutableDictionary *) [self getSensorData];
             NSMutableDictionary *allData = [[NSMutableDictionary alloc] init];
             NSMutableArray *words = [NSMutableArray arrayWithObjects:@"Dashboard", @"Sensors", @"Relays", @"Cameras", nil];
+            NSMutableDictionary *cams = [[NSMutableDictionary alloc] init];
             for (NSString *house in globals.houses){
                 mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
                 NSString *received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getcurrentperipheralsbyhouse" withData:mapData isAsync:NO];
@@ -84,6 +85,7 @@
                         [words addObject:[NSString stringWithFormat:@"%@ %@ %@", house, @"Show", periph]];
                     }
                 }
+
             }
             globals.commands = words;
             globals.allData = allData;
@@ -415,6 +417,40 @@
     }
     return sens;
 }
+- (NSArray *)parseCameras:(NSString *)body{
+    NSLog(@"%@", body);
+    NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@"},{"] count] - 1;
+    NSString *haystackPrefix = @"[[{";
+    NSString *haystackSuffix = @"}]]";
+    NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
+    NSString *needle = [body substringWithRange:needleRange];
+    NSArray *houseArray = [needle componentsSeparatedByString:@"},{"];
+    NSMutableArray *sens = [[NSMutableArray alloc] init];
+    for(int i = 0; i < numberOfOccurrences + 1; i++){
+        NSUInteger numberOfSens = [[houseArray[i] componentsSeparatedByString:@","] count];
+        NSArray *senArray = [houseArray[i] componentsSeparatedByString:@","];
+        for(int j = 0; j < numberOfSens; j++){
+            if (j % 2 == 0){
+                NSString *house = (NSString *)senArray[j];
+                haystackPrefix = @"\"PeripheralName\":\"";
+                haystackSuffix = @"\"";
+                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                needle = [house substringWithRange:needleRange];
+                [sens addObject:[NSString stringWithString:needle]];
+            }
+            else if (j % 2 == 1){
+                NSString *house = (NSString *)senArray[j];
+                haystackPrefix = @"\"BoardName\":\"";
+                haystackSuffix = @"\"";
+                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                needle = [house substringWithRange:needleRange];
+                [sens addObject:[NSString stringWithString:needle]];
+            }
+        }
+        
+    }
+    return sens;
+}
 - (NSArray *)parsePeripherals:(NSString *)body{
     NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
     NSString *haystackPrefix = @"[[";
@@ -459,6 +495,7 @@
     }
     return peripherals;
 }
+
 - (NSArray *)parseBoards:(NSString *)body{
     NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
     NSString *haystackPrefix = @"[[";
@@ -504,6 +541,16 @@
             sensorData = [NSArray arrayWithObject:@"Empty"];
         }
         [periphData addObject: sensorData];
+        mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
+        relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/getcurrentcamerasbyhouse" withData:mapData isAsync:NO];
+        NSArray *cameras;
+        if ([relayData containsString:@"Peripheral"]){
+            cameras = [self parseCameras:relayData];
+        }
+        else{
+            cameras = [NSArray arrayWithObject:@"Empty"];
+        }
+        [periphData addObject:cameras];
         [data setObject:periphData forKey:house];
         NSLog(@"%@", data);
     }

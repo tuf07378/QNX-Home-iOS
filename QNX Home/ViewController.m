@@ -535,6 +535,7 @@ NSArray *picker;
     GlobalVars *globals = [GlobalVars sharedInstance];
     [self.system reloadData];
     [self.houseList reloadData];
+    [self.cameras reloadData];
 }
 
 -(NSString*) sha256:(NSString *)clear{
@@ -567,12 +568,12 @@ NSArray *picker;
     else if (tableView == self.system){
         NSString *title = picker[globals.house];
         NSArray *data = [globals.allData objectForKey:title];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         if([self.selector selectedSegmentIndex] == 0){
             NSArray *boards = data[1];
             cell.textLabel.text = boards[indexPath.row];
         }
         else{
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
             NSArray *periphs = data[0];
             cell.textLabel.text = periphs[indexPath.row * 4];
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@", periphs[indexPath.row * 4 + 2],periphs[indexPath.row * 4 + 1]];
@@ -602,7 +603,12 @@ NSArray *picker;
         cell.accessoryView = NULL;
     }
     else{
-        cell.textLabel.text = @"HardwickCameraOne";
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        NSString *title = picker[globals.house];
+        NSArray *cams = [globals.houseData objectForKey:title][2];
+        cell.textLabel.text = cams[indexPath.row * 2];
+        cell.detailTextLabel.text = cams[indexPath.row * 2 + 1];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
     return cell;
@@ -768,12 +774,16 @@ NSArray *picker;
         NSArray *data = [globals.houseData objectForKey:title];
         NSDictionary *relays = data[0];
         NSArray *sensors = data[1];
+        NSArray *cameras = data[2];
         NSString *bar;
         if (indexPath.section == 1 || globals.type == 2){
             bar = [relays allKeys][indexPath.row];
         }
-        else{
+        else if(globals.type == 1 || (globals.type == 0 && indexPath.section == 0)){
             bar = sensors[(indexPath.row) * 5];
+        }
+        else{
+            bar = cameras[(indexPath.row) * 2];
         }
         globals.device = bar;
         [self performSegueWithIdentifier:@"History" sender:self];
@@ -813,7 +823,11 @@ NSArray *picker;
         return [sensors count] / 5;
     }
     else if (globals.type == 3){
-        return 1;
+        NSString *title = picker[globals.house];
+        NSArray *cams = [globals.houseData objectForKey:title][2];
+        if ([cams[0] isEqualToString:@"Empty"])
+            return 0;
+        return [cams count] / 2;
     }
     return 5;
 }
@@ -1008,6 +1022,41 @@ NSArray *picker;
     }
 }
 
+- (NSArray *)parseCameras:(NSString *)body{
+    NSLog(@"%@", body);
+    NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@"},{"] count] - 1;
+    NSString *haystackPrefix = @"[[{";
+    NSString *haystackSuffix = @"}]]";
+    NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
+    NSString *needle = [body substringWithRange:needleRange];
+    NSArray *houseArray = [needle componentsSeparatedByString:@"},{"];
+    NSMutableArray *sens = [[NSMutableArray alloc] init];
+    for(int i = 0; i < numberOfOccurrences + 1; i++){
+        NSUInteger numberOfSens = [[houseArray[i] componentsSeparatedByString:@","] count];
+        NSArray *senArray = [houseArray[i] componentsSeparatedByString:@","];
+        for(int j = 0; j < numberOfSens; j++){
+            if (j % 2 == 0){
+                NSString *house = (NSString *)senArray[j];
+                haystackPrefix = @"\"PeripheralName\":\"";
+                haystackSuffix = @"\"";
+                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                needle = [house substringWithRange:needleRange];
+                [sens addObject:[NSString stringWithString:needle]];
+            }
+            else if (j % 2 == 1){
+                NSString *house = (NSString *)senArray[j];
+                haystackPrefix = @"\"BoardName\":\"";
+                haystackSuffix = @"\"";
+                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                needle = [house substringWithRange:needleRange];
+                [sens addObject:[NSString stringWithString:needle]];
+            }
+        }
+        
+    }
+    return sens;
+}
+
 - (NSDictionary *)getSensorData{
     GlobalVars *globals = [GlobalVars sharedInstance];
     NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
@@ -1034,6 +1083,16 @@ NSArray *picker;
             sensorData = [NSArray arrayWithObject:@"Empty"];
         }
         [periphData addObject: sensorData];
+        mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
+        relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/getcurrentcamerasbyhouse" withData:mapData isAsync:NO];
+        NSArray *cameras;
+        if ([relayData containsString:@"Peripheral"]){
+            cameras = [self parseCameras:relayData];
+        }
+        else{
+            cameras = [NSArray arrayWithObject:@"Empty"];
+        }
+        [periphData addObject:cameras];
         [data setObject:periphData forKey:house];
         NSLog(@"%@", data);
     }
