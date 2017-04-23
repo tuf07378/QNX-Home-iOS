@@ -46,7 +46,6 @@ NSArray *picker;
         else
             [self.selector setSelectedSegmentIndex:0];
     }
-    
 }
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
@@ -483,47 +482,51 @@ NSArray *picker;
     }];
     UIAlertAction *add = [UIAlertAction actionWithTitle:@"Join House" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
         UIAlertController *adding = [UIAlertController alertControllerWithTitle:@"Joining House" message:@"Waiting for house to be added to your account." preferredStyle:UIAlertControllerStyleAlert];
-        [self presentViewController:adding animated:TRUE completion:nil];
-        GlobalVars *globals = [GlobalVars sharedInstance];
-        NSString *newHouse = self.temp.text;
-        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.temp.text, @"houseName", globals.seshToke, @"sessionToken", nil];
-        NSString *hpass = [self sha256:self.uNew.text];
-        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability" withData:mapData isAsync:NO];
-        NSLog(@"Response Body:\n%@\n", body);
-        if ([body containsString:@"0"]){
-            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.temp.text, @"houseName", hpass, @"housePassword", globals.seshToke, @"sessionToken", nil];
-            NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/joinhouse" withData:mapData isAsync:NO];
+        [self presentViewController:adding animated:TRUE completion:^(void){
+            GlobalVars *globals = [GlobalVars sharedInstance];
+            NSString *newHouse = self.temp.text;
+            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.temp.text, @"houseName", globals.seshToke, @"sessionToken", nil];
+            NSString *hpass = [self sha256:self.uNew.text];
+            NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/check-house-availability" withData:mapData isAsync:NO];
             NSLog(@"Response Body:\n%@\n", body);
-            if ([body containsString:@"Success"]){
-                [globals.houses addObject:self.temp.text];
-                [self dismissViewControllerAnimated:TRUE completion:nil];
-                UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Joined House" message:@"Successfully joined existing house." preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
-                [success addAction:ok];
-                [self presentViewController:success animated:TRUE completion:nil];
-                globals.houseData = (NSMutableDictionary *) [self getSensorData];
-                mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", newHouse, @"houseName", nil];
-                NSString *received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getcurrentperipheralsbyhouse" withData:mapData isAsync:NO];
-                NSArray *periphs;
-                if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
-                    periphs = (NSMutableArray *)[self parsePeripherals:received];
+            if ([body containsString:@"0"]){
+                NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: self.temp.text, @"houseName", hpass, @"housePassword", globals.seshToke, @"sessionToken", nil];
+                NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/joinhouse" withData:mapData isAsync:NO];
+                NSLog(@"Response Body:\n%@\n", body);
+                if ([body containsString:@"Success"]){
+                    [globals.houses addObject:self.temp.text];
+                    [self dismissViewControllerAnimated:TRUE completion:nil];
+                    UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Joined House" message:@"Successfully joined existing house." preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+                    [success addAction:ok];
+                    [self presentViewController:success animated:TRUE completion:nil];
+                    globals.houseData = (NSMutableDictionary *) [self getSensorData];
+                    mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", newHouse, @"houseName", nil];
+                    NSString *received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getcurrentperipheralsbyhouse" withData:mapData isAsync:NO];
+                    NSArray *periphs;
+                    if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
+                        periphs = (NSMutableArray *)[self parsePeripherals:received];
+                    }
+                    else{
+                        periphs = [[NSMutableArray alloc] init];
+                    }
+                    mapData = [[NSDictionary alloc] initWithObjectsAndKeys: newHouse, @"HouseName", globals.seshToke, @"SessionToken", nil];
+                    received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/getboardsbyhouse" withData:mapData isAsync:NO];
+                    NSMutableArray *boards;
+                    if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
+                        boards = (NSMutableArray *)[self parseBoards:received];
+                    }
+                    else{
+                        boards = [[NSMutableArray alloc] init];
+                    }
+                    [globals.allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:newHouse];
+                    [self.houseList reloadData];
                 }
                 else{
-                    periphs = [[NSMutableArray alloc] init];
+                    [self dismissViewControllerAnimated:TRUE completion:nil];
                 }
-                mapData = [[NSDictionary alloc] initWithObjectsAndKeys: newHouse, @"HouseName", globals.seshToke, @"SessionToken", nil];
-                received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/getboardsbyhouse" withData:mapData isAsync:NO];
-                NSMutableArray *boards;
-                if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
-                    boards = (NSMutableArray *)[self parseBoards:received];
-                }
-                else{
-                    boards = [[NSMutableArray alloc] init];
-                }
-                [globals.allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:newHouse];
-                [self.houseList reloadData];
             }
-        }
+        }];
     }];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
     [house addAction:add];

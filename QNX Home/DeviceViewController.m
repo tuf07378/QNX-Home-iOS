@@ -21,10 +21,12 @@
     self.navigationItem.title = globals.device;
     if(globals.type != 3){
         [self.capture setHidden:YES];
+        [self.start setHidden:YES];
+        [self.end setHidden:YES];
     }
     else{
         [self loadImage];
-        NSTimer *imageTimer = [NSTimer scheduledTimerWithTimeInterval: 2.0 target:self selector:@selector(loadImage) userInfo:nil repeats: YES];
+        NSTimer *imageTimer = [NSTimer scheduledTimerWithTimeInterval: .25 target:self selector:@selector(loadImage) userInfo:nil repeats: YES];
     }
     // Do any additional setup after loading the view.
 }
@@ -72,8 +74,20 @@
     GlobalVars *globals = [GlobalVars sharedInstance];
     NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", @"HardwickCameraOne", @"peripheralName", @"Hardwick", @"houseName", nil];
     //NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", globals.device, @"peripheralName", [globals.houses objectAtIndex:globals.house-2], @"houseName", nil];
-    NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/takepicture" withData:mapData isAsync:NO];
-    NSLog(@"%@", body);
+    [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/takepicture" withData:mapData isAsync:YES];
+}
+-(IBAction)setCameraFeedWithFPS:(id)sender{
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    int isOn;
+    int fps;
+    if (sender == self.start)
+        isOn = 1;
+    else
+        isOn = 0;
+    fps = 2;
+    NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", @"HardwickCameraOne", @"peripheralName", @"Hardwick", @"houseName", [NSString stringWithFormat:@"%d",isOn], @"cameraFeedValue", [NSString stringWithFormat:@"%d",fps], @"cameraFeedFPS", nil];
+    //NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", globals.device, @"peripheralName", [globals.houses objectAtIndex:globals.house-2], @"houseName", nil];
+    NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/setcamerafeed" withData:mapData isAsync:YES];
 }
 
 /*

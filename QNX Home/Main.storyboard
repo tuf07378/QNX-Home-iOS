@@ -1047,7 +1047,7 @@
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="07K-1V-9jH">
                                         <rect key="frame" x="8" y="8" width="359" height="215"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="215" id="pXz-fa-rIq"/>
+                                            <constraint firstAttribute="height" constant="215" id="4Pp-ha-cPN"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -1062,7 +1062,7 @@
                                         <rect key="frame" x="8" y="231" width="359" height="35"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="35" id="Aij-kN-6bh"/>
+                                            <constraint firstAttribute="height" constant="35" id="Huv-Mn-hoo"/>
                                         </constraints>
                                         <state key="normal" title="Request Snapshot"/>
                                         <userDefinedRuntimeAttributes>
@@ -1077,31 +1077,78 @@
                                             <action selector="capture:" destination="8t8-Tw-HR6" eventType="touchUpInside" id="hze-JJ-U4j"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0rD-hO-7Bd">
+                                        <rect key="frame" x="8" y="274" width="359" height="35"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="qmM-dk-0cS"/>
+                                        </constraints>
+                                        <state key="normal" title="Start Feed"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="capture:" destination="8t8-Tw-HR6" eventType="touchUpInside" id="ecg-V5-mOY"/>
+                                            <action selector="setCameraFeedWithFPS:" destination="8t8-Tw-HR6" eventType="touchUpInside" id="zRa-5k-8Fh"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HNl-nX-sT2">
+                                        <rect key="frame" x="8" y="317" width="359" height="35"/>
+                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="tcj-c6-l1d"/>
+                                        </constraints>
+                                        <state key="normal" title="End Feed">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="capture:" destination="8t8-Tw-HR6" eventType="touchUpInside" id="42w-rE-dgE"/>
+                                            <action selector="setCameraFeedWithFPS:" destination="8t8-Tw-HR6" eventType="touchUpInside" id="ljh-K7-wEQ"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="07K-1V-9jH" firstAttribute="trailing" secondItem="PBI-ng-BLJ" secondAttribute="trailing" id="3MX-WS-AmL"/>
-                                    <constraint firstItem="07K-1V-9jH" firstAttribute="leading" secondItem="4q3-QK-qZ6" secondAttribute="leadingMargin" id="EJJ-nC-LRA"/>
-                                    <constraint firstItem="PBI-ng-BLJ" firstAttribute="top" secondItem="07K-1V-9jH" secondAttribute="bottom" constant="8" symbolic="YES" id="hrX-3h-FgX"/>
-                                    <constraint firstItem="07K-1V-9jH" firstAttribute="top" secondItem="4q3-QK-qZ6" secondAttribute="topMargin" id="muz-yf-EDd"/>
-                                    <constraint firstItem="07K-1V-9jH" firstAttribute="trailing" secondItem="4q3-QK-qZ6" secondAttribute="trailingMargin" id="nq0-Yz-Rhn"/>
-                                    <constraint firstItem="07K-1V-9jH" firstAttribute="leading" secondItem="PBI-ng-BLJ" secondAttribute="leading" id="oYy-7U-fRY"/>
+                                    <constraint firstItem="07K-1V-9jH" firstAttribute="trailing" secondItem="4q3-QK-qZ6" secondAttribute="trailingMargin" id="56k-Nh-OI3"/>
+                                    <constraint firstItem="0rD-hO-7Bd" firstAttribute="leading" secondItem="HNl-nX-sT2" secondAttribute="leading" id="BjS-xA-Fqx"/>
+                                    <constraint firstItem="0rD-hO-7Bd" firstAttribute="top" secondItem="PBI-ng-BLJ" secondAttribute="bottom" constant="8" symbolic="YES" id="CgD-oC-Rky"/>
+                                    <constraint firstItem="0rD-hO-7Bd" firstAttribute="trailing" secondItem="HNl-nX-sT2" secondAttribute="trailing" id="Grc-HQ-qIw"/>
+                                    <constraint firstItem="07K-1V-9jH" firstAttribute="leading" secondItem="4q3-QK-qZ6" secondAttribute="leadingMargin" id="HfF-07-Tqv"/>
+                                    <constraint firstItem="HNl-nX-sT2" firstAttribute="top" secondItem="0rD-hO-7Bd" secondAttribute="bottom" constant="8" symbolic="YES" id="QzT-BU-lce"/>
+                                    <constraint firstItem="PBI-ng-BLJ" firstAttribute="top" secondItem="07K-1V-9jH" secondAttribute="bottom" constant="8" symbolic="YES" id="SNU-mD-yPg"/>
+                                    <constraint firstItem="PBI-ng-BLJ" firstAttribute="leading" secondItem="0rD-hO-7Bd" secondAttribute="leading" id="VfB-i8-lt1"/>
+                                    <constraint firstItem="07K-1V-9jH" firstAttribute="trailing" secondItem="PBI-ng-BLJ" secondAttribute="trailing" id="hQA-BD-vmY"/>
+                                    <constraint firstItem="PBI-ng-BLJ" firstAttribute="trailing" secondItem="0rD-hO-7Bd" secondAttribute="trailing" id="lZq-Oi-IjU"/>
+                                    <constraint firstItem="07K-1V-9jH" firstAttribute="top" secondItem="4q3-QK-qZ6" secondAttribute="topMargin" id="tQk-Af-bB9"/>
+                                    <constraint firstItem="07K-1V-9jH" firstAttribute="leading" secondItem="PBI-ng-BLJ" secondAttribute="leading" id="zvV-cp-xRR"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="4q3-QK-qZ6" firstAttribute="leading" secondItem="rIf-wU-X3D" secondAttribute="leading" id="0EU-qQ-LeD"/>
-                            <constraint firstAttribute="trailing" secondItem="4q3-QK-qZ6" secondAttribute="trailing" id="7ge-sv-uN6"/>
-                            <constraint firstItem="4q3-QK-qZ6" firstAttribute="bottom" secondItem="gZH-3l-GXc" secondAttribute="top" id="cYx-NX-B0Z"/>
-                            <constraint firstItem="4q3-QK-qZ6" firstAttribute="top" secondItem="OsJ-SY-WEX" secondAttribute="bottom" id="q8D-W7-lPT"/>
+                            <constraint firstItem="4q3-QK-qZ6" firstAttribute="bottom" secondItem="gZH-3l-GXc" secondAttribute="top" id="0E0-6i-B4k"/>
+                            <constraint firstItem="4q3-QK-qZ6" firstAttribute="leading" secondItem="rIf-wU-X3D" secondAttribute="leading" id="NYW-Tu-EGz"/>
+                            <constraint firstAttribute="trailing" secondItem="4q3-QK-qZ6" secondAttribute="trailing" id="Y9o-cj-LXD"/>
+                            <constraint firstItem="4q3-QK-qZ6" firstAttribute="top" secondItem="OsJ-SY-WEX" secondAttribute="bottom" id="ntj-kS-Dog"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="QNX Home" id="eEM-qz-db0"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="capture" destination="PBI-ng-BLJ" id="Alb-qT-flM"/>
+                        <outlet property="end" destination="HNl-nX-sT2" id="exJ-cq-BPj"/>
                         <outlet property="imageView" destination="07K-1V-9jH" id="HIN-xr-ArF"/>
+                        <outlet property="start" destination="0rD-hO-7Bd" id="d2C-Ob-t8h"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k6K-HQ-Cvi" userLabel="First Responder" sceneMemberID="firstResponder"/>
