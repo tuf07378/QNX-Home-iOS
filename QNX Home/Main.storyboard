@@ -826,7 +826,7 @@
                                             <action selector="cancel:" destination="ydO-TL-6am" eventType="touchUpInside" id="Lk7-0P-eKv"/>
                                         </connections>
                                     </button>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Peripheral Name" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="X9i-WR-S8n">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Peripheral Name" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="X9i-WR-S8n">
                                         <rect key="frame" x="8" y="84" width="359" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1029,7 +1029,7 @@
             </objects>
             <point key="canvasLocation" x="3981.5999999999999" y="572.56371814092961"/>
         </scene>
-        <!--QNX Home-->
+        <!--Data Source-->
         <scene sceneID="3Rv-KZ-Q5q">
             <objects>
                 <viewController storyboardIdentifier="PeripheralView" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8t8-Tw-HR6" customClass="DeviceViewController" sceneMemberID="viewController">
@@ -1041,105 +1041,161 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4q3-QK-qZ6">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="07K-1V-9jH">
-                                        <rect key="frame" x="8" y="8" width="359" height="215"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="215" id="4Pp-ha-cPN"/>
-                                        </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="5"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                <integer key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PBI-ng-BLJ">
-                                        <rect key="frame" x="8" y="231" width="359" height="35"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="35" id="Huv-Mn-hoo"/>
-                                        </constraints>
-                                        <state key="normal" title="Request Snapshot"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                <integer key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="5"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="capture:" destination="8t8-Tw-HR6" eventType="touchUpInside" id="hze-JJ-U4j"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0rD-hO-7Bd">
-                                        <rect key="frame" x="8" y="274" width="359" height="35"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="35" id="qmM-dk-0cS"/>
-                                        </constraints>
-                                        <state key="normal" title="Start Feed"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                <integer key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="5"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="capture:" destination="8t8-Tw-HR6" eventType="touchUpInside" id="ecg-V5-mOY"/>
-                                            <action selector="setCameraFeedWithFPS:" destination="8t8-Tw-HR6" eventType="touchUpInside" id="zRa-5k-8Fh"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HNl-nX-sT2">
-                                        <rect key="frame" x="8" y="317" width="359" height="35"/>
-                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="35" id="tcj-c6-l1d"/>
-                                        </constraints>
-                                        <state key="normal" title="End Feed">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="5"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="capture:" destination="8t8-Tw-HR6" eventType="touchUpInside" id="42w-rE-dgE"/>
-                                            <action selector="setCameraFeedWithFPS:" destination="8t8-Tw-HR6" eventType="touchUpInside" id="ljh-K7-wEQ"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PBI-ng-BLJ">
+                                <rect key="frame" x="8" y="295" width="359" height="35"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="07K-1V-9jH" firstAttribute="trailing" secondItem="4q3-QK-qZ6" secondAttribute="trailingMargin" id="56k-Nh-OI3"/>
-                                    <constraint firstItem="0rD-hO-7Bd" firstAttribute="leading" secondItem="HNl-nX-sT2" secondAttribute="leading" id="BjS-xA-Fqx"/>
-                                    <constraint firstItem="0rD-hO-7Bd" firstAttribute="top" secondItem="PBI-ng-BLJ" secondAttribute="bottom" constant="8" symbolic="YES" id="CgD-oC-Rky"/>
-                                    <constraint firstItem="0rD-hO-7Bd" firstAttribute="trailing" secondItem="HNl-nX-sT2" secondAttribute="trailing" id="Grc-HQ-qIw"/>
-                                    <constraint firstItem="07K-1V-9jH" firstAttribute="leading" secondItem="4q3-QK-qZ6" secondAttribute="leadingMargin" id="HfF-07-Tqv"/>
-                                    <constraint firstItem="HNl-nX-sT2" firstAttribute="top" secondItem="0rD-hO-7Bd" secondAttribute="bottom" constant="8" symbolic="YES" id="QzT-BU-lce"/>
-                                    <constraint firstItem="PBI-ng-BLJ" firstAttribute="top" secondItem="07K-1V-9jH" secondAttribute="bottom" constant="8" symbolic="YES" id="SNU-mD-yPg"/>
-                                    <constraint firstItem="PBI-ng-BLJ" firstAttribute="leading" secondItem="0rD-hO-7Bd" secondAttribute="leading" id="VfB-i8-lt1"/>
-                                    <constraint firstItem="07K-1V-9jH" firstAttribute="trailing" secondItem="PBI-ng-BLJ" secondAttribute="trailing" id="hQA-BD-vmY"/>
-                                    <constraint firstItem="PBI-ng-BLJ" firstAttribute="trailing" secondItem="0rD-hO-7Bd" secondAttribute="trailing" id="lZq-Oi-IjU"/>
-                                    <constraint firstItem="07K-1V-9jH" firstAttribute="top" secondItem="4q3-QK-qZ6" secondAttribute="topMargin" id="tQk-Af-bB9"/>
-                                    <constraint firstItem="07K-1V-9jH" firstAttribute="leading" secondItem="PBI-ng-BLJ" secondAttribute="leading" id="zvV-cp-xRR"/>
+                                    <constraint firstAttribute="height" constant="35" id="6To-Tb-HEZ"/>
                                 </constraints>
+                                <state key="normal" title="Request Snapshot"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                        <integer key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="capture:" destination="8t8-Tw-HR6" eventType="touchUpInside" id="hze-JJ-U4j"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="07K-1V-9jH">
+                                <rect key="frame" x="8" y="72" width="359" height="215"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                        <integer key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HNl-nX-sT2">
+                                <rect key="frame" x="8" y="381" width="359" height="35"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="SXk-J5-6gI"/>
+                                </constraints>
+                                <state key="normal" title="End Feed">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="capture:" destination="8t8-Tw-HR6" eventType="touchUpInside" id="42w-rE-dgE"/>
+                                    <action selector="setCameraFeedWithFPS:" destination="8t8-Tw-HR6" eventType="touchUpInside" id="ljh-K7-wEQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0rD-hO-7Bd">
+                                <rect key="frame" x="8" y="338" width="359" height="35"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="FRO-Al-SXM"/>
+                                </constraints>
+                                <state key="normal" title="Start Feed"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                        <integer key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="capture:" destination="8t8-Tw-HR6" eventType="touchUpInside" id="ecg-V5-mOY"/>
+                                    <action selector="setCameraFeedWithFPS:" destination="8t8-Tw-HR6" eventType="touchUpInside" id="zRa-5k-8Fh"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kk3-QX-vhy" customClass="BEMSimpleLineGraphView">
+                                <rect key="frame" x="8" y="72" width="359" height="344"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="sizePoint">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="enableXAxisLabel" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="enableYAxisLabel" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="enableBezierCurve" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="alphaTop">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="alphaBottom">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="colorTop">
+                                        <color key="value" red="0.10037178546190262" green="0.54694145917892456" blue="0.9848596453666687" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="colorBottom">
+                                        <color key="value" red="0.10037178546190262" green="0.54694145917892456" blue="0.9848596453666687" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="colorLine">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="alphaLine">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="widthLine">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="colorPoint">
+                                        <color key="value" red="0.89502543209999996" green="0.89502543209999996" blue="0.89502543209999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="colorXaxisLabel">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="colorYaxisLabel">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="sizePoint">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="widthReferenceLines">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="alphaBackgroundXaxis">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="colorBackgroundYaxis">
+                                        <color key="value" red="0.10037178546190262" green="0.54694145917892456" blue="0.9848596453666687" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="colorBackgroundXaxis">
+                                        <color key="value" red="0.10037178546190262" green="0.54694145917892456" blue="0.9848596453666687" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="positionYAxisRight" value="NO"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="alphaBackgroundYaxis">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="displayDotsOnly" value="NO"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="dataSource" destination="8t8-Tw-HR6" id="wf3-Ph-nhj"/>
+                                    <outlet property="delegate" destination="8t8-Tw-HR6" id="J6C-R8-1A9"/>
+                                </connections>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="4q3-QK-qZ6" firstAttribute="bottom" secondItem="gZH-3l-GXc" secondAttribute="top" id="0E0-6i-B4k"/>
-                            <constraint firstItem="4q3-QK-qZ6" firstAttribute="leading" secondItem="rIf-wU-X3D" secondAttribute="leading" id="NYW-Tu-EGz"/>
-                            <constraint firstAttribute="trailing" secondItem="4q3-QK-qZ6" secondAttribute="trailing" id="Y9o-cj-LXD"/>
-                            <constraint firstItem="4q3-QK-qZ6" firstAttribute="top" secondItem="OsJ-SY-WEX" secondAttribute="bottom" id="ntj-kS-Dog"/>
+                            <constraint firstItem="07K-1V-9jH" firstAttribute="leading" secondItem="PBI-ng-BLJ" secondAttribute="leading" id="3sy-mi-K8z"/>
+                            <constraint firstItem="HNl-nX-sT2" firstAttribute="bottom" secondItem="kk3-QX-vhy" secondAttribute="bottom" id="75l-uh-9qy"/>
+                            <constraint firstItem="PBI-ng-BLJ" firstAttribute="trailing" secondItem="0rD-hO-7Bd" secondAttribute="trailing" id="99v-t7-o29"/>
+                            <constraint firstItem="kk3-QX-vhy" firstAttribute="centerX" secondItem="rIf-wU-X3D" secondAttribute="centerX" id="HfL-eq-FaT"/>
+                            <constraint firstItem="07K-1V-9jH" firstAttribute="trailing" secondItem="PBI-ng-BLJ" secondAttribute="trailing" id="J9n-Dm-Cnl"/>
+                            <constraint firstItem="kk3-QX-vhy" firstAttribute="leading" secondItem="HNl-nX-sT2" secondAttribute="leading" id="JJg-mO-RaR"/>
+                            <constraint firstItem="07K-1V-9jH" firstAttribute="leading" secondItem="rIf-wU-X3D" secondAttribute="leadingMargin" constant="-8" id="K6K-mG-b6C"/>
+                            <constraint firstItem="0rD-hO-7Bd" firstAttribute="leading" secondItem="HNl-nX-sT2" secondAttribute="leading" id="N8A-mp-VHE"/>
+                            <constraint firstItem="0rD-hO-7Bd" firstAttribute="trailing" secondItem="HNl-nX-sT2" secondAttribute="trailing" id="OUx-Ov-of4"/>
+                            <constraint firstItem="PBI-ng-BLJ" firstAttribute="top" secondItem="07K-1V-9jH" secondAttribute="bottom" constant="8" symbolic="YES" id="RUJ-ZU-AA3"/>
+                            <constraint firstItem="kk3-QX-vhy" firstAttribute="top" secondItem="07K-1V-9jH" secondAttribute="top" id="SeT-QE-yi9"/>
+                            <constraint firstItem="kk3-QX-vhy" firstAttribute="trailing" secondItem="0rD-hO-7Bd" secondAttribute="trailing" id="XiR-oh-flq"/>
+                            <constraint firstItem="07K-1V-9jH" firstAttribute="top" secondItem="OsJ-SY-WEX" secondAttribute="bottom" constant="8" symbolic="YES" id="dX5-wL-nnR"/>
+                            <constraint firstItem="0rD-hO-7Bd" firstAttribute="top" secondItem="PBI-ng-BLJ" secondAttribute="bottom" constant="8" symbolic="YES" id="jcC-rH-Ubm"/>
+                            <constraint firstItem="PBI-ng-BLJ" firstAttribute="leading" secondItem="0rD-hO-7Bd" secondAttribute="leading" id="pO9-yE-S6m"/>
+                            <constraint firstItem="gZH-3l-GXc" firstAttribute="top" secondItem="kk3-QX-vhy" secondAttribute="bottom" constant="251" id="tTp-s8-gK4"/>
+                            <constraint firstItem="HNl-nX-sT2" firstAttribute="top" secondItem="0rD-hO-7Bd" secondAttribute="bottom" constant="8" symbolic="YES" id="tad-8n-QAU"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="QNX Home" id="eEM-qz-db0"/>
@@ -1147,13 +1203,14 @@
                     <connections>
                         <outlet property="capture" destination="PBI-ng-BLJ" id="Alb-qT-flM"/>
                         <outlet property="end" destination="HNl-nX-sT2" id="exJ-cq-BPj"/>
+                        <outlet property="graph" destination="kk3-QX-vhy" id="IJA-NX-QeE"/>
                         <outlet property="imageView" destination="07K-1V-9jH" id="HIN-xr-ArF"/>
                         <outlet property="start" destination="0rD-hO-7Bd" id="d2C-Ob-t8h"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k6K-HQ-Cvi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4688.8000000000002" y="572.56371814092961"/>
+            <point key="canvasLocation" x="4687.1999999999998" y="571.66416791604206"/>
         </scene>
     </scenes>
     <resources>

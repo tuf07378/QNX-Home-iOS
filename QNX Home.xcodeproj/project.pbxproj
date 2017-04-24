@@ -35,6 +35,11 @@
 		2DAD44881E6B3D530098BB0E /* RightViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD44861E6B3D530098BB0E /* RightViewCell.m */; };
 		2DAD448C1E6B3D630098BB0E /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DAD448A1E6B3D630098BB0E /* MainViewController.m */; };
 		2DCF77D11E9FAFDD00EB7813 /* APViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCF77D01E9FAFDD00EB7813 /* APViewController.m */; };
+		2DCF84A31EAD791700A4902B /* BEMAverageLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCF849A1EAD791700A4902B /* BEMAverageLine.m */; };
+		2DCF84A41EAD791700A4902B /* BEMCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCF849C1EAD791700A4902B /* BEMCircle.m */; };
+		2DCF84A51EAD791700A4902B /* BEMGraphCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCF849E1EAD791700A4902B /* BEMGraphCalculator.m */; };
+		2DCF84A61EAD791700A4902B /* BEMLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCF84A01EAD791700A4902B /* BEMLine.m */; };
+		2DCF84A71EAD791700A4902B /* BEMSimpleLineGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCF84A21EAD791700A4902B /* BEMSimpleLineGraphView.m */; };
 		2DD86F181EABC4C200B083E0 /* DeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD86F171EABC4C200B083E0 /* DeviceViewController.m */; };
 		2DEB3C091E8491B7007487AF /* GlobalVars.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DEB3C081E8491B7007487AF /* GlobalVars.m */; };
 /* End PBXBuildFile section */
@@ -106,6 +111,16 @@
 		2DAD448A1E6B3D630098BB0E /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		2DCF77CF1E9FAFDD00EB7813 /* APViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APViewController.h; sourceTree = "<group>"; };
 		2DCF77D01E9FAFDD00EB7813 /* APViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APViewController.m; sourceTree = "<group>"; };
+		2DCF84991EAD791700A4902B /* BEMAverageLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEMAverageLine.h; sourceTree = "<group>"; };
+		2DCF849A1EAD791700A4902B /* BEMAverageLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BEMAverageLine.m; sourceTree = "<group>"; };
+		2DCF849B1EAD791700A4902B /* BEMCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEMCircle.h; sourceTree = "<group>"; };
+		2DCF849C1EAD791700A4902B /* BEMCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BEMCircle.m; sourceTree = "<group>"; };
+		2DCF849D1EAD791700A4902B /* BEMGraphCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEMGraphCalculator.h; sourceTree = "<group>"; };
+		2DCF849E1EAD791700A4902B /* BEMGraphCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BEMGraphCalculator.m; sourceTree = "<group>"; };
+		2DCF849F1EAD791700A4902B /* BEMLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEMLine.h; sourceTree = "<group>"; };
+		2DCF84A01EAD791700A4902B /* BEMLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BEMLine.m; sourceTree = "<group>"; };
+		2DCF84A11EAD791700A4902B /* BEMSimpleLineGraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEMSimpleLineGraphView.h; sourceTree = "<group>"; };
+		2DCF84A21EAD791700A4902B /* BEMSimpleLineGraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BEMSimpleLineGraphView.m; sourceTree = "<group>"; };
 		2DD86F161EABC4C200B083E0 /* DeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceViewController.h; sourceTree = "<group>"; };
 		2DD86F171EABC4C200B083E0 /* DeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceViewController.m; sourceTree = "<group>"; };
 		2DEB3C071E8491B7007487AF /* GlobalVars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalVars.h; sourceTree = "<group>"; };
@@ -175,6 +190,7 @@
 				2D6958301E607E95008C918F /* QNX HomeTests */,
 				2D69583B1E607E95008C918F /* QNX HomeUITests */,
 				2D6958121E607E95008C918F /* Products */,
+				2DCF84981EAD791700A4902B /* Graphs */,
 				2D33D1221E6B42640033202C /* LGSideMenuController */,
 				2D3164E61E6BC7DA005FDD1A /* Frameworks */,
 			);
@@ -294,6 +310,23 @@
 				2DAD44861E6B3D530098BB0E /* RightViewCell.m */,
 			);
 			name = "Right View Controller";
+			sourceTree = "<group>";
+		};
+		2DCF84981EAD791700A4902B /* Graphs */ = {
+			isa = PBXGroup;
+			children = (
+				2DCF84991EAD791700A4902B /* BEMAverageLine.h */,
+				2DCF849A1EAD791700A4902B /* BEMAverageLine.m */,
+				2DCF849B1EAD791700A4902B /* BEMCircle.h */,
+				2DCF849C1EAD791700A4902B /* BEMCircle.m */,
+				2DCF849D1EAD791700A4902B /* BEMGraphCalculator.h */,
+				2DCF849E1EAD791700A4902B /* BEMGraphCalculator.m */,
+				2DCF849F1EAD791700A4902B /* BEMLine.h */,
+				2DCF84A01EAD791700A4902B /* BEMLine.m */,
+				2DCF84A11EAD791700A4902B /* BEMSimpleLineGraphView.h */,
+				2DCF84A21EAD791700A4902B /* BEMSimpleLineGraphView.m */,
+			);
+			path = Graphs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -442,8 +475,13 @@
 				2DAD448C1E6B3D630098BB0E /* MainViewController.m in Sources */,
 				2D33D12C1E6B42640033202C /* LGSideMenuControllerGesturesHandler.m in Sources */,
 				2D33D12E1E6B42640033202C /* UIViewController+LGSideMenuController.m in Sources */,
+				2DCF84A41EAD791700A4902B /* BEMCircle.m in Sources */,
 				2DAD44871E6B3D530098BB0E /* RightViewController.m in Sources */,
 				2D6958221E607E95008C918F /* QNX_Home.xcdatamodeld in Sources */,
+				2DCF84A61EAD791700A4902B /* BEMLine.m in Sources */,
+				2DCF84A51EAD791700A4902B /* BEMGraphCalculator.m in Sources */,
+				2DCF84A31EAD791700A4902B /* BEMAverageLine.m in Sources */,
+				2DCF84A71EAD791700A4902B /* BEMSimpleLineGraphView.m in Sources */,
 				2D6958191E607E95008C918F /* AppDelegate.m in Sources */,
 				2D6958161E607E95008C918F /* main.m in Sources */,
 				2DAD44781E6B3D190098BB0E /* NavigationController.m in Sources */,

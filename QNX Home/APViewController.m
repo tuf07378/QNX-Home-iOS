@@ -43,12 +43,12 @@ NSMutableArray *pins;
         [self.board selectRow:0 inComponent:0 animated:YES];
         [self.pType selectRow:0 inComponent:0 animated:YES];
         [self.pMod selectRow:0 inComponent:0 animated:YES];
-        [self.pCon selectRow:0 inComponent:0 animated:YES];
         [models addObjectsFromArray:[globals.peripheralModels objectForKey:globals.peripheralTypes[[self.pType selectedRowInComponent:0]]]];
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: title, @"HouseName", globals.seshToke, @"SessionToken", boards[[self.board selectedRowInComponent:0]], @"BoardName", globals.peripheralTypes[[self.pType selectedRowInComponent:0]], @"PeripheralTypeName", nil];
         NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/getavailablepinconnections/" withData:mapData isAsync:NO];
         [self parsePins:body];
         [self.pCon reloadAllComponents];
+        [self.pCon selectRow:0 inComponent:0 animated:YES];
     }];
     // Do any additional setup after loading the view.
 }
@@ -99,6 +99,9 @@ NSMutableArray *pins;
         return [mods count];
     }
     else if (pickerView == self.pCon){
+        if ([pins[0] isEqualToString:@"Empty"]){
+            return 0;
+        }
         return [pins count];
     }
     return 1;
@@ -136,6 +139,8 @@ NSMutableArray *pins;
     GlobalVars *globals = [GlobalVars sharedInstance];
     if (pickerView == self.house){
         [self.board reloadAllComponents];
+        [self.pCon reloadAllComponents];
+        [self.pMod reloadAllComponents];
     }
     else if(pickerView == self.pType){
         [models removeAllObjects];
@@ -217,19 +222,24 @@ NSMutableArray *pins;
 
 - (void)parsePins:(NSString *)body{
     pins = [[NSMutableArray alloc] init];
-    NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
-    NSString *haystackPrefix = @"[[";
-    NSString *haystackSuffix = @"]]";
-    NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
-    NSString *needle = [body substringWithRange:needleRange];
-    NSArray *houseArray = [needle componentsSeparatedByString:@","];
-    for(int i = 0; i < numberOfOccurrences + 1; i++){
-                NSString *house = (NSString *)houseArray[i];
-                haystackPrefix = @"{\"PinConnectionName\":\"";
-                haystackSuffix = @"\"}";
-                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
-                needle = [house substringWithRange:needleRange];
-                [pins addObject:[NSString stringWithString:needle]];
+    if ([body isEqualToString:@"[[]]"]){
+        pins = [NSMutableArray arrayWithObject:@"Empty"];
+    }
+    else{
+        NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@","] count] - 1;
+        NSString *haystackPrefix = @"[[";
+        NSString *haystackSuffix = @"]]";
+        NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
+        NSString *needle = [body substringWithRange:needleRange];
+        NSArray *houseArray = [needle componentsSeparatedByString:@","];
+        for(int i = 0; i < numberOfOccurrences + 1; i++){
+            NSString *house = (NSString *)houseArray[i];
+            haystackPrefix = @"{\"PinConnectionName\":\"";
+            haystackSuffix = @"\"}";
+            needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+            needle = [house substringWithRange:needleRange];
+            [pins addObject:[NSString stringWithString:needle]];
+        }
     }
 }
 -(IBAction)addP:(id)sender{
@@ -263,9 +273,11 @@ NSMutableArray *pins;
             }
             else if([type.lowercaseString containsString:@"relay"]){
                 [periphs addObject:@"Relay"];
-                NSMutableDictionary *newPeripheral = [globals.houseData objectForKey:title];
+                NSMutableDictionary *newPeripheral = [globals.houseData objectForKey:title][0];
                 [newPeripheral setObject:@"0" forKey:self.pName.text];
-                [globals.allData setObject:newPeripheral forKey:title];
+                NSMutableArray *data = [globals.houseData objectForKey:title];
+                [data replaceObjectAtIndex:0 withObject:newPeripheral];
+                [globals.houseData setObject:data forKey:title];
             }
             else{
                 [periphs addObject:@"Camera"];

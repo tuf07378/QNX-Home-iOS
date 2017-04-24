@@ -8,6 +8,8 @@
 
 #import "DeviceViewController.h"
 #import "GlobalVars.h"
+#import "BEMSimpleLineGraphView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface DeviceViewController ()
 
@@ -23,9 +25,39 @@
         [self.capture setHidden:YES];
         [self.start setHidden:YES];
         [self.end setHidden:YES];
-    }
+        [self.imageView setHidden:YES];
+        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", [globals.houses objectAtIndex:globals.house-2], @"HouseName", globals.device, @"PeripheralName", nil];
+        //NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", globals.device, @"peripheralName", [globals.houses objectAtIndex:globals.house-2], @"houseName", nil];
+        NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/gethistoricdata" withData:mapData isAsync:NO];
+        self.data = [self parseHistorical:body];
+        self.graph.averageLine.enableAverageLine = YES;
+        self.graph.averageLine.alpha = 0.6;
+        self.graph.averageLine.color = [UIColor darkGrayColor];
+        self.graph.averageLine.width = 2.5;
+        self.graph.averageLine.dashPattern = @[@(2),@(2)];
+        self.graph.averageLine.title = @"Avg";
+        self.graph.enableTouchReport = YES;
+        self.graph.enablePopUpReport = YES;
+        self.graph.autoScaleYAxis = YES;
+        // self.myGraph.alwaysDisplayDots = YES;
+        // self.myGraph.alwaysDisplayPopUpLabels = YES;
+        self.graph.enableReferenceXAxisLines = YES;
+        self.graph.enableReferenceYAxisLines = YES;
+        self.graph.enableReferenceAxisFrame = YES;
+        // Dash the y reference lines
+        self.graph.lineDashPatternForReferenceYAxisLines = @[@(2),@(2)];
+        self.graph.enableXAxisLabel = YES;
+        // Show the y axis values with this format string
+        self.graph.formatStringForValues = @"%.1f";
+        
+        // Setup initial curve selection segment
+        self.curveChoice.selectedSegmentIndex = self.graph.enableBezierCurve;
+        self.graph.layer.cornerRadius = 5;
+        self.graph.layer.masksToBounds = YES;
+        }
     else{
         [self loadImage];
+        [self.graph setHidden:YES];
         NSTimer *imageTimer = [NSTimer scheduledTimerWithTimeInterval: .25 target:self selector:@selector(loadImage) userInfo:nil repeats: YES];
     }
     // Do any additional setup after loading the view.
@@ -90,6 +122,67 @@
     NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/setcamerafeed" withData:mapData isAsync:YES];
 }
 
+- (NSDictionary *)parseHistorical:(NSString *)body{
+    NSLog(@"%@", body);
+    if (body == nil || [body length] == 0 || [body isEqualToString:@"[[]]"]){
+        return [NSDictionary dictionaryWithObject:@"1" forKey:@"Empty"];
+    }
+    else{
+        NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@"},{"] count] - 1;
+        NSString *haystackPrefix = @"[[{";
+        NSString *haystackSuffix = @"}]]";
+        NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
+        NSString *needle = [body substringWithRange:needleRange];
+        NSArray *houseArray = [needle componentsSeparatedByString:@"},{"];
+        NSMutableDictionary *sens = [[NSMutableDictionary alloc] init];
+        NSString *time;
+        for(int i = 0; i < numberOfOccurrences + 1; i++){
+            NSUInteger numberOfSens = [[houseArray[i] componentsSeparatedByString:@","] count];
+            NSArray *senArray = [houseArray[i] componentsSeparatedByString:@","];
+            for(int j = 0; j < numberOfSens; j++){
+                if (j % 2 == 0){
+                    NSString *house = (NSString *)senArray[j];
+                    haystackPrefix = @"\"Timestamp\":\"";
+                    haystackSuffix = @"\"";
+                    needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                    needle = [house substringWithRange:needleRange];
+                    time = [NSString stringWithString:needle];
+                }
+                else if (j % 2 == 1){
+                    NSString *house = (NSString *)senArray[j];
+                    haystackPrefix = @"\"PeripheralValue\":";
+                    haystackSuffix = @"";
+                    needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                    needle = [house substringWithRange:needleRange];
+                    [sens setObject:[NSString stringWithString:needle] forKey:time];
+                }
+            }
+            
+        }
+        return sens;
+    }
+}
+
+- (NSUInteger)numberOfPointsInLineGraph:(BEMSimpleLineGraphView *)graph {
+    return [self.data count]; // Number of points in the graph.
+}
+- (CGFloat)lineGraph:(BEMSimpleLineGraphView *)graph valueForPointAtIndex:(NSUInteger)index {
+    return [[[self.data allValues] objectAtIndex:index] floatValue];
+    // The value of the point on the Y-Axis for the index.
+}
+
+- (NSString *)lineGraph:(BEMSimpleLineGraphView *)graph labelOnXAxisForIndex:(NSUInteger)index {
+    
+    NSString *label = [[self.data allKeys] objectAtIndex:index];
+    return [label stringByReplacingOccurrencesOfString:@" " withString:@"\n"];
+}
+
+- (NSUInteger)numberOfGapsBetweenLabelsOnLineGraph:(BEMSimpleLineGraphView *)graph {
+    return [self.data count]/5;
+}
+- (NSString *)popUpSuffixForlineGraph:(BEMSimpleLineGraphView *)graph {
+    return @"°";
+}
 /*
 #pragma mark - Navigation
 

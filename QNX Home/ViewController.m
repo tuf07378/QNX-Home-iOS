@@ -912,7 +912,8 @@ NSArray *picker;
         else{
             NSMutableArray *boards = data[0];
             NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", title, @"houseName", boards[indexPath.row * 4], @"peripheralName", nil];
-            [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/removeperipheral" withData:mapData isAsync:YES];
+            NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/removeperipheral" withData:mapData isAsync:NO];
+            NSLog(@"%@", body);
             NSMutableArray *houseData = [globals.houseData objectForKey:title];
             NSString *type = [globals.allData objectForKey:title][0][(indexPath.row * 4) + 3];
             if ([type isEqualToString:@"Sensor"]){
@@ -1218,29 +1219,32 @@ NSArray *picker;
         }];
         UIAlertAction *add = [UIAlertAction actionWithTitle:@"Add Board" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
             UIAlertController *adding = [UIAlertController alertControllerWithTitle:@"Adding Board" message:@"Waiting for board to be added to your account." preferredStyle:UIAlertControllerStyleAlert];
-            [self presentViewController:adding animated:TRUE completion:nil];
-            NSString *title = picker[globals.house];
-            NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: title, @"HouseName", globals.seshToke, @"SessionToken", self.board.text, @"BoardName", nil];
-            NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/checkboardnameavailability" withData:mapData isAsync:NO];
-            NSLog(@"%@", body);
-            if ([body containsString:@"1"]){
-                mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", self.boardSer.text, @"BoardSerialNumber", title, @"HouseName", self.board.text, @"BoardName", nil];
-                body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/createboard" withData:mapData isAsync:NO];
-                NSLog(@"Response Body:\n%@\n", body);
-                if ([body containsString:@"0"]){
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                    UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Created Board" message:@"Successfully registered new board." preferredStyle:UIAlertControllerStyleAlert];
-                    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
-                    [success addAction:ok];
-                    [self presentViewController:success animated:TRUE completion:nil];
-                    NSArray *data = [globals.allData objectForKey:title];
-                    NSMutableArray *boards = [[NSMutableArray alloc] init];
-                    [boards addObjectsFromArray:data[1]];
-                    [boards addObject:self.board.text];
-                    [globals.allData setObject:[NSArray arrayWithObjects:data[0], boards, nil] forKey:title];
-                    [self.system reloadData];
+            [self presentViewController:adding animated:TRUE completion:^{
+                NSString *title = picker[globals.house];
+                NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: title, @"HouseName", globals.seshToke, @"SessionToken", self.board.text, @"BoardName", nil];
+                NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/checkboardnameavailability" withData:mapData isAsync:NO];
+                NSLog(@"%@", body);
+                if ([body containsString:@"1"]){
+                    mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", self.boardSer.text, @"BoardSerialNumber", title, @"HouseName", self.board.text, @"BoardName", nil];
+                    body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/board/createboard" withData:mapData isAsync:NO];
+                    NSLog(@"Response Body:\n%@\n", body);
+                    if ([body containsString:@"0"]){
+                        [self dismissViewControllerAnimated:YES completion:^{
+                            NSString *houseN = picker[globals.house];
+                            UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Created Board" message:@"Successfully registered new board." preferredStyle:UIAlertControllerStyleAlert];
+                            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+                            [success addAction:ok];
+                            [self presentViewController:success animated:TRUE completion:nil];
+                            NSArray *data = [globals.allData objectForKey:houseN];
+                            NSMutableArray *boards = [[NSMutableArray alloc] init];
+                            [boards addObjectsFromArray:data[1]];
+                            [boards addObject:self.board.text];
+                            [globals.allData setObject:[NSArray arrayWithObjects:data[0], boards, nil] forKey:houseN];
+                            [self.system reloadData];
+                        }];
+                    }
                 }
-            }
+            }];
         }];
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil];
         [board addAction:add];
