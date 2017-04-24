@@ -274,6 +274,8 @@ NSMutableArray *pins;
             else if([type.lowercaseString containsString:@"relay"]){
                 [periphs addObject:@"Relay"];
                 NSMutableDictionary *newPeripheral = [globals.houseData objectForKey:title][0];
+                if (newPeripheral == 0 || [newPeripheral count] == 0)
+                    newPeripheral = [[NSMutableDictionary alloc] init];
                 [newPeripheral setObject:@"0" forKey:self.pName.text];
                 NSMutableArray *data = [globals.houseData objectForKey:title];
                 [data replaceObjectAtIndex:0 withObject:newPeripheral];
@@ -284,8 +286,6 @@ NSMutableArray *pins;
             }
         }
         [globals.allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:title];
-        
-        
         NSLog(@"%@", globals.houseData);
     }
 }

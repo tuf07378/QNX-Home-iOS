@@ -912,8 +912,7 @@ NSArray *picker;
         else{
             NSMutableArray *boards = data[0];
             NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", title, @"houseName", boards[indexPath.row * 4], @"peripheralName", nil];
-            NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/removeperipheral" withData:mapData isAsync:NO];
-            NSLog(@"%@", body);
+            NSString *body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/removeperipheral" withData:mapData isAsync:YES];
             NSMutableArray *houseData = [globals.houseData objectForKey:title];
             NSString *type = [globals.allData objectForKey:title][0][(indexPath.row * 4) + 3];
             if ([type isEqualToString:@"Sensor"]){

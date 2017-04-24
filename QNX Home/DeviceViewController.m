@@ -181,7 +181,8 @@
     return [self.data count]/5;
 }
 - (NSString *)popUpSuffixForlineGraph:(BEMSimpleLineGraphView *)graph {
-    return @"°";
+    //return @"°";
+    return @"";
 }
 /*
 #pragma mark - Navigation
