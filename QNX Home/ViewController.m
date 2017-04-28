@@ -135,9 +135,28 @@ NSArray *picker;
         UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
             NSArray *commandArray = [hypothesis componentsSeparatedByString:@" "];
             if ([hypothesis containsString:@" Show "]){
-
+                NSString *periph = [[NSMutableString alloc] init];
+                NSUInteger loc = [commandArray indexOfObject:@"Show"];
+                NSMutableString *house = [[NSMutableString alloc] init];
+                for(int h = 0; h < (int)loc; h++){
+                    [house appendString:commandArray[h]];
+                }
+                NSDictionary *relays = [globals.houseData objectForKey:house][0];
+                NSArray *sensors = [globals.houseData objectForKey:house][1];
+                NSArray *cameras = [globals.houseData objectForKey:house][2];
+                periph = commandArray[loc + 1];
+                if ([[relays allKeys] containsObject:[NSString stringWithString:periph]] || [sensors containsObject:[NSString stringWithString:periph]]){
+                    globals.type = 0;
+                    globals.device = periph;
+                    [self performSegueWithIdentifier:@"History" sender:self];
+                }
+                else if ([cameras containsObject:periph]){
+                    globals.device = periph;
+                    globals.type = 3;
+                    [self performSegueWithIdentifier:@"History" sender:self];
+                }
             }
-            else{
+            else if ([hypothesis containsString:@" Turn "]){
                 NSMutableString *relay = [[NSMutableString alloc] init];
                 NSUInteger loc = [commandArray indexOfObject:@"Turn"];
                 NSMutableString *house = [[NSMutableString alloc] init];
@@ -161,6 +180,9 @@ NSArray *picker;
                 [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/setrelaystatus" withData:mapData isAsync:YES];
                 if (globals.type < 3)
                     [self transition:@"ViewController"];
+            }
+            else{
+                
             }
             
         }];
