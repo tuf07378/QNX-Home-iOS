@@ -34,5 +34,6 @@
 @property (retain, readwrite) IBOutlet UITextField *chgH;
 @property (retain, readwrite) IBOutlet UITextField *chgP;
 @property IBOutlet UITableView *cameras;
+@property IBOutlet UITableView *automation;
 
 @end

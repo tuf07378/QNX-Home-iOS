@@ -29,7 +29,7 @@
 @property(strong, nonatomic, readwrite) NSMutableDictionary *peripheralModels;
 @property(strong, nonatomic, readwrite) NSMutableArray *commands;
 @property(strong, nonatomic, readwrite) NSString *device;
-
-
+@property(strong, nonatomic, readwrite) NSArray *condtions;
+@property(strong, nonatomic, readwrite) NSArray *aPC;
 
 @end

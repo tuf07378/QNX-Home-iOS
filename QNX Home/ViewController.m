@@ -66,36 +66,14 @@ NSArray *picker;
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
     GlobalVars *globals = [GlobalVars sharedInstance];
     globals.house = row;
-    if (!globals.isConfig && globals.type != 3){
-        MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
-        UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
-        ViewController *viewController;
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        
-        viewController = [storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
-        
-        [navigationController setViewControllers:@[viewController]];
-    }
-    else if (globals.type == 3){
-        MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
-        UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
-        ViewController *viewController;
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        
-        viewController = [storyboard instantiateViewControllerWithIdentifier:@"Camera"];
-        
-        [navigationController setViewControllers:@[viewController]];
-    }
-    else{
-        MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
-        UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
-        ViewController *viewController;
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        
-        viewController = [storyboard instantiateViewControllerWithIdentifier:@"System"];
-        
-        [navigationController setViewControllers:@[viewController]];
-    }
+    if (!globals.isConfig && globals.type != 3 && globals.type != 4)
+        [self transition:@"ViewController"];
+    else if (globals.type == 3)
+        [self transition:@"Camera"];
+    else if (globals.type == 4)
+        [self transition:@"Automation"];
+    else
+        [self transition:@"System"];
 }
 
 - (IBAction)voice:(id)sender{
@@ -517,36 +495,40 @@ NSArray *picker;
                 NSLog(@"Response Body:\n%@\n", body);
                 if ([body containsString:@"Success"]){
                     [globals.houses addObject:self.temp.text];
-                    [self dismissViewControllerAnimated:TRUE completion:nil];
-                    UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Joined House" message:@"Successfully joined existing house." preferredStyle:UIAlertControllerStyleAlert];
-                    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
-                    [success addAction:ok];
-                    [self presentViewController:success animated:TRUE completion:nil];
-                    globals.houseData = (NSMutableDictionary *) [self getSensorData];
-                    mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", newHouse, @"houseName", nil];
-                    NSString *received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getcurrentperipheralsbyhouse" withData:mapData isAsync:NO];
-                    NSArray *periphs;
-                    if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
-                        periphs = (NSMutableArray *)[self parsePeripherals:received];
-                    }
-                    else{
-                        periphs = [[NSMutableArray alloc] init];
-                    }
-                    mapData = [[NSDictionary alloc] initWithObjectsAndKeys: newHouse, @"HouseName", globals.seshToke, @"SessionToken", nil];
-                    received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/getboardsbyhouse" withData:mapData isAsync:NO];
-                    NSMutableArray *boards;
-                    if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
-                        boards = (NSMutableArray *)[self parseBoards:received];
-                    }
-                    else{
-                        boards = [[NSMutableArray alloc] init];
-                    }
-                    [globals.allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:newHouse];
-                    [self.houseList reloadData];
+                    [self dismissViewControllerAnimated:TRUE completion:^{
+                        UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Joined House" message:@"Successfully joined existing house." preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+                        [success addAction:ok];
+                        [self presentViewController:success animated:TRUE completion:nil];
+                        globals.houseData = (NSMutableDictionary *) [self getSensorData];
+                        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", newHouse, @"houseName", nil];
+                        NSString *received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getcurrentperipheralsbyhouse" withData:mapData isAsync:NO];
+                        NSArray *periphs;
+                        if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
+                            periphs = (NSMutableArray *)[self parsePeripherals:received];
+                        }
+                        else{
+                            periphs = [[NSMutableArray alloc] init];
+                        }
+                        mapData = [[NSDictionary alloc] initWithObjectsAndKeys: newHouse, @"HouseName", globals.seshToke, @"SessionToken", nil];
+                        received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/getboardsbyhouse" withData:mapData isAsync:NO];
+                        NSMutableArray *boards;
+                        if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
+                            boards = (NSMutableArray *)[self parseBoards:received];
+                        }
+                        else{
+                            boards = [[NSMutableArray alloc] init];
+                        }
+                        [globals.allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:newHouse];
+                        [self.houseList reloadData];
+                    }];
                 }
                 else{
                     [self dismissViewControllerAnimated:TRUE completion:nil];
                 }
+            }
+            else{
+                [self dismissViewControllerAnimated:TRUE completion:nil];
             }
         }];
     }];
@@ -587,7 +569,10 @@ NSArray *picker;
         //add a switch
 
     }
-    if(tableView == self.houseList){
+    if (tableView == self.automation){
+        return cell;
+    }
+    else if(tableView == self.houseList){
         cell.textLabel.text = globals.houses[indexPath.row];
     }
     else if (tableView == self.system){
@@ -627,7 +612,7 @@ NSArray *picker;
         cell.detailTextLabel.text = sensors[(indexPath.row * 5) + 4];
         cell.accessoryView = NULL;
     }
-    else{
+    else if (globals.type != 4){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         NSString *title = picker[globals.house];
         NSArray *cams = [globals.houseData objectForKey:title][2];
@@ -794,7 +779,7 @@ NSArray *picker;
             [self presentViewController:boardOpts animated:YES completion:nil];
         }
     }
-    else{
+    else if (tableView != self.automation){
         NSString *title = picker[globals.house];
         NSArray *data = [globals.houseData objectForKey:title];
         NSDictionary *relays = data[0];
@@ -813,12 +798,18 @@ NSArray *picker;
         globals.device = bar;
         [self performSegueWithIdentifier:@"History" sender:self];
     }
+    else if (tableView == self.automation){
+        
+    }
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     GlobalVars *globals = [GlobalVars sharedInstance];
-    if(tableView == self.houseList){
+    if (tableView == self.automation){
+        return 0;
+    }
+    else if(tableView == self.houseList){
         return [globals.houses count];
     }
     else if (tableView == self.system){
@@ -836,21 +827,21 @@ NSArray *picker;
     else if (section == 1 || globals.type == 2){
         NSString *title = picker[globals.house];
         NSDictionary *relays = [globals.houseData objectForKey:title][0];
-        if ([[relays allKeys][0] isEqualToString:@"Empty"])
+        if (relays == nil)
             return 0;
         return [relays count];
     }
     else if (section == 0 && (globals.type == 0 || globals.type == 1)){
         NSString *title = picker[globals.house];
         NSArray *sensors = [globals.houseData objectForKey:title][1];
-        if ([sensors[0] isEqualToString:@"Empty"])
+        if (sensors == nil)
             return 0;
         return [sensors count] / 5;
     }
     else if (globals.type == 3){
         NSString *title = picker[globals.house];
         NSArray *cams = [globals.houseData objectForKey:title][2];
-        if ([cams[0] isEqualToString:@"Empty"])
+        if (cams == nil)
             return 0;
         return [cams count] / 2;
     }
@@ -946,7 +937,7 @@ NSArray *picker;
                 [sensors removeObjectAtIndex:(ind + 1)];
                 [sensors removeObjectAtIndex:(ind)];
                 if ([sensors count] == 0){
-                    [sensors addObject:@"Empty"];
+                    //[sensors addObject:@"Empty"];
                 }
                 [houseData replaceObjectAtIndex:1 withObject:sensors];
             }
@@ -954,7 +945,7 @@ NSArray *picker;
                 NSMutableDictionary *relays = houseData[0];
                 [relays removeObjectForKey:boards[indexPath.row * 4]];
                 if ([relays count] == 0){
-                    [relays setObject:@"1" forKey:@"Empty"];
+                    //[relays setObject:@"1" forKey:@"Empty"];
                 }
                 [houseData replaceObjectAtIndex:0 withObject:relays];
             }
@@ -1095,7 +1086,7 @@ NSArray *picker;
             [periphData addObject:relays];
         }
         else{
-            NSDictionary *relays = [NSDictionary dictionaryWithObject:@"1" forKey:@"Empty"];
+            NSDictionary *relays = [[NSDictionary alloc] init];
             [periphData addObject:relays];
         }
         mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
@@ -1105,7 +1096,7 @@ NSArray *picker;
             sensorData = [self parseSensors:relayData];
         }
         else{
-            sensorData = [NSArray arrayWithObject:@"Empty"];
+            sensorData = [[NSArray alloc] init];
         }
         [periphData addObject: sensorData];
         mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
@@ -1115,7 +1106,7 @@ NSArray *picker;
             cameras = [self parseCameras:relayData];
         }
         else{
-            cameras = [NSArray arrayWithObject:@"Empty"];
+            cameras = [[NSArray alloc] init];
         }
         [periphData addObject:cameras];
         [data setObject:periphData forKey:house];
@@ -1366,6 +1357,19 @@ NSArray *picker;
             [self transition:@"ViewController"];
         }];
     }];
+    
+}
+-(IBAction)action:(id)sender{
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    if (globals.house == 0 || globals.house == 1){
+        UIAlertController *house = [UIAlertController alertControllerWithTitle:@"Select House" message:@"You must select a house first." preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+        [house addAction:ok];
+        [self presentViewController:house animated:YES completion:nil];
+    }
+    else{
+        [self performSegueWithIdentifier:@"Action" sender:self];
+    }
     
 }
 

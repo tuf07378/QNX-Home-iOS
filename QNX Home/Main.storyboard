@@ -1212,6 +1212,402 @@
             </objects>
             <point key="canvasLocation" x="4687.1999999999998" y="571.66416791604206"/>
         </scene>
+        <!--QNX Home-->
+        <scene sceneID="cpK-Uq-vlC">
+            <objects>
+                <viewController storyboardIdentifier="Automation" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ilh-Zi-maL" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="RYo-DL-XR9"/>
+                        <viewControllerLayoutGuide type="bottom" id="NWO-IP-myJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6UH-Nf-I3e">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aQH-7c-fHQ">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="igT-Sd-VDk">
+                                        <rect key="frame" x="8" y="8" width="359" height="68"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="68" id="bzL-Y3-UEi"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="Ilh-Zi-maL" id="ug0-zY-7h4"/>
+                                            <outlet property="delegate" destination="Ilh-Zi-maL" id="g0V-0P-4KC"/>
+                                        </connections>
+                                    </pickerView>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="uPR-c1-EZD">
+                                        <rect key="frame" x="8" y="85" width="359" height="442"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <sections/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="Ilh-Zi-maL" id="Ym8-pe-Nr6"/>
+                                            <outlet property="delegate" destination="Ilh-Zi-maL" id="x0s-9D-7pR"/>
+                                        </connections>
+                                    </tableView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dGc-rY-CuW">
+                                        <rect key="frame" x="8" y="535" width="359" height="49"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="49" id="Q7Q-kD-isv"/>
+                                        </constraints>
+                                        <state key="normal" title="Add Action"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="action:" destination="Ilh-Zi-maL" eventType="touchUpInside" id="Qg5-SR-66N"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="igT-Sd-VDk" firstAttribute="trailing" secondItem="uPR-c1-EZD" secondAttribute="trailing" id="C5l-Zg-04n"/>
+                                    <constraint firstItem="igT-Sd-VDk" firstAttribute="trailing" secondItem="aQH-7c-fHQ" secondAttribute="trailingMargin" id="Dfk-Ft-y0P"/>
+                                    <constraint firstItem="uPR-c1-EZD" firstAttribute="leading" secondItem="dGc-rY-CuW" secondAttribute="leading" id="FTC-sf-vnJ"/>
+                                    <constraint firstAttribute="bottom" secondItem="dGc-rY-CuW" secondAttribute="bottom" constant="19" id="ORu-DQ-fO3"/>
+                                    <constraint firstItem="igT-Sd-VDk" firstAttribute="top" secondItem="aQH-7c-fHQ" secondAttribute="topMargin" id="Rdm-6j-UTg"/>
+                                    <constraint firstItem="dGc-rY-CuW" firstAttribute="top" secondItem="uPR-c1-EZD" secondAttribute="bottom" constant="8" symbolic="YES" id="V8A-kn-uOk"/>
+                                    <constraint firstItem="uPR-c1-EZD" firstAttribute="trailing" secondItem="dGc-rY-CuW" secondAttribute="trailing" id="Vhn-gl-dsk"/>
+                                    <constraint firstItem="igT-Sd-VDk" firstAttribute="leading" secondItem="uPR-c1-EZD" secondAttribute="leading" id="ZrK-Mr-31m"/>
+                                    <constraint firstItem="igT-Sd-VDk" firstAttribute="leading" secondItem="aQH-7c-fHQ" secondAttribute="leadingMargin" id="i0K-PZ-bbs"/>
+                                    <constraint firstItem="uPR-c1-EZD" firstAttribute="top" secondItem="igT-Sd-VDk" secondAttribute="bottom" constant="9" id="kaj-QX-Sh6"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="aQH-7c-fHQ" firstAttribute="leading" secondItem="6UH-Nf-I3e" secondAttribute="leading" id="1dO-PY-2yE"/>
+                            <constraint firstAttribute="trailing" secondItem="aQH-7c-fHQ" secondAttribute="trailing" id="R8A-4U-Qlg"/>
+                            <constraint firstItem="aQH-7c-fHQ" firstAttribute="top" secondItem="RYo-DL-XR9" secondAttribute="bottom" id="ld7-yQ-VMm"/>
+                            <constraint firstItem="aQH-7c-fHQ" firstAttribute="bottom" secondItem="NWO-IP-myJ" secondAttribute="top" id="ybo-ta-Bp8"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="QNX Home" id="9yG-F6-lzr">
+                        <barButtonItem key="leftBarButtonItem" image="menu" id="wjt-6d-RhV">
+                            <connections>
+                                <action selector="showLeftViewAnimated:" destination="Ilh-Zi-maL" id="8kT-IJ-G9x"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="microphone" id="laA-C1-Srv">
+                            <connections>
+                                <action selector="voice:" destination="Ilh-Zi-maL" id="0xP-yB-l6h"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="automation" destination="uPR-c1-EZD" id="Zyg-xF-GMe"/>
+                        <outlet property="cameras" destination="uPR-c1-EZD" id="DcU-2I-bn3"/>
+                        <outlet property="house" destination="igT-Sd-VDk" id="3iB-65-OVL"/>
+                        <segue destination="hyh-5l-vUR" kind="show" identifier="Action" id="5oX-tb-WMm"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Q0m-fM-1YD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5342" y="572"/>
+        </scene>
+        <!--QNX Home-->
+        <scene sceneID="ZeY-j7-Mzq">
+            <objects>
+                <viewController storyboardIdentifier="Event" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hyh-5l-vUR" customClass="AAViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Yqr-Vw-LtN"/>
+                        <viewControllerLayoutGuide type="bottom" id="tcR-LX-OQX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cF2-e1-Oci">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jnx-3f-EkU">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qfa-py-dop">
+                                        <rect key="frame" x="8" y="557" width="359" height="38"/>
+                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="38" id="7JU-DP-8oE"/>
+                                        </constraints>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="cancel:" destination="hyh-5l-vUR" eventType="touchUpInside" id="7fu-BC-BOy"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0b9-Rk-tjh">
+                                        <rect key="frame" x="8" y="509" width="359" height="40"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="WEx-xp-Vgg"/>
+                                        </constraints>
+                                        <state key="normal" title="Add Action"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="add:" destination="hyh-5l-vUR" eventType="touchUpInside" id="u9Z-j2-VCg"/>
+                                        </connections>
+                                    </button>
+                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vyM-cN-Kx3">
+                                        <rect key="frame" x="8" y="46" width="359" height="68"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="hyh-5l-vUR" id="qpG-Q8-3sf"/>
+                                            <outlet property="delegate" destination="hyh-5l-vUR" id="S1f-3M-jof"/>
+                                        </connections>
+                                    </pickerView>
+                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PPI-me-Di8">
+                                        <rect key="frame" x="8" y="122" width="359" height="58"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="58" id="it5-bf-6e5"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="hyh-5l-vUR" id="qFE-em-I0t"/>
+                                            <outlet property="delegate" destination="hyh-5l-vUR" id="o8X-hy-Igf"/>
+                                        </connections>
+                                    </pickerView>
+                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O5D-Dw-xxb">
+                                        <rect key="frame" x="8" y="226" width="359" height="58"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="58" id="VPv-bM-0Ds"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="hyh-5l-vUR" id="qJR-eF-gTi"/>
+                                            <outlet property="delegate" destination="hyh-5l-vUR" id="tX3-Jm-fPv"/>
+                                        </connections>
+                                    </pickerView>
+                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KlO-9H-aDn">
+                                        <rect key="frame" x="8" y="292" width="359" height="58"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="58" id="4zW-nb-xR2"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="hyh-5l-vUR" id="2zo-DY-2o3"/>
+                                            <outlet property="delegate" destination="hyh-5l-vUR" id="Idp-ti-hJU"/>
+                                        </connections>
+                                    </pickerView>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Rule Name" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="K8f-Rr-9Y4">
+                                        <rect key="frame" x="8" y="8" width="359" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="cRI-6x-OvS"/>
+                                        </constraints>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outlet property="delegate" destination="hyh-5l-vUR" id="Ji3-od-bIk"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Condition Value" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Syo-Ck-kPO">
+                                        <rect key="frame" x="8" y="188" width="359" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="zFV-Mi-lya"/>
+                                        </constraints>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outlet property="delegate" destination="hyh-5l-vUR" id="k9F-Mx-dVB"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Action Parameter" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="5sN-au-DL0">
+                                        <rect key="frame" x="8" y="462" width="359" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="SjZ-La-M6n"/>
+                                        </constraints>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outlet property="delegate" destination="hyh-5l-vUR" id="FBg-rN-JQ1"/>
+                                        </connections>
+                                    </textField>
+                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6xP-2g-8YF">
+                                        <rect key="frame" x="8" y="358" width="359" height="58"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="58" id="gxh-yt-gze"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="hyh-5l-vUR" id="hVA-ZO-rp9"/>
+                                            <outlet property="delegate" destination="hyh-5l-vUR" id="yKV-W5-Yq3"/>
+                                        </connections>
+                                    </pickerView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wl6-Iy-ehy">
+                                        <rect key="frame" x="166" y="433" width="42" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="TyF-xt-QpX"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="6xP-2g-8YF" firstAttribute="trailing" secondItem="5sN-au-DL0" secondAttribute="trailing" id="0di-OG-R2M"/>
+                                    <constraint firstItem="Syo-Ck-kPO" firstAttribute="trailing" secondItem="O5D-Dw-xxb" secondAttribute="trailing" id="2FZ-Cu-fW6"/>
+                                    <constraint firstItem="5sN-au-DL0" firstAttribute="leading" secondItem="0b9-Rk-tjh" secondAttribute="leading" id="4SD-5I-zwH"/>
+                                    <constraint firstItem="0b9-Rk-tjh" firstAttribute="top" secondItem="5sN-au-DL0" secondAttribute="bottom" constant="17" id="5IP-HS-8np"/>
+                                    <constraint firstItem="PPI-me-Di8" firstAttribute="leading" secondItem="Syo-Ck-kPO" secondAttribute="leading" id="6DG-6V-5yr"/>
+                                    <constraint firstItem="K8f-Rr-9Y4" firstAttribute="leading" secondItem="vyM-cN-Kx3" secondAttribute="leading" id="7MF-uo-X6S"/>
+                                    <constraint firstItem="PPI-me-Di8" firstAttribute="top" secondItem="vyM-cN-Kx3" secondAttribute="bottom" constant="8" symbolic="YES" id="AoR-xD-gMr"/>
+                                    <constraint firstItem="KlO-9H-aDn" firstAttribute="top" secondItem="O5D-Dw-xxb" secondAttribute="bottom" constant="8" symbolic="YES" id="Gkz-7x-Osi"/>
+                                    <constraint firstItem="6xP-2g-8YF" firstAttribute="top" secondItem="KlO-9H-aDn" secondAttribute="bottom" constant="8" symbolic="YES" id="HeP-Gz-kmy"/>
+                                    <constraint firstItem="O5D-Dw-xxb" firstAttribute="top" secondItem="Syo-Ck-kPO" secondAttribute="bottom" constant="8" symbolic="YES" id="LDc-lJ-kti"/>
+                                    <constraint firstItem="Syo-Ck-kPO" firstAttribute="top" secondItem="PPI-me-Di8" secondAttribute="bottom" constant="8" symbolic="YES" id="ZXZ-va-1vZ"/>
+                                    <constraint firstItem="5sN-au-DL0" firstAttribute="trailing" secondItem="0b9-Rk-tjh" secondAttribute="trailing" id="ZcG-4Z-dOn"/>
+                                    <constraint firstItem="qfa-py-dop" firstAttribute="top" secondItem="0b9-Rk-tjh" secondAttribute="bottom" constant="8" symbolic="YES" id="aDE-uE-xnI"/>
+                                    <constraint firstItem="vyM-cN-Kx3" firstAttribute="leading" secondItem="PPI-me-Di8" secondAttribute="leading" id="avf-yr-aJi"/>
+                                    <constraint firstItem="0b9-Rk-tjh" firstAttribute="leading" secondItem="qfa-py-dop" secondAttribute="leading" id="bkd-qd-4u5"/>
+                                    <constraint firstItem="6xP-2g-8YF" firstAttribute="leading" secondItem="5sN-au-DL0" secondAttribute="leading" id="d63-8d-LPh"/>
+                                    <constraint firstItem="5sN-au-DL0" firstAttribute="top" secondItem="wl6-Iy-ehy" secondAttribute="bottom" constant="8" symbolic="YES" id="enB-t7-mOi"/>
+                                    <constraint firstItem="vyM-cN-Kx3" firstAttribute="top" secondItem="K8f-Rr-9Y4" secondAttribute="bottom" constant="8" symbolic="YES" id="gZc-cz-7Sq"/>
+                                    <constraint firstItem="vyM-cN-Kx3" firstAttribute="trailing" secondItem="PPI-me-Di8" secondAttribute="trailing" id="hO0-gd-HqP"/>
+                                    <constraint firstItem="K8f-Rr-9Y4" firstAttribute="trailing" secondItem="jnx-3f-EkU" secondAttribute="trailingMargin" id="hoH-BO-42F"/>
+                                    <constraint firstItem="K8f-Rr-9Y4" firstAttribute="trailing" secondItem="vyM-cN-Kx3" secondAttribute="trailing" id="iG8-gq-czD"/>
+                                    <constraint firstItem="wl6-Iy-ehy" firstAttribute="centerX" secondItem="5sN-au-DL0" secondAttribute="centerX" id="jrs-q2-jqw"/>
+                                    <constraint firstItem="KlO-9H-aDn" firstAttribute="trailing" secondItem="6xP-2g-8YF" secondAttribute="trailing" id="lan-73-OWx"/>
+                                    <constraint firstItem="qfa-py-dop" firstAttribute="bottom" secondItem="jnx-3f-EkU" secondAttribute="bottomMargin" id="mK4-Xa-nlK"/>
+                                    <constraint firstItem="O5D-Dw-xxb" firstAttribute="leading" secondItem="KlO-9H-aDn" secondAttribute="leading" id="pq9-yp-sro"/>
+                                    <constraint firstItem="Syo-Ck-kPO" firstAttribute="leading" secondItem="O5D-Dw-xxb" secondAttribute="leading" id="pwI-Qr-uIG"/>
+                                    <constraint firstItem="0b9-Rk-tjh" firstAttribute="trailing" secondItem="qfa-py-dop" secondAttribute="trailing" id="q3N-ZX-bGR"/>
+                                    <constraint firstItem="O5D-Dw-xxb" firstAttribute="trailing" secondItem="KlO-9H-aDn" secondAttribute="trailing" id="ss7-eY-ePa"/>
+                                    <constraint firstItem="KlO-9H-aDn" firstAttribute="leading" secondItem="6xP-2g-8YF" secondAttribute="leading" id="ut0-Bv-swv"/>
+                                    <constraint firstItem="K8f-Rr-9Y4" firstAttribute="leading" secondItem="jnx-3f-EkU" secondAttribute="leadingMargin" id="vUN-Ai-2C6"/>
+                                    <constraint firstItem="PPI-me-Di8" firstAttribute="trailing" secondItem="Syo-Ck-kPO" secondAttribute="trailing" id="wTo-se-DYR"/>
+                                    <constraint firstItem="K8f-Rr-9Y4" firstAttribute="top" secondItem="jnx-3f-EkU" secondAttribute="topMargin" id="xr3-sH-9eT"/>
+                                    <constraint firstItem="wl6-Iy-ehy" firstAttribute="top" secondItem="6xP-2g-8YF" secondAttribute="bottom" constant="17" id="zRs-sH-rPc"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="jnx-3f-EkU" firstAttribute="bottom" secondItem="tcR-LX-OQX" secondAttribute="top" id="ANu-rj-9q0"/>
+                            <constraint firstItem="jnx-3f-EkU" firstAttribute="leading" secondItem="cF2-e1-Oci" secondAttribute="leading" id="Ped-3D-0de"/>
+                            <constraint firstItem="jnx-3f-EkU" firstAttribute="top" secondItem="Yqr-Vw-LtN" secondAttribute="bottom" id="m5g-ve-rvQ"/>
+                            <constraint firstAttribute="trailing" secondItem="jnx-3f-EkU" secondAttribute="trailing" id="s5U-wb-qwb"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="QNX Home" id="rBM-XJ-7UW"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="aP" destination="5sN-au-DL0" id="Dgn-OC-cok"/>
+                        <outlet property="action" destination="6xP-2g-8YF" id="8lr-SW-sXo"/>
+                        <outlet property="actionP" destination="KlO-9H-aDn" id="AbN-3U-zFt"/>
+                        <outlet property="actionPC" destination="O5D-Dw-xxb" id="grH-yH-LYb"/>
+                        <outlet property="cV" destination="Syo-Ck-kPO" id="2eX-Vs-gEX"/>
+                        <outlet property="condition" destination="PPI-me-Di8" id="r45-X1-ghe"/>
+                        <outlet property="desc" destination="wl6-Iy-ehy" id="6BN-1y-q2S"/>
+                        <outlet property="rule" destination="K8f-Rr-9Y4" id="obY-7Y-RAK"/>
+                        <outlet property="sensor" destination="vyM-cN-Kx3" id="djD-9o-zF4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d2Y-Xb-p5z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6056.8000000000002" y="572.56371814092961"/>
+        </scene>
     </scenes>
     <resources>
         <image name="menu" width="28" height="28"/>

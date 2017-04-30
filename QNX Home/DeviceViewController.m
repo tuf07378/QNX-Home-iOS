@@ -67,13 +67,6 @@ NSTimer *imageTimer;
                 houseName = [NSString stringWithString:house];
         }
         imageTimer = [NSTimer scheduledTimerWithTimeInterval: .25 target:self selector:@selector(loadImage) userInfo:nil repeats: YES];
-        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", globals.device, @"peripheralName", houseName, @"houseName", nil];
-        url = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/getimagecamera" withData:mapData isAsync:NO];
-        
-        NSString *haystackPrefix = @"[[{\"ImageName\":\"";
-        NSString *haystackSuffix = @"\"}]]";
-        NSRange needleRange = NSMakeRange(haystackPrefix.length, url.length - haystackPrefix.length - haystackSuffix.length);
-        url = [url substringWithRange:needleRange];
     }
     // Do any additional setup after loading the view.
 }
@@ -83,7 +76,7 @@ NSTimer *imageTimer;
     // Dispose of any resources that can be recreated.
 }
 -(void)loadImage{
-    NSString *ImageURL = [NSString stringWithFormat:@"https://s3.amazonaws.com/smart-home-gateway/%@.jpeg", url];
+    NSString *ImageURL = @"https://s3.amazonaws.com/smart-home-gateway/test5.jpeg";
     NSLog(@"%@", ImageURL);
     NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:ImageURL]];
     self.imageView.image = [UIImage imageWithData:imageData];

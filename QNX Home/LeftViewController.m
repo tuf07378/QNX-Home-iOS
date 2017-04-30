@@ -35,7 +35,7 @@
                          @"Sensors",
                          @"Relays",
                          @"Cameras",
-                         @"Automation\\Notifications",
+                         @"Automation",
                          @"User Account Settings",
                          @"System Configuration",
                          @"",
@@ -176,6 +176,18 @@
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
             globals.isConfig = FALSE;
             viewController = [storyboard instantiateViewControllerWithIdentifier:@"Camera"];
+            
+            [navigationController setViewControllers:@[viewController]];
+            break;
+        }
+        case 8:{
+            globals.type = 4;
+            [mainViewController hideLeftViewAnimated:YES completionHandler:nil];
+            UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
+            ViewController *viewController;
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+            globals.isConfig = FALSE;
+            viewController = [storyboard instantiateViewControllerWithIdentifier:@"Automation"];
             
             [navigationController setViewControllers:@[viewController]];
             break;
