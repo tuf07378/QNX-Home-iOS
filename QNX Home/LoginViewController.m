@@ -621,6 +621,10 @@
     return data;
 }
 - (NSArray *)parseRules:(NSString *)body{
+    if ([body isEqualToString:@"[[]]"]){
+        NSArray *rules = [[NSArray alloc] init];
+        return rules;
+    }
     GlobalVars *globals = [GlobalVars sharedInstance];
     NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@"},{"] count] - 1;
     NSString *haystackPrefix = @"[[{";
