@@ -500,7 +500,7 @@ NSArray *picker;
                         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
                         [success addAction:ok];
                         [self presentViewController:success animated:TRUE completion:nil];
-                        globals.houseData = (NSMutableDictionary *) [self getSensorData];
+                        [self getSensorDataWithOption:newHouse];
                         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", newHouse, @"houseName", nil];
                         NSString *received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getcurrentperipheralsbyhouse" withData:mapData isAsync:NO];
                         NSArray *periphs;
@@ -1103,46 +1103,60 @@ NSArray *picker;
     return sens;
 }
 
-- (NSDictionary *)getSensorData{
+- (void)getSensorDataWithOption:(NSString *)option{
     GlobalVars *globals = [GlobalVars sharedInstance];
+    BOOL go = TRUE;
     NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
-    for (NSString *house in globals.houses){
-        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: house, @"HouseName", globals.seshToke, @"SessionToken", nil];
-        NSString *relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/getrelayvaluesbyhouseid" withData:mapData  isAsync:NO];
-        [data setValue:@"" forKey:house];
-        NSMutableArray *periphData = [[NSMutableArray alloc] init];
-        if ([relayData containsString:@"Peripheral"]){
-            NSDictionary *relays = [self parseRelays:relayData];
-            [periphData addObject:relays];
-        }
-        else{
-            NSDictionary *relays = [[NSDictionary alloc] init];
-            [periphData addObject:relays];
-        }
-        mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
-        relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/sensor/getsensorvaluesbyhouse" withData:mapData  isAsync:NO];
-        NSArray *sensorData;
-        if ([relayData containsString:@"Peripheral"]){
-            sensorData = [self parseSensors:relayData];
-        }
-        else{
-            sensorData = [[NSArray alloc] init];
-        }
-        [periphData addObject: sensorData];
-        mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
-        relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/getcurrentcamerasbyhouse" withData:mapData isAsync:NO];
-        NSArray *cameras;
-        if ([relayData containsString:@"Peripheral"]){
-            cameras = [self parseCameras:relayData];
-        }
-        else{
-            cameras = [[NSArray alloc] init];
-        }
-        [periphData addObject:cameras];
-        [data setObject:periphData forKey:house];
-        NSLog(@"%@", data);
+    NSArray *houses;
+    if ([option isEqualToString:@"All"]){
+        houses = globals.houses;
     }
-    return data;
+    else{
+        houses = [NSArray arrayWithObject:picker[globals.house]];
+        go = NO;
+    }
+    for (NSString *house in globals.houses){
+        NSDictionary *mapData;
+        NSString *relayData;
+        NSMutableArray *periphData = [[NSMutableArray alloc] init];
+        if (go || [option isEqualToString:@"Dash"] || [option isEqualToString:@"Relays"]){
+            mapData = [[NSDictionary alloc] initWithObjectsAndKeys: house, @"HouseName", globals.seshToke, @"SessionToken", nil];
+            relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/getrelayvaluesbyhouseid" withData:mapData  isAsync:NO];
+            [data setValue:@"" forKey:house];
+            if ([relayData containsString:@"Peripheral"]){
+                NSDictionary *relays = [self parseRelays:relayData];
+                [[globals.houseData objectForKey:house] replaceObjectAtIndex:0 withObject:relays];
+            }
+            else{
+                NSDictionary *relays = [[NSDictionary alloc] init];
+                [[globals.houseData objectForKey:house] replaceObjectAtIndex:0 withObject:relays];
+            }
+        }
+        if (go || [option isEqualToString:@"Dash"] || [option isEqualToString:@"Sensors"]){
+            mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
+            relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/sensor/getsensorvaluesbyhouse" withData:mapData  isAsync:NO];
+            NSArray *sensorData;
+            if ([relayData containsString:@"Peripheral"]){
+                sensorData = [self parseSensors:relayData];
+            }
+            else{
+                sensorData = [[NSArray alloc] init];
+            }
+            [[globals.houseData objectForKey:house] replaceObjectAtIndex:1 withObject:sensorData];
+        }
+        if (go || [option isEqualToString:@"Cameras"]){
+            mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
+            relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/getcurrentcamerasbyhouse" withData:mapData isAsync:NO];
+            NSArray *cameras;
+            if ([relayData containsString:@"Peripheral"]){
+                cameras = [self parseCameras:relayData];
+            }
+            else{
+                cameras = [[NSArray alloc] init];
+            }
+            [[globals.houseData objectForKey:house] replaceObjectAtIndex:2 withObject:cameras];
+        }
+    }
 }
 
 - (NSDictionary *)parseRelays:(NSString *)body{
@@ -1381,7 +1395,17 @@ NSArray *picker;
     GlobalVars *globals = [GlobalVars sharedInstance];
     UIAlertController *refresh = [UIAlertController alertControllerWithTitle:@"Refreshing" message:@"Refreshing user data, please wait." preferredStyle:UIAlertControllerStyleAlert];
     [self presentViewController:refresh animated:YES completion:^(void){
-        globals.houseData = (NSMutableDictionary *) [self getSensorData];
+        NSString *option;
+        if (globals.type == 0){
+            option = @"Dash";
+        }
+        else if (globals.type == 1){
+            option = @"Sensors";
+        }
+        else{
+            option = @"Relays";
+        }
+        [self getSensorDataWithOption:option];
         [self.tableView reloadData];
         [self dismissViewControllerAnimated:YES completion:^(void){
             [self transition:@"ViewController"];
