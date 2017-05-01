@@ -48,47 +48,7 @@
             NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", nil];
             NSString *test = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/listhouses" withData:mapData isAsync:NO];
             [self parseHouses:test];
-            globals.houseData = (NSMutableDictionary *) [self getSensorData];
-            NSMutableDictionary *allData = [[NSMutableDictionary alloc] init];
-            NSMutableArray *words = [NSMutableArray arrayWithObjects:@"Dashboard", @"Sensors", @"Relays", @"Cameras", nil];
-            NSMutableDictionary *cams = [[NSMutableDictionary alloc] init];
-            for (NSString *house in globals.houses){
-                mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
-                NSString *received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getcurrentperipheralsbyhouse" withData:mapData isAsync:NO];
-                NSMutableArray *periphs;
-                if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
-                    periphs = (NSMutableArray *)[self parsePeripherals:received];
-                }
-                else{
-                    periphs = [[NSMutableArray alloc] init];
-                }
-                mapData = [[NSDictionary alloc] initWithObjectsAndKeys: house, @"HouseName", globals.seshToke, @"SessionToken", nil];
-                received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/getboardsbyhouse" withData:mapData isAsync:NO];
-                NSMutableArray *boards;
-                if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
-                    boards = (NSMutableArray *)[self parseBoards:received];
-                }
-                else{
-                    boards = [[NSMutableArray alloc] init];
-                }
-                [allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:house];
-                for (int i = 0; i < [periphs count]; i+=4){
-                    NSString *periph = [periphs objectAtIndex:i];
-                    if ([periphs[[periphs indexOfObject:periph] + 3] isEqualToString:@"Sensor"]){
-                        [words addObject:[NSString stringWithFormat:@"%@ %@ %@", house, @"Show", periph]];
-                    }
-                    else if ([periphs[[periphs indexOfObject:periph] + 3] isEqualToString:@"Relay"]){
-                        [words addObject:[NSString stringWithFormat:@"%@ %@ %@", house, @"Turn On", periph]];
-                        [words addObject:[NSString stringWithFormat:@"%@ %@ %@", house, @"Turn Off", periph]];
-                    }
-                    else{
-                        [words addObject:[NSString stringWithFormat:@"%@ %@ %@", house, @"Show", periph]];
-                    }
-                }
-
-            }
-            globals.commands = words;
-            globals.allData = allData;
+            globals.houseData = (NSMutableDictionary *) [self getSensorData];   
             mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", nil];
             body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getperipheraltypes/" withData:mapData isAsync:NO];
             [self parseTypes:body];
@@ -616,12 +576,47 @@
             cameras = [[NSArray alloc] init];
         }
         [periphData addObject:cameras];
-        NSArray *actions;
         mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
         relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/getcurrentrulesbyhouse" withData:mapData isAsync:NO];
         [periphData addObject:[self parseRules:relayData]];
         [data setObject:periphData forKey:house];
-        NSLog(@"%@", data);
+        NSMutableDictionary *allData = [[NSMutableDictionary alloc] init];
+        NSMutableArray *words = [NSMutableArray arrayWithObjects:@"Dashboard", @"Sensors", @"Relays", @"Cameras", nil];
+        NSMutableDictionary *cams = [[NSMutableDictionary alloc] init];
+        mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
+        NSString *received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getcurrentperipheralsbyhouse" withData:mapData isAsync:NO];
+        NSMutableArray *periphs;
+        if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
+            periphs = (NSMutableArray *)[self parsePeripherals:received];
+        }
+        else{
+            periphs = [[NSMutableArray alloc] init];
+        }
+        mapData = [[NSDictionary alloc] initWithObjectsAndKeys: house, @"HouseName", globals.seshToke, @"SessionToken", nil];
+        received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/getboardsbyhouse" withData:mapData isAsync:NO];
+        NSMutableArray *boards;
+        if (![received isEqualToString:@"[[]]"] && ![received isEqualToString:@"{\"message\":null}"]){
+            boards = (NSMutableArray *)[self parseBoards:received];
+        }
+        else{
+            boards = [[NSMutableArray alloc] init];
+        }
+        [allData setObject:[NSArray arrayWithObjects:periphs, boards, nil] forKey:house];
+        for (int i = 0; i < [periphs count]; i+=4){
+            NSString *periph = [periphs objectAtIndex:i];
+            if ([periphs[[periphs indexOfObject:periph] + 3] isEqualToString:@"Sensor"]){
+                [words addObject:[NSString stringWithFormat:@"%@ %@ %@", house, @"Show", periph]];
+            }
+            else if ([periphs[[periphs indexOfObject:periph] + 3] isEqualToString:@"Relay"]){
+                [words addObject:[NSString stringWithFormat:@"%@ %@ %@", house, @"Turn On", periph]];
+                [words addObject:[NSString stringWithFormat:@"%@ %@ %@", house, @"Turn Off", periph]];
+            }
+            else{
+                [words addObject:[NSString stringWithFormat:@"%@ %@ %@", house, @"Show", periph]];
+            }
+        }
+        globals.commands = words;
+        globals.allData = allData;
     }
     return data;
 }
