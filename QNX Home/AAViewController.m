@@ -164,16 +164,32 @@
         else
             periph = [globals.houseData objectForKey:house][2][[self.actionP selectedRowInComponent:0]];
         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", [globals.houses objectAtIndex:(globals.house - 2)], @"HouseName", self.rule.text, @"RuleName", [globals.houseData objectForKey:[globals.houses objectAtIndex:(globals.house - 2)]][1][[self.sensor selectedRowInComponent:0] * 5], @"ConditionPeripheralName", [globals.condtions objectAtIndex:[self.condition selectedRowInComponent:0]], @"AutomationConditionName", self.cV.text, @"AutomationConditionValue", periph, @"ActionPeripheralName", [globals.actions objectForKey:[globals.aPC objectAtIndex:[self.actionPC selectedRowInComponent:0]]][[self.action selectedRowInComponent:0]], @"AutomationActionName", self.aP.text, @"AutomationActionParameter", nil];
-        NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/createautomationrule" withData:mapData isAsync:NO];
-        if ([body containsString:@"[]"]){
-            [self.navigationController popViewControllerAnimated:TRUE];
-        }
-        else{
-            UIAlertController *rule = [UIAlertController alertControllerWithTitle:@"Fix Options" message:@"Something went wrong, try changing options." preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
-            [rule addAction:ok];
-            [self presentViewController:rule animated:YES completion:nil];
-        }
+        UIAlertController *action = [UIAlertController alertControllerWithTitle:@"Adding Action" message:@"Adding action to your house." preferredStyle:UIAlertControllerStyleAlert];
+        [self presentViewController:action animated:YES completion:^(void){
+            NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/createautomationrule" withData:mapData isAsync:NO];
+            if ([body containsString:@"[]"]){
+                NSMutableArray *actions = [globals.houseData objectForKey:house][3];
+                [actions addObject:self.rule.text];
+                [actions addObject:[globals.houseData objectForKey:[globals.houses objectAtIndex:(globals.house - 2)]][1][[self.sensor selectedRowInComponent:0] * 5]];
+                [actions addObject:[globals.condtions objectAtIndex:[self.condition selectedRowInComponent:0]]];
+                [actions addObject:self.cV.text];
+                [actions addObject:periph];
+                [actions addObject:[globals.actions objectForKey:[globals.aPC objectAtIndex:[self.actionPC selectedRowInComponent:0]]][[self.action selectedRowInComponent:0]]];
+                [actions addObject:self.aP.text];
+                [[globals.houseData objectForKey:house] replaceObjectAtIndex:3 withObject:actions];
+                [self dismissViewControllerAnimated:YES completion:^(void){
+                    [self.navigationController popViewControllerAnimated:TRUE];
+                }];
+            }
+            else{
+                [self dismissViewControllerAnimated:YES completion:^(void){
+                    UIAlertController *rule = [UIAlertController alertControllerWithTitle:@"Fix Options" message:@"Something went wrong, try changing options." preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+                    [rule addAction:ok];
+                    [self presentViewController:rule animated:YES completion:nil];
+                }];
+            }
+        }];
     }
 }
 -(IBAction)cancel:(id)sender{

@@ -1321,7 +1321,6 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="automation" destination="uPR-c1-EZD" id="Zyg-xF-GMe"/>
-                        <outlet property="cameras" destination="uPR-c1-EZD" id="DcU-2I-bn3"/>
                         <outlet property="house" destination="igT-Sd-VDk" id="3iB-65-OVL"/>
                         <segue destination="hyh-5l-vUR" kind="show" identifier="Action" id="5oX-tb-WMm"/>
                     </connections>

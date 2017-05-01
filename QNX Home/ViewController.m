@@ -543,6 +543,7 @@ NSArray *picker;
     [self.system reloadData];
     [self.houseList reloadData];
     [self.cameras reloadData];
+    [self.automation reloadData];
 }
 
 -(NSString*) sha256:(NSString *)clear{
@@ -570,7 +571,12 @@ NSArray *picker;
 
     }
     if (tableView == self.automation){
-        return cell;
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        NSString *title = picker[globals.house];
+        NSArray *actions = [globals.houseData objectForKey:title][3];
+        cell.textLabel.text = actions[indexPath.row * 7];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@ - %@", actions[indexPath.row * 7 + 1], actions[indexPath.row * 7 + 2], actions[indexPath.row * 7 + 3]];
+        
     }
     else if(tableView == self.houseList){
         cell.textLabel.text = globals.houses[indexPath.row];
@@ -799,17 +805,16 @@ NSArray *picker;
         [self performSegueWithIdentifier:@"History" sender:self];
     }
     else if (tableView == self.automation){
-        
+        NSString *title = picker[globals.house];
+        NSArray *actions = [globals.houseData objectForKey:title][3];
+    
     }
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     GlobalVars *globals = [GlobalVars sharedInstance];
-    if (tableView == self.automation){
-        return 0;
-    }
-    else if(tableView == self.houseList){
+    if(tableView == self.houseList){
         return [globals.houses count];
     }
     else if (tableView == self.system){
@@ -844,6 +849,13 @@ NSArray *picker;
         if (cams == nil)
             return 0;
         return [cams count] / 2;
+    }
+    else if (tableView == self.automation){
+        NSString *title = picker[globals.house];
+        NSArray *actions = [globals.houseData objectForKey:title][3];
+        if (actions == nil)
+            return 0;
+        return [actions count] / 7;
     }
     return 5;
 }
@@ -964,8 +976,21 @@ NSArray *picker;
     }
     else if (tableView == self.automation){
         NSString *title = picker[globals.house];
-        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", title, @"houseName", [globals.houseData objectForKey:title][3][indexPath.row], @"ruleName", nil];
-        [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/setrelaystatus" withData:mapData isAsync:YES];
+        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", title, @"houseName", [globals.houseData objectForKey:title][3][indexPath.row * 7], @"ruleName", nil];
+        [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/removeautomationrule" withData:mapData isAsync:YES];
+        NSMutableArray *actions = [globals.houseData objectForKey:title][3];
+        [actions removeObjectAtIndex:((indexPath.row * 7) + 6)];
+        [actions removeObjectAtIndex:((indexPath.row * 7) + 5)];
+        [actions removeObjectAtIndex:((indexPath.row * 7) + 4)];
+        [actions removeObjectAtIndex:((indexPath.row * 7) + 3)];
+        [actions removeObjectAtIndex:((indexPath.row * 7) + 2)];
+        [actions removeObjectAtIndex:((indexPath.row * 7) + 1)];
+        [actions removeObjectAtIndex:(indexPath.row * 7)];
+        if ([actions count] == 0){
+                //[sensors addObject:@"Empty"];
+        }
+        [[globals.houseData objectForKey:title] replaceObjectAtIndex:3 withObject:actions];
+        [self.automation reloadData];
     }
 }
 

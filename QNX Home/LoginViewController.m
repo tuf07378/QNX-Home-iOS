@@ -616,10 +616,88 @@
             cameras = [[NSArray alloc] init];
         }
         [periphData addObject:cameras];
+        NSArray *actions;
+        mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
+        relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/getcurrentrulesbyhouse" withData:mapData isAsync:NO];
+        [periphData addObject:[self parseRules:relayData]];
         [data setObject:periphData forKey:house];
         NSLog(@"%@", data);
     }
     return data;
+}
+- (NSArray *)parseRules:(NSString *)body{
+    GlobalVars *globals = [GlobalVars sharedInstance];
+    NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@"},{"] count] - 1;
+    NSString *haystackPrefix = @"[[{";
+    NSString *haystackSuffix = @"}]]";
+    NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
+    NSString *needle = [body substringWithRange:needleRange];
+    NSArray *houseArray = [needle componentsSeparatedByString:@"},{"];
+    NSMutableArray *sens = [[NSMutableArray alloc] init];
+    for(int i = 0; i < numberOfOccurrences + 1; i++){
+        NSUInteger numberOfSens = [[houseArray[i] componentsSeparatedByString:@","] count];
+        NSArray *senArray = [houseArray[i] componentsSeparatedByString:@","];
+        for(int j = 0; j < numberOfSens; j++){
+            if (j % 7 == 0){
+                NSString *house = (NSString *)senArray[j];
+                haystackPrefix = @"\"AutomationRuleName\":\"";
+                haystackSuffix = @"\"";
+                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                needle = [house substringWithRange:needleRange];
+                [sens addObject:[NSString stringWithString:needle]];
+            }
+            else if (j % 7 == 1){
+                NSString *house = (NSString *)senArray[j];
+                haystackPrefix = @"\"AutomationConditionPeripheralName\":\"";
+                haystackSuffix = @"\"";
+                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                needle = [house substringWithRange:needleRange];
+                [sens addObject:[NSString stringWithString:needle]];
+            }
+            else if (j % 7 == 2){
+                NSString *house = (NSString *)senArray[j];
+                haystackPrefix = @"\"AutomationConditionName\":\"";
+                haystackSuffix = @"\"";
+                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                needle = [house substringWithRange:needleRange];
+                [sens addObject:[NSString stringWithString:needle]];
+            }
+            else if (j % 7 == 3){
+                NSString *house = (NSString *)senArray[j];
+                haystackPrefix = @"\"AutomationConditionValue\":";
+                haystackSuffix = @"";
+                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                needle = [house substringWithRange:needleRange];
+                [sens addObject:[NSString stringWithString:needle]];
+            }
+            else if (j % 7 == 4){
+                NSString *house = (NSString *)senArray[j];
+                haystackPrefix = @"\"AutomationActionPeripheralName\":\"";
+                haystackSuffix = @"\"";
+                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                needle = [house substringWithRange:needleRange];
+                [sens addObject:[NSString stringWithString:needle]];
+            }
+            else if (j % 7 == 5){
+                NSString *house = (NSString *)senArray[j];
+                haystackPrefix = @"\"AutomationActionName\":\"";
+                haystackSuffix = @"\"";
+                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                needle = [house substringWithRange:needleRange];
+                [sens addObject:[NSString stringWithString:needle]];
+            }
+            else if (j % 7 == 6){
+                NSString *house = (NSString *)senArray[j];
+                haystackPrefix = @"\"AutomationActionParameter\":";
+                haystackSuffix = @"";
+                needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+                needle = [house substringWithRange:needleRange];
+                [sens addObject:[NSString stringWithString:needle]];
+            }
+        }
+        
+    }
+    return sens;
 }
 
 - (void)parseTypes:(NSString *)body{
