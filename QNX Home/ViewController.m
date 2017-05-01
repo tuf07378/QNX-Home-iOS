@@ -866,7 +866,7 @@ NSArray *picker;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(tableView == self.houseList || tableView == self.system){
+    if(tableView == self.houseList || tableView == self.system || tableView == self.automation){
         return YES;
     }
     return NO;
@@ -961,6 +961,11 @@ NSArray *picker;
             [globals.allData setObject:[NSArray arrayWithObjects:boards, periphs, nil] forKey:title];
             [tableView reloadData];
         }
+    }
+    else if (tableView == self.automation){
+        NSString *title = picker[globals.house];
+        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", title, @"houseName", [globals.houseData objectForKey:title][3][indexPath.row], @"ruleName", nil];
+        [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/setrelaystatus" withData:mapData isAsync:YES];
     }
 }
 

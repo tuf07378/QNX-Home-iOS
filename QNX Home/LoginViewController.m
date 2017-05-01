@@ -99,6 +99,11 @@
             mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", nil];
             body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getactionperipheralcategories" withData:mapData isAsync:NO];
             globals.aPC = [self parseCategories:body];
+            for(NSString *category in globals.aPC){
+                mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", category, @"PeripheralCategoryName", nil];
+                body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/getautomationactionsbyperipheralcategory" withData:mapData isAsync:NO];
+                [globals.actions setObject:[self parseActions:body] forKey:category];
+            }
             [self dismissViewControllerAnimated:TRUE completion:nil];
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"NavigationController"];
@@ -486,6 +491,24 @@
     for(int i = 0; i < numberOfOccurrences + 1; i++){
         NSString *house = (NSString *)houseArray[i];
         haystackPrefix = @"\"PeripheralCategoryName\":\"";
+        haystackSuffix = @"\"";
+        needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
+        needle = [house substringWithRange:needleRange];
+        [sens addObject:[NSString stringWithString:needle]];
+    }
+    return sens;
+}
+- (NSArray *)parseActions:(NSString *)body{
+    NSUInteger numberOfOccurrences = [[body componentsSeparatedByString:@"},{"] count] - 1;
+    NSString *haystackPrefix = @"[[{";
+    NSString *haystackSuffix = @"}]]";
+    NSRange needleRange = NSMakeRange(haystackPrefix.length, body.length - haystackPrefix.length - haystackSuffix.length);
+    NSString *needle = [body substringWithRange:needleRange];
+    NSArray *houseArray = [needle componentsSeparatedByString:@"},{"];
+    NSMutableArray *sens = [[NSMutableArray alloc] init];
+    for(int i = 0; i < numberOfOccurrences + 1; i++){
+        NSString *house = (NSString *)houseArray[i];
+        haystackPrefix = @"\"AutomationActionName\":\"";
         haystackSuffix = @"\"";
         needleRange = NSMakeRange(haystackPrefix.length, house.length - haystackPrefix.length - haystackSuffix.length);
         needle = [house substringWithRange:needleRange];

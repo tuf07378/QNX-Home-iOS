@@ -31,5 +31,6 @@
 @property(strong, nonatomic, readwrite) NSString *device;
 @property(strong, nonatomic, readwrite) NSArray *condtions;
 @property(strong, nonatomic, readwrite) NSArray *aPC;
+@property(strong, nonatomic, readwrite) NSMutableDictionary *actions;
 
 @end
