@@ -976,7 +976,9 @@ NSArray *picker;
                 [houseData replaceObjectAtIndex:0 withObject:relays];
             }
             else if ([type isEqualToString:@"Camera"]){
-                
+                NSMutableArray *cams = houseData[2];
+                [cams removeObjectAtIndex:[cams indexOfObject:boards[indexPath.row * 4]] + 1];
+                [cams removeObject:boards[indexPath.row * 4]];
             }
             [globals.houseData setObject:houseData forKey:title];
             [boards removeObjectAtIndex:(indexPath.row * 4) + 3];
