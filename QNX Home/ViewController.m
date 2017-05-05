@@ -807,7 +807,11 @@ NSArray *picker;
     else if (tableView == self.automation){
         NSString *title = picker[globals.house];
         NSArray *actions = [globals.houseData objectForKey:title][3];
-    
+        NSString *message = [NSString stringWithFormat:@"If %@ is %@ %@, then %@ %@ %@", actions[(indexPath.row * 7) + 1], actions[(indexPath.row * 7) + 2], actions[(indexPath.row * 7) + 3], actions[(indexPath.row * 7) + 4], actions[(indexPath.row * 7) + 5], actions[(indexPath.row * 7) + 6]];
+        UIAlertController *action = [UIAlertController alertControllerWithTitle:[actions objectAtIndex:indexPath.row * 7] message:message preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
+        [action addAction:ok];
+        [self presentViewController:action animated:YES completion:nil];
     }
 }
 
