@@ -410,8 +410,14 @@ NSArray *picker;
             body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/house/changehousename" withData:mapData isAsync:NO];
             NSLog(@"Response Body:\n%@\n", body);
             if ([body containsString:@"Success"]){
+                NSArray *data = [globals.houseData objectForKey:[globals.houses objectAtIndex:self.selected]];
+                NSArray *all = [globals.allData objectForKey:[globals.houses objectAtIndex:self.selected]];
                 [globals.houses removeObject:[globals.houses objectAtIndex:self.selected]];
                 [globals.houses addObject:self.uNew.text];
+                [globals.houseData removeObjectForKey:[globals.houses objectAtIndex:self.selected]];
+                [globals.allData removeObjectForKey:[globals.houses objectAtIndex:self.selected]];
+                [globals.houseData setObject:data forKey:self.uNew.text];
+                [globals.allData setObject:data forKey:self.uNew.text];
                 MainViewController *mainViewController = (MainViewController *)self.sideMenuController;
                 UINavigationController *navigationController = (UINavigationController *)mainViewController.rootViewController;
                 ViewController *viewController;
