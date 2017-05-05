@@ -506,11 +506,13 @@ NSArray *picker;
                 if ([body containsString:@"Success"]){
                     [globals.houses addObject:self.temp.text];
                     [self dismissViewControllerAnimated:TRUE completion:^{
+                        NSArray *array = [NSArray arrayWithObjects:[[NSDictionary alloc] init], [[NSArray alloc] init], [[NSArray alloc] init], [[NSArray alloc] init], nil];
+                        [globals.houseData setObject:array forKey:self.temp.text];
                         UIAlertController *success = [UIAlertController alertControllerWithTitle:@"Joined House" message:@"Successfully joined existing house." preferredStyle:UIAlertControllerStyleAlert];
                         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
                         [success addAction:ok];
                         [self presentViewController:success animated:TRUE completion:nil];
-                        [self getSensorDataWithOption:newHouse];
+                        [self getSensorDataWithOption:@"All"];
                         NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", newHouse, @"houseName", nil];
                         NSString *received = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/peripheral/getcurrentperipheralsbyhouse" withData:mapData isAsync:NO];
                         NSArray *periphs;
@@ -1135,14 +1137,15 @@ NSArray *picker;
             mapData = [[NSDictionary alloc] initWithObjectsAndKeys: house, @"HouseName", globals.seshToke, @"SessionToken", nil];
             relayData = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/dev/relay/getrelayvaluesbyhouseid" withData:mapData  isAsync:NO];
             [data setValue:@"" forKey:house];
+            NSDictionary *relays;
             if ([relayData containsString:@"Peripheral"]){
-                NSDictionary *relays = [self parseRelays:relayData];
-                [[globals.houseData objectForKey:house] replaceObjectAtIndex:0 withObject:relays];
+                relays = [self parseRelays:relayData];
             }
             else{
-                NSDictionary *relays = [[NSDictionary alloc] init];
-                [[globals.houseData objectForKey:house] replaceObjectAtIndex:0 withObject:relays];
+                relays = [[NSDictionary alloc] init];
             }
+            NSArray *data = [NSArray arrayWithObjects:relays, [globals.houseData objectForKey:house][1], [globals.houseData objectForKey:house][2], [globals.houseData objectForKey:house][3], nil];
+            [globals.houseData setObject:data forKey:house];
         }
         if (go || [option isEqualToString:@"Dash"] || [option isEqualToString:@"Sensors"]){
             mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
@@ -1154,7 +1157,8 @@ NSArray *picker;
             else{
                 sensorData = [[NSArray alloc] init];
             }
-            [[globals.houseData objectForKey:house] replaceObjectAtIndex:1 withObject:sensorData];
+            NSArray *data = [NSArray arrayWithObjects:[globals.houseData objectForKey:house][0], sensorData, [globals.houseData objectForKey:house][2], [globals.houseData objectForKey:house][3], nil];
+            [globals.houseData setObject:data forKey:house];
         }
         if (go || [option isEqualToString:@"Cameras"]){
             mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"sessionToken", house, @"houseName", nil];
@@ -1166,7 +1170,8 @@ NSArray *picker;
             else{
                 cameras = [[NSArray alloc] init];
             }
-            [[globals.houseData objectForKey:house] replaceObjectAtIndex:2 withObject:cameras];
+            NSArray *data = [NSArray arrayWithObjects:[globals.houseData objectForKey:house][0], [globals.houseData objectForKey:house][1], cameras, [globals.houseData objectForKey:house][3], nil];
+            [globals.houseData setObject:data forKey:house];
         }
     }
 }
