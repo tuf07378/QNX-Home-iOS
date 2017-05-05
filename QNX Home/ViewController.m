@@ -76,6 +76,10 @@ NSArray *picker;
         [self transition:@"System"];
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
+}
+
 - (IBAction)voice:(id)sender{
         [[OEPocketsphinxController sharedInstance] setActive:TRUE error:nil];
         [[OEPocketsphinxController sharedInstance] startListeningWithLanguageModelAtPath:lmPath dictionaryAtPath:dicPath acousticModelAtPath:[OEAcousticModel pathToModel:@"AcousticModelEnglish"] languageModelIsJSGF:NO]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to perform Spanish recognition instead of English.
@@ -1014,10 +1018,6 @@ NSArray *picker;
     [globals.houseData setObject:house forKey:houseN];
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    [self.view endEditing:YES];
-}
-
 - (NSString *)post:(NSString *) link withData:(NSDictionary *) data isAsync:(BOOL)aSync{
     NSError *error;
     NSURL *url = [[NSURL alloc] initWithString:link];
@@ -1430,5 +1430,6 @@ NSArray *picker;
     }
     
 }
+
 
 @end

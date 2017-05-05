@@ -156,6 +156,11 @@
         [self presentViewController:rule animated:YES completion:nil];
     }
     else{
+        NSString *param;
+        if ([self.aP.text isEqualToString:@""])
+            param = @"1";
+        else
+             param = self.aP.text;
         GlobalVars *globals = [GlobalVars sharedInstance];
         NSString *house = [globals.houses objectAtIndex:(globals.house - 2)];
         NSString *periph;
@@ -163,7 +168,7 @@
             periph = [[[globals.houseData objectForKey:house][0] allKeys] objectAtIndex:[self.actionP selectedRowInComponent:0]];
         else
             periph = [globals.houseData objectForKey:house][2][[self.actionP selectedRowInComponent:0]];
-        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", [globals.houses objectAtIndex:(globals.house - 2)], @"HouseName", self.rule.text, @"RuleName", [globals.houseData objectForKey:[globals.houses objectAtIndex:(globals.house - 2)]][1][[self.sensor selectedRowInComponent:0] * 5], @"ConditionPeripheralName", [globals.condtions objectAtIndex:[self.condition selectedRowInComponent:0]], @"AutomationConditionName", self.cV.text, @"AutomationConditionValue", periph, @"ActionPeripheralName", [globals.actions objectForKey:[globals.aPC objectAtIndex:[self.actionPC selectedRowInComponent:0]]][[self.action selectedRowInComponent:0]], @"AutomationActionName", self.aP.text, @"AutomationActionParameter", nil];
+        NSDictionary *mapData = [[NSDictionary alloc] initWithObjectsAndKeys: globals.seshToke, @"SessionToken", [globals.houses objectAtIndex:(globals.house - 2)], @"HouseName", self.rule.text, @"RuleName", [globals.houseData objectForKey:[globals.houses objectAtIndex:(globals.house - 2)]][1][[self.sensor selectedRowInComponent:0] * 5], @"ConditionPeripheralName", [globals.condtions objectAtIndex:[self.condition selectedRowInComponent:0]], @"AutomationConditionName", self.cV.text, @"AutomationConditionValue", periph, @"ActionPeripheralName", [globals.actions objectForKey:[globals.aPC objectAtIndex:[self.actionPC selectedRowInComponent:0]]][[self.action selectedRowInComponent:0]], @"AutomationActionName", param, @"AutomationActionParameter", nil];
         UIAlertController *action = [UIAlertController alertControllerWithTitle:@"Adding Action" message:@"Adding action to your house." preferredStyle:UIAlertControllerStyleAlert];
         [self presentViewController:action animated:YES completion:^(void){
             NSString* body = [self post:@"https://zvgalu45ka.execute-api.us-east-1.amazonaws.com/prod/createautomationrule" withData:mapData isAsync:NO];
@@ -207,6 +212,10 @@
         [self.aP setEnabled:FALSE];
     else
         [self.aP setEnabled:TRUE];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
 }
 
 @end
